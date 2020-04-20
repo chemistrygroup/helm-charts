@@ -1,0 +1,13 @@
+---
+apiVersion: v2
+name: java-service
+version: 1.0.0
+description: A sample description of the service purpose
+type: application
+keywords:
+  - service-name
+home: https://github.com/chemistrygroup/servicetemplate
+sources:
+  - https://github.com/chemistrygroup/servicetemplate
+appVersion: 1.0.0
+icon: https://helm.sh/img/helm.svg

@@ -1,0 +1,120 @@
+---
+version: v1  # service version, good practice to label every k8s resource with a version if we want to use istio traffic routing capabilities in the future
+
+name: java-service  # replace this by your service name
+
+# Controls if prometheus scrapping should be enabled for this service
+prometheus:
+  enabled: true  # enables/disable scraping of prometheus metrics
+  path: '/metrics'  # path for scrapping prometheus metrics
+  port: 8082  # port were the metrics web server is running
+  scheme: 'http'  # http connection scheme
+
+# Service serviceAccount
+serviceAccountName: java-service-sa
+serviceAccount:
+  create: true  # if true the chart will create the service account
+  name: &serviceAccountName  # name of the serviceAccount to use or to create
+
+# controls k8s Role Based Access Control settings tied to the serviceAccount
+rbac:
+  enabled: true  # enables/disables the creation of Role Based Policies
+  type: cluster  # type can be cluster or namespace  ( ClusterRole or Role)
+  ref: &name  # name of the manifests to be created
+  serviceAccount: &serviceAccountName
+
+# pod affinity policies
+# affinity: {}
+
+# node selector
+# nodeSelector: {}
+
+# service image
+image:
+  registry: docker.io  # container registry url
+  repository: nginx  # container registry repo name
+  tag: latest  # image tag
+  pullPolicy: IfNotPresent  # kubernetes container image pull policy
+
+# limits the container resources
+resources:
+  # resources that the container requires to boot
+  requests:
+    memory: 512Mi
+    cpu: 250m
+  # limit of resources that a container may consume
+  limits:
+    memory: 1024Mi
+    cpu: 500m
+
+#  Controlls the Horizontal Pod Autoscalling settings
+hpa:
+  minReplicas: 1  # set's the minimum number of replicas for this service
+  maxReplicas: 2  # set's the maximum number of replicas for this service
+  targetCPU: 80  # the target cpu value that triggers the scale action
+
+# service related settings
+service:
+  enabled: true  # enables helm to create a dedicated clusterIP service for this service
+  http: true  # creates a service that routes traffic from port 80 to port 8080 ( this port is already exposed in the container )
+  ingress:  # should this service be exposed to the web
+    enabled: true  # activate/deactive ingress traffic
+    paths:  # route traffic from one external path to another
+      - path: /api/v1/users  # original path
+        targetPath: /users  # target path
+# uncomment the following yaml if you wish to add additional port's to this service
+#  extraPorts:
+#    - name: grpc  # port name , must be http, https, http2, grpc or tcp ( istio )
+#      port: 81
+#      protocol: TCP  # service protocol TCP/UDP
+#      targetPort: 8081
+
+# specify k8s configmaps to create
+configMaps:
+#  - name: some-config-map
+#    data:
+#      somefile.txt: |
+#        some text containerPort
+#      somenewfile.txt: |
+#        some other text content
+
+# specify k8s secrets to create
+secrets:
+#  - name: some-secret
+#    data:
+#    - name: key1
+#      value: value1
+#    - name: key2
+#      value: value2
+
+
+# Allows you to set extra container environment variables
+# extraEnvs:
+#   - name: SOME_VAR
+#     value: some-value
+#   - name: SOME_SECRET_VAR
+#     valueFrom:
+#       secretKeyRef:
+#         name: some-secret
+#         key: some-key
+
+# Allows you to create extra volumes
+# extraVolumes:
+#   - name: sample-volume
+#     emptyDir: {}
+
+# Allows you to mount extra volume mounts onto your container
+# extraVolumeMounts:
+#   - name: sample-volume-mount
+#     mountPath: /sample/volume/mount
+
+# Allows you to expose extra container ports
+# extraContainerPorts:
+#   - name: grpc-port
+#     containerPort: 8081
+
+# application settings
+app:
+  java:
+    xmx: 1024Mi
+    xms: 512Mi

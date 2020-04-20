@@ -1,0 +1,31 @@
+---
+{{- $scope := . }}
+{{- $release := .Release }}
+{{- $values := .Values }}
+{{- $service := $values.service }}
+{{- if $service.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "app.name" $scope }}
+  namespace: {{ $release.Namespace }}
+  labels:
+{{ include "chart.labels" $scope | indent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+  {{- if $service.http }}
+    - port: 80
+      name: http-port
+      protocol: TCP
+      targetPort: 8080
+  {{- end }}
+  {{- if $service.extraPorts }}
+{{ toYaml $service.extraPorts | indent 4 }}
+  {{- end }}
+  selector:
+    app: {{ template "app.name" $scope }}
+    release: {{ $release.Name }}
+    namespace: {{ $release.Namespace }}
+    version: {{ template "app.version" $scope }}
+{{- end }}
