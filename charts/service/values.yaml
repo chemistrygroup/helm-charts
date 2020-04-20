@@ -1,7 +1,9 @@
 ---
 version: v1  # service version, good practice to label every k8s resource with a version if we want to use istio traffic routing capabilities in the future
 
-name: java-service  # replace this by your service name
+nameOverride: "service" # replace this by your service name
+fullnameOverride: ""  # fill if you whish to override the generatedChartFullName
+name: &nameOverride
 
 # Controls if prometheus scrapping should be enabled for this service
 prometheus:
@@ -11,23 +13,25 @@ prometheus:
   scheme: 'http'  # http connection scheme
 
 # Service serviceAccount
-serviceAccountName: java-service-sa
 serviceAccount:
   create: true  # if true the chart will create the service account
-  name: &serviceAccountName  # name of the serviceAccount to use or to create
+  name: java-service-sa  # name of the serviceAccount to use or to create
 
 # controls k8s Role Based Access Control settings tied to the serviceAccount
 rbac:
   enabled: true  # enables/disables the creation of Role Based Policies
   type: cluster  # type can be cluster or namespace  ( ClusterRole or Role)
-  ref: &name  # name of the manifests to be created
-  serviceAccount: &serviceAccountName
 
 # pod affinity policies
-# affinity: {}
+affinity: {}
 
 # node selector
-# nodeSelector: {}
+nodeSelector: {}
+
+# tolerations
+# tolerations: []
+
+replicaCount: 1
 
 # service image
 image:
@@ -53,6 +57,68 @@ hpa:
   maxReplicas: 2  # set's the maximum number of replicas for this service
   targetCPU: 80  # the target cpu value that triggers the scale action
 
+# Constrols the liveness and readiness kubernetes pod probes
+probes:
+  livenessProbe:
+    initialDelaySeconds: 60 
+    failureThreshold: 2
+    httpGet:
+      path: /health
+      port: 8082
+      scheme: HTTP
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 20
+  readinessProbe:
+    initialDelaySeconds: 60
+    failureThreshold: 10
+    httpGet:
+      path: /health
+      port: 8082
+      scheme: HTTP
+    periodSeconds: 30
+    successThreshold: 1
+    timeoutSeconds: 10
+
+
+podSecurityContext: {}
+# fsGroup: 2000
+
+securityContext: {}
+# capabilities:
+#   drop:
+#   - ALL
+# readOnlyRootFilesystem: true
+# runAsNonRoot: true
+# runAsUser: 1000
+
+# Allows you to set extra container environment variables
+extraEnvs:
+  - name: XMS
+    value: 512Mi
+  - name: XMX
+    value: 1024Mi
+#  - name: SOME_SECRET_VAR
+#    valueFrom:
+#      secretKeyRef:
+#        name: some-secret
+#        key: some-key
+
+# Allows you to create extra volumes
+# extraVolumes:
+#   - name: sample-volume
+#     emptyDir: {}
+
+# Allows you to mount extra volume mounts onto your container
+# extraVolumeMounts:
+#   - name: sample-volume-mount
+#     mountPath: /sample/volume/mount
+
+# Allows you to expose extra container ports
+# extraContainerPorts:
+#   - name: grpc-port
+#     containerPort: 8081
+
 # service related settings
 service:
   enabled: true  # enables helm to create a dedicated clusterIP service for this service
@@ -60,8 +126,10 @@ service:
   ingress:  # should this service be exposed to the web
     enabled: true  # activate/deactive ingress traffic
     paths:  # route traffic from one external path to another
-      - path: /api/v1/users  # original path
-        targetPath: /users  # target path
+        # original path
+      - path: /api/v1/users
+        # target path
+        targetPath: /users
 # uncomment the following yaml if you wish to add additional port's to this service
 #  extraPorts:
 #    - name: grpc  # port name , must be http, https, http2, grpc or tcp ( istio )
@@ -86,35 +154,3 @@ secrets:
 #      value: value1
 #    - name: key2
 #      value: value2
-
-
-# Allows you to set extra container environment variables
-# extraEnvs:
-#   - name: SOME_VAR
-#     value: some-value
-#   - name: SOME_SECRET_VAR
-#     valueFrom:
-#       secretKeyRef:
-#         name: some-secret
-#         key: some-key
-
-# Allows you to create extra volumes
-# extraVolumes:
-#   - name: sample-volume
-#     emptyDir: {}
-
-# Allows you to mount extra volume mounts onto your container
-# extraVolumeMounts:
-#   - name: sample-volume-mount
-#     mountPath: /sample/volume/mount
-
-# Allows you to expose extra container ports
-# extraContainerPorts:
-#   - name: grpc-port
-#     containerPort: 8081
-
-# application settings
-app:
-  java:
-    xmx: 1024Mi
-    xms: 512Mi

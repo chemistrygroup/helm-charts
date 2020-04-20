@@ -7,7 +7,7 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ $values.serviceAccount }}
+  name: {{ include "chart.serviceAccountName" $scope }}
   namespace: {{ $release.Namespace }}
   labels:
 {{ include "chart.labels" $scope | indent 4 }}

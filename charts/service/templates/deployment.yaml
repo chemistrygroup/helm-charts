@@ -5,17 +5,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "app.name" $scope }}
+  name: {{ include "chart.name" $scope }}
   namespace: {{ $release.Namespace }}
   labels:
 {{ include "chart.labels" $scope | indent 4 }}
 spec:
   selector:
     matchLabels:
-      app: {{ template "app.name" $scope }}
+      app: {{ include "chart.name" $scope }}
       release: {{ $release.Name }}
       namespace: {{ $release.Namespace }}
-      version: {{ template "app.version" $scope }}
+      version: {{ include "chart.appVersion" $scope }}
   replicas: {{ $values.replicaCount }}
   startegy:
     type: "RollingUpdate"
@@ -34,25 +34,25 @@ spec:
         prometheus.io/scrape: 'false'
 {{- end }}
       labels:
-        app: {{ template "app.name" $scope }}
+        app: {{ include "chart.name" $scope }}
         release: {{ $release.Name }}
         namespace: {{ $release.Namespace }}
-        version: {{ template "app.version" $scope }}
+        version: {{ include "chart.appVersion" $scope }}
     spec:
-{{- if $values.serviceAccount }}
-      serviceAccountName: {{ $values.serviceAccount }}
+{{- if and $values.serviceAccount $values.serviceAccount.name }}
+      serviceAccountName: {{ $values.serviceAccount.name }}
 {{- end }}
+      securityContext:
+{{ toYaml $values.podSecurityContext | indent 8 }}
       containers:
         - name: service
+          securityContext:
+{{ toYaml $values.securityContext | indent 12 }}
           env:
-            - name: XMS
-              value: {{ $values.app.java.xms }}
-            - name: XMX
-              value: {{ $values.app.java.xmx }}
   {{- if $values.extraEnvs }}
-  {{ toYaml $values.extraEnvs | indent 10 }}
+{{ toYaml $values.extraEnvs | indent 12 }}
   {{- end }}
-          image: {{- printf '%s/%s:%s' $values.image.registry $values.image.repository $values.image.tag }}
+          image: {{ printf "%s/%s:%s" $values.image.registry $values.image.repository $values.image.tag }}
           imagePullPolicy: {{ default $values.image.pullPolicy "IfNotPresent" }}
           ports:
   {{- if and $values.service.enabled $values.service.http }}
@@ -60,36 +60,19 @@ spec:
               containerPort: 8080
   {{- end }}
   {{- if $values.extraContainerPorts }}
-  {{ toYaml $values.containerPorts | indent 10 }}
+{{ toYaml $values.containerPorts | indent 12 }}
   {{- end }}
   {{- if $values.resources }}
           resources:
-  {{ toYaml $values.resources | indent 10 }}
+{{ toYaml $values.resources | indent 12 }}
   {{- end }}
   {{- if $values.extraVolumeMounts }}
           volumeMounts:
-  {{ toYaml $values.extraVolumeMounts | indent 8 }}
+{{ toYaml $values.extraVolumeMounts | indent 12 }}
   {{- end }}
-          livenessProbe:
-            initialDelaySeconds: 60
-            failureThreshold: 2
-            httpGet:
-              path: /health
-              port: 8082
-              scheme: HTTP
-            periodSeconds: 10
-            successThreshold: 1
-            timeoutSeconds: 20
-          readinessProbe:
-            initialDelaySeconds: 60
-            failureThreshold: 10
-            httpGet:
-              path: /health
-              port: 8082
-              scheme: HTTP
-            periodSeconds: 30
-            successThreshold: 1
-            timeoutSeconds: 10
+  {{- if $values.probes }}
+{{ toYaml $values.probes | indent 10 }}
+  {{- end }}
 {{- if $values.affinity }}
       affinity:
 {{ toYaml $values.affinity | indent 8 }}
@@ -97,6 +80,10 @@ spec:
 {{- if $values.nodeSelector }}
       nodeSelector:
 {{ toYaml $values.nodeSelector | indent 8 }}
+{{- end }}
+{{- if $values.tolerations }}
+      tolerations:
+{{ toYaml $values.tolerations | indent 8 }}
 {{- end }}
 {{- if $values.extraVolumes }}
       volumes:

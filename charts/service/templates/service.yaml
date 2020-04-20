@@ -7,7 +7,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "app.name" $scope }}
+  name: {{ include "chart.name" $scope }}
   namespace: {{ $release.Namespace }}
   labels:
 {{ include "chart.labels" $scope | indent 4 }}
@@ -24,8 +24,8 @@ spec:
 {{ toYaml $service.extraPorts | indent 4 }}
   {{- end }}
   selector:
-    app: {{ template "app.name" $scope }}
+    app: {{ include "chart.name" $scope }}
     release: {{ $release.Name }}
     namespace: {{ $release.Namespace }}
-    version: {{ template "app.version" $scope }}
+    version: {{ include "chart.appVersion" $scope }}
 {{- end }}
