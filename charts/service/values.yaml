@@ -1,7 +1,7 @@
 ---
 version: v1  # service version, good practice to label every k8s resource with a version if we want to use istio traffic routing capabilities in the future
 
-nameOverride: "service" # replace this by your service name
+nameOverride: "service"  # replace this by your service name
 fullnameOverride: ""  # fill if you whish to override the generatedChartFullName
 name: &nameOverride
 
@@ -60,7 +60,7 @@ hpa:
 # Constrols the liveness and readiness kubernetes pod probes
 probes:
   livenessProbe:
-    initialDelaySeconds: 60 
+    initialDelaySeconds: 60
     failureThreshold: 2
     httpGet:
       path: /health

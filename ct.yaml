@@ -6,4 +6,4 @@ chart-dirs:
 #   - bitnami=https://charts.bitnami.com
 helm-extra-args: --timeout 600s
 debug: true
-all: true
+validate-mantainers: false
