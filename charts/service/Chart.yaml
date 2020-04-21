@@ -9,5 +9,8 @@ keywords:
 home: https://github.com/chemistrygroup/helm-charts/service
 sources:
   - https://github.com/chemistrygroup/helm-charts/service
-appVersion: 1.0.0
+appVersion: "0.0.1"
 icon: https://helm.sh/img/helm.svg
+maintainers:
+  - email: pedro.rocha@mindera.com
+    name: Pedro Rocha
