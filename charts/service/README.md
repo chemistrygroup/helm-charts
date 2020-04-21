@@ -1,6 +1,6 @@
-# Java Service
+# Service
 
-This is a template Helm Chart for deploying java services into our cluster. This template contains all the required resources to successfully deploy a java service into our kuberentes cluster.
+This is a template Helm Chart for deploying services into our cluster. This template contains all the required resources to successfully deploy a service into our kuberentes cluster.
 
 # Dependencies
 
