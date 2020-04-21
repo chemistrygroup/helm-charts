@@ -29,14 +29,14 @@ affinity: {}
 nodeSelector: {}
 
 # tolerations
-# tolerations: []
+tolerations: []
 
 replicaCount: 1
 
 # service image
 image:
-  registry: docker.io  # container registry url
-  repository: nginx  # container registry repo name
+  registry: gcr.io  # container registry url
+  repository: hello-minikube-zero-install/hello-node  # container registry repo name
   tag: latest  # image tag
   pullPolicy: IfNotPresent  # kubernetes container image pull policy
 
@@ -63,8 +63,8 @@ probes:
     initialDelaySeconds: 60
     failureThreshold: 2
     httpGet:
-      path: /health
-      port: 8082
+      path: /
+      port: 8080
       scheme: HTTP
     periodSeconds: 10
     successThreshold: 1
@@ -73,8 +73,8 @@ probes:
     initialDelaySeconds: 60
     failureThreshold: 10
     httpGet:
-      path: /health
-      port: 8082
+      path: /
+      port: 8080
       scheme: HTTP
     periodSeconds: 30
     successThreshold: 1
@@ -105,17 +105,17 @@ extraEnvs:
 #        key: some-key
 
 # Allows you to create extra volumes
-# extraVolumes:
+extraVolumes: []
 #   - name: sample-volume
 #     emptyDir: {}
 
 # Allows you to mount extra volume mounts onto your container
-# extraVolumeMounts:
+extraVolumeMounts: []
 #   - name: sample-volume-mount
 #     mountPath: /sample/volume/mount
 
 # Allows you to expose extra container ports
-# extraContainerPorts:
+extraContainerPorts: []
 #   - name: grpc-port
 #     containerPort: 8081
 
@@ -125,20 +125,20 @@ service:
   http: true  # creates a service that routes traffic from port 80 to port 8080 ( this port is already exposed in the container )
   ingress:  # should this service be exposed to the web
     enabled: true  # activate/deactive ingress traffic
-    paths:  # route traffic from one external path to another
+    paths: []  # route traffic from one external path to another
         # original path
-      - path: /api/v1/users
+#      - path: /api/v1/users
         # target path
-        targetPath: /users
-# uncomment the following yaml if you wish to add additional port's to this service
-#  extraPorts:
+#        targetPath: /users
+# add additional port's to this service
+  extraPorts: []
 #    - name: grpc  # port name , must be http, https, http2, grpc or tcp ( istio )
 #      port: 81
 #      protocol: TCP  # service protocol TCP/UDP
 #      targetPort: 8081
 
 # specify k8s configmaps to create
-configMaps:
+configMaps: []
 #  - name: some-config-map
 #    data:
 #      somefile.txt: |
@@ -147,7 +147,7 @@ configMaps:
 #        some other text content
 
 # specify k8s secrets to create
-secrets:
+secrets: []
 #  - name: some-secret
 #    data:
 #    - name: key1

@@ -5,5 +5,4 @@ chart-dirs:
 # chart-repos:
 #   - bitnami=https://charts.bitnami.com
 helm-extra-args: --timeout 600s
-debug: true
 validate-mantainers: false

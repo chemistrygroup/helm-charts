@@ -16,8 +16,8 @@ spec:
       release: {{ $release.Name }}
       namespace: {{ $release.Namespace }}
       version: {{ include "chart.appVersion" $scope }}
-  replicas: {{ $values.replicaCount }}
-  startegy:
+  replicas: {{ default $values.replicaCount 1 }}
+  strategy:
     type: "RollingUpdate"
     rollingUpdate:
       maxSurge: 1
@@ -25,23 +25,17 @@ spec:
   template:
     metadata:
       annotations:
-{{- if $values.prometheus.enabled }}
-        prometheus.io/scrape: 'true'
+        prometheus.io/scrape: {{ default (printf "'%s'" $values.prometheus.enabled) "'true'" }}
         prometheus.io/path: {{ default $values.prometheus.path "/metrics" }}
-        prometheus.io/port: {{ default $values.prometheus.port "8082" }}
+        prometheus.io/port: {{ default (printf "'%s'" $values.prometheus.port) "'8082'" }}
         prometheus.io/scheme: {{ default $values.prometheus.scheme "http" }}
-{{- else }}
-        prometheus.io/scrape: 'false'
-{{- end }}
       labels:
         app: {{ include "chart.name" $scope }}
         release: {{ $release.Name }}
         namespace: {{ $release.Namespace }}
         version: {{ include "chart.appVersion" $scope }}
     spec:
-{{- if and $values.serviceAccount $values.serviceAccount.name }}
-      serviceAccountName: {{ $values.serviceAccount.name }}
-{{- end }}
+      serviceAccountName: {{ include "chart.serviceAccountName" $scope }}
       securityContext:
 {{ toYaml $values.podSecurityContext | indent 8 }}
       containers:

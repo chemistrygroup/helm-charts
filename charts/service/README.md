@@ -16,7 +16,6 @@ helm repo add chemistry https://chemistrygroup.github.io/helm-charts
 
 Install the service using the chart:
 
-
 ```bash
 helm upgrade -i service chemistry/service
 ```
@@ -46,75 +45,63 @@ The following dir tree represents the repo directory structure:
 The following tables lists the configurable parameters of the Service
 chart and their default values.
 
-| Parameter                                         | Default                                              | Description
-| -----------------------------------------------   | ---------------------------------------------------- | ---
-| `image.repository`                                | `docker.io/fluxcd/helm-operator`                     | Image repository
-| `image.tag`                                       | `{{ version }}`                                      | Image tag
-| `replicaCount`                                    | `1`                                                  | Number of Helm Operator pods to deploy, more than one is not desirable
-| `image.pullPolicy`                                | `IfNotPresent`                                       | Image pull policy
-| `image.pullSecret`                                | `None`                                               | Image pull secret
-| `resources.requests.cpu`                          | `50m`                                                | CPU resource requests for the deployment
-| `resources.requests.memory`                       | `64Mi`                                               | Memory resource requests for the deployment
-| `resources.requests.cpu`                          | `None`                                               | CPU resource limits for the deployment
-| `resources.limits.memory`                         | `None`                                               | Memory resource limits for the deployment
-| `nodeSelector`                                    | `{}`                                                 | Node Selector properties for the deployment
-| `tolerations`                                     | `[]`                                                 | Tolerations properties for the deployment
-| `affinity`                                        | `{}`                                                 | Affinity properties for the deployment
-| `extraEnvs`                                       | `[]`                                                 | Extra environment variables for the Helm Operator pod(s)
-| `podAnnotations`                                  | `{}`                                                 | Additional pod annotations
-| `podLabels`                                       | `{}`                                                 | Additional pod labels
-| `rbac.create`                                     | `true`                                               | If `true`, create and use RBAC resources
-| `rbac.pspEnabled`                                 | `false`                                              | If `true`, create and use a restricted pod security policy for Helm Operator pod(s)
-| `serviceAccount.create`                           | `true`                                               | If `true`, create a new service account
-| `serviceAccount.annotations`                      | `{}`                                                 | Additional Service Account annotations
-| `serviceAccount.name`                             | `flux`                                               | Service account to be used
-| `clusterRole.create`                              | `true`                                               | If `false`, Helm Operator will be restricted to the namespace where is deployed
-| `createCRD`                                       | `false`                                              | Install the `HelmRelease` CRD. Setting this value only has effect for Helm 2, as Helm 3 uses `--skip-crds` and will skip installation if the CRD is already present. Managing CRDs outside of Helm is recommended, also see the [Helm best practices](https://helm.sh/docs/chart_best_practices/custom_resource_definitions/)
-| `service.type`                                    | `ClusterIP`                                          | Service type to be used (exposing the Helm Operator API outside of the cluster is not advised)
-| `service.port`                                    | `3030`                                               | Service port to be used
-| `updateChartDeps`                                 | `true`                                               | Update dependencies for charts
-| `git.pollInterval`                                | `git.pollInterval`                                   | Period on which to poll git chart sources for changes
-| `git.timeout`                                     | `git.timeout`                                        | Duration after which git operations time out
-| `git.defaultRef`                                  | `master`                                             | Ref to clone chart from if ref is unspecified in a HelmRelease
-| `git.ssh.secretName`                              | `None`                                               | The name of the kubernetes secret with the SSH private key, supercedes `git.secretName`
-| `git.ssh.known_hosts`                             | `None`                                               | The contents of an SSH `known_hosts` file, if you need to supply host key(s)
-| `git.ssh.configMapName`                           | `None`                                               | The name of a kubernetes config map containing the ssh config
-| `git.ssh.configMapKey`                            | `config`                                             | The name of the key in the kubernetes config map specified above
-| `chartsSyncInterval`                              | `3m`                                                 | Period on which to reconcile the Helm releases with `HelmRelease` resources
-| `statusUpdateInterval`                            | `30s`                                                | Period on which to update the Helm release status in `HelmRelease` resources
-| `workers`                                         | `None`                                               | Number of workers processing releases
-| `logFormat`                                       | `fmt`                                                | Log format (fmt or json)
-| `logReleaseDiffs`                                 | `false`                                              | Helm Operator should log the diff when a chart release diverges (possibly insecure)
-| `allowNamespace`                                  | `None`                                               | If set, this limits the scope to a single namespace. If not specified, all namespaces will be watched
-| `helm.versions`                                   | `v2,v3`                                              | Helm versions supported by this operator instance, if v2 is specified then Tiller is required
-| `tillerNamespace`                                 | `kube-system`                                        | Namespace in which the Tiller server can be found
-| `tillerSidecar.enabled`                           | `false`                                              | Whether to deploy Tiller as a sidecar (and listening on `localhost` only).
-| `tillerSidecar.image.repository`                  | `gcr.io/kubernetes-helm/tiller`                      | Image repository to use for the Tiller sidecar.
-| `tillerSidecar.image.tag`                         | `v2.16.1`                                            | Image tag to use for the Tiller sidecar.
-| `tillerSidecar.storage`                           | `secret`                                             | Storage engine to use for the Tiller sidecar.
-| `tls.enable`                                      | `false`                                              | Enable TLS for communicating with Tiller
-| `tls.verify`                                      | `false`                                              | Verify the Tiller certificate, also enables TLS when set to true
-| `tls.secretName`                                  | `helm-client-certs`                                  | Name of the secret containing the TLS client certificates for communicating with Tiller
-| `tls.keyFile`                                     | `tls.key`                                            | Name of the key file within the k8s secret
-| `tls.certFile`                                    | `tls.crt`                                            | Name of the certificate file within the k8s secret
-| `tls.caContent`                                   | `None`                                               | Certificate Authority content used to validate the Tiller server certificate
-| `tls.hostname`                                    | `None`                                               | The server name used to verify the hostname on the returned certificates from the Tiller server
-| `configureRepositories.enable`                    | `false`                                              | Enable volume mount for a `repositories.yaml` configuration file and repository cache
-| `configureRepositories.volumeName`                | `repositories-yaml`                                  | Name of the volume for the `repositories.yaml` file
-| `configureRepositories.secretName`                | `flux-helm-repositories`                             | Name of the secret containing the contents of the `repositories.yaml` file
-| `configureRepositories.cacheName`                 | `repositories-cache`                                 | Name for the repository cache volume
-| `configureRepositories.repositories`              | `None`                                               | List of custom Helm repositories to add. If non empty, the corresponding secret with a `repositories.yaml` will be created
-| `initPlugins.enable`                              | `false`                                              | Enable the initialization of Helm plugins using init containers
-| `initPlugins.cacheVolumeName`                     | `plugins-cache`                                      | Name for the plugins cache volume
-| `initPlugins.plugins`                             | `None`                                               | List of Helm plugins to initialize before starting the operator. If non empty, an init container will be added for every entry
-| `kube.config`                                     | `None`                                               | Override for kubectl default config in the Helm Operator pod(s)
-| `prometheus.enabled`                              | `false`                                              | If enabled, adds prometheus annotations to Helm Operator pod(s)
-| `prometheus.serviceMonitor.create`                | `false`                                              | Set to true if using the Prometheus Operator
-| `prometheus.serviceMonitor.interval`              | `None`                                               | Interval at which metrics should be scraped
-| `prometheus.serviceMonitor.namespace`             | `None`                                               | The namespace where the ServiceMonitor is deployed
-| `prometheus.serviceMonitor.additionalLabels`      | `{}`                                                 | Additional labels to add to the ServiceMonitor
-| `initContainers`                                  | `[]`                                                 | Init containers and their specs
-| `hostAliases`                                     | `{}`                                                 | Host aliases allow the modification of the hosts file (`/etc/hosts`) inside Helm Operator container. See 
+| Parameter                                         | Default                                                                       | Description
+| ------------------------------------------------- | ----------------------------------------------------------------------------- | ---
+| `version`                                         | `v1`                                                                          | Service Version label
+| `nameOverride`                                    | `None`                                                                        | Override default chart name ( deployment name, service name .. )
+| `fullnameOverride`                                | `None`                                                                        | Override default chart full name
+| `prometheus.enabled`                              | `true`                                                                        | Flags pod for prometheus metric scrapping
+| `prometheus.path`                                 | `/metrics`                                                                    | Url Path for metrics scrapping
+| `prometheus.port`                                 | `8082`                                                                        | Metrics webserver running port
+| `prometheus.scheme`                               | `http`                                                                        | Metrics webserver protocol/scheme
+| `serviceAccount.create`                           | `true`                                                                        | If `true`, create a new service account
+| `serviceAccount.name`                             | `{nameOverride}`                                                              | Service account to be used
+| `rbac.enabled`                                    | `true`                                                                        | If `true`, create and use RBAC resources
+| `rbac.type`                                       | `cluster`                                                                     | `cluster` creates cluster level role's , `namespace` create's namespace level roles
+| `affinity`                                        | `{}`                                                                          | Affinity properties for the deployment
+| `nodeSelector`                                    | `{}`                                                                          | Node Selector properties for the deployment
+| `tolerations`                                     | `[]`                                                                          | Tolerations properties for the deployment
+| `replicaCount`                                    | `1`                                                                           | Number of pods to deploy
+| `image.registry`                                  | `gcr.io`                                                                      | Image repository host url
+| `image.repository`                                | `hello-minikube-zero-install/hello-node`                                      | Image repository
+| `image.tag`                                       | `latest`                                                                      | Image tag
+| `image.pullPolicy`                                | `IfNotPresent`                                                                | Image pull policy
+`resources.requests.cpu`                            | `250m`                                                                        | CPU resource requests for the deployment
+| `resources.requests.memory`                       | `512Mi`                                                                       | Memory resource requests for the deployment
+| `resources.limits.cpu`                            | `500m`                                                                        | CPU resource limits for the deployment
+| `resources.limits.memory`                         | `1024Mi`                                                                      | Memory resource limits for the deployment
+| `hpa.minReplicas`                                 | `1`                                                                           | minimum number of replicas for this service
+| `hpa.maxReplicas`                                 | `2`                                                                           | maximum number of replicas for this service
+| `hpa.targetCPU`                                   | `80`                                                                          | target cpu value that triggers the scale action
+| `probes.livenessProbe.initialDelaySeconds`        | `60`                                                                          | number of seconds to delay the start of the livenessProbe
+| `probes.livenessProbe.failureThreshold`           | `2`                                                                           | fail threashould to reboot the pod
+| `probes.livenessProbe.httpGet.path`               | `/`                                                                           | url path were to perform http health check's
+| `probes.livenessProbe.httpGet.port`               | `8080`                                                                        | port were the http webserver is running
+| `probes.livenessProbe.httpGet.scheme`             | `HTTP`                                                                        | use `HTTP`or `HTTPS`
+| `probes.livenessProbe.periodSeconds`              | `10`                                                                          | interval between liveness checks
+| `probes.livenessProbe.successThreshold`           | `1`                                                                           | number of success calls to consider a pod live
+| `probes.livenessProbe.timeoutSeconds`             | `20`                                                                          | time to wait for a server response before flagging it as failed
+| `probes.readinessProbe.initialDelaySeconds`       | `60`                                                                          | number of seconds to delay the start of the readinessProbe
+| `probes.readinessProbe.failureThreshold`          | `10`                                                                          | fail threashould to reboot a pod
+| `probes.readinessProbe.httpGet.path`              | `/`                                                                           | url path were to perform http health check's
+| `probes.readinessProbe.httpGet.port`              | `8080`                                                                        | port were the http webserver is running
+| `probes.readinessProbe.httpGet.scheme`            | `HTTP`                                                                        | use `HTTP`or `HTTPS`
+| `probes.readinessProbe.periodSeconds`             | `30`                                                                          | interval between readiness checks
+| `probes.readinessProbe.successThreshold`          | `1`                                                                           | number of success calls to consider a pod live
+| `probes.readinessProbe.timeoutSeconds`            | `10`                                                                          | time to wait for a server response before flagging it as failed
+| `podSecurityContext`                              | `{}`                                                                          | Security context policies to add to the pod
+| `securityContext`                                 | `{}`                                                                          | Security context policies to add to the container
+| `extraEnvs`                                       | `[{"name": "XMS", "value": "512Mi"}, {"name": "XMX", "value": "1024Mi"}]`     | Extra environment variables for the Helm Operator pod(s)
+| `extraVolumes`                                    | `[]`                                                                          | Additional volumes to the pod
+| `extraVolumeMounts`                               | `[]`                                                                          | Additional volumeMounts to the controller main container 
+| `extraContainerPorts`                             | `[]`                                                                          | Additional containerPorts to expose
+| `service.enabled`                                 | `true`                                                                        | If `true` a ClusterIP service with the same name as the deployment/chart will be created and assigned to the deployment
+| `service.http`                                    | `true`                                                                        | If `true` the service will route external traffic from port 80 to pod port 8080
+| `service.ingress.enabled`                         | `true`                                                                        | If `true` an ingress route should be created for this service ( W.I.P. )
+| `service.ingress.paths`                           | `[]`                                                                          | A list of items ( {path: "", targetPath: ""}) of gateway paths to route traffic from to a specific service url path (W.I.P.)
+| `service.extraPorts`                              | `[]`                                                                          | A list of extra service ports to route traffic
+| `configMaps`                                      | `[]`                                                                          | A list of configmap resources to create and their data
+| `secrets`                                         | `[]`                                                                          | A list of secret resources to create and their data
 
 
 # Contibuting

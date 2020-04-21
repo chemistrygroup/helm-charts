@@ -1,0 +1,11 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane
+  image: pedrorochaorg/node-image:v1.15.11@sha256:6910556ba57e70c8bc27978d10d717db89b903a5a5a7e0d08f7dba3f0ed9ef8f
+- role: worker
+  image: pedrorochaorg/node-image:v1.15.11@sha256:6910556ba57e70c8bc27978d10d717db89b903a5a5a7e0d08f7dba3f0ed9ef8f
+- role: worker
+  image: pedrorochaorg/node-image:v1.15.11@sha256:6910556ba57e70c8bc27978d10d717db89b903a5a5a7e0d08f7dba3f0ed9ef8f
+- role: worker
+  image: pedrorochaorg/node-image:v1.15.11@sha256:6910556ba57e70c8bc27978d10d717db89b903a5a5a7e0d08f7dba3f0ed9ef8f
