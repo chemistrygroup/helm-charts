@@ -1,0 +1,23 @@
+apiVersion: v1
+entries:
+  service:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2020-04-21T14:22:26.563048251Z"
+    description: A sample description of the service purpose
+    digest: 3b4551f79d7d51276cd27829d77032becb48f3686f6fa361bde3999f9afb47be
+    home: https://github.com/chemistrygroup/helm-charts/service
+    icon: https://helm.sh/img/helm.svg
+    keywords:
+    - service-name
+    maintainers:
+    - email: pedro.rocha@mindera.com
+      name: Pedro Rocha
+    name: service
+    sources:
+    - https://github.com/chemistrygroup/helm-charts/service
+    type: application
+    urls:
+    - https://github.com/chemistrygroup/helm-charts/releases/download/service-1.0.2/service-1.0.2.tgz
+    version: 1.0.2
+generated: "2020-04-21T14:22:26.460313409Z"
