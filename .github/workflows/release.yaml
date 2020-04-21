@@ -2,11 +2,20 @@ name: Release Charts
 
 on:
   push:
-    branches:
-      - master
 
 jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: helm-check
+        uses: chemistrygroup/helm-check-action@0.1.6
+        env:
+          CHART_DIRECTORY: ./charts
   release:
+    if: github.ref == 'refs/heads/master'    
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
