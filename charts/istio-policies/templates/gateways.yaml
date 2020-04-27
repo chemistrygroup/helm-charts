@@ -1,0 +1,88 @@
+{{- $scope := . }}
+{{- $values := .Values }}
+{{- $release := .Release }}
+{{- $chart := .Chart }}
+# Egress Rules
+{{- if $values.egress }}
+  {{- if $values.egress.http }}
+    {{- range $service := $values.egress.http }}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: {{ $service.name }}-egress
+spec:
+  selector:
+    istio: {{ default $service.gateway.selector "egressgateway" }}
+  servers:
+  - port:
+      number: {{ $service.port }}
+      name: http-port
+      protocol: HTTP
+    hosts:
+    - {{ $service.host }}
+    {{- end }}
+  {{- end }}
+  {{- if $values.egress.https }}
+    {{- range $service := $values.egress.https }}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: {{ $service.name }}-egress
+spec:
+  selector:
+    istio: {{ default $service.gateway.selector "egressgateway" }}
+  servers:
+  - port:
+      number: {{ $service.port }}
+      name: http-port
+      protocol: HTTP
+    hosts:
+    - {{ $service.host }}
+    {{- end }}
+  {{- end }}
+  {{- if $values.egress.httpToHttps }}
+    {{- range $service := $values.egress.httpToHttps }}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: {{ $service.name }}-egress
+spec:
+  selector:
+    istio: {{ default $service.gateway.selector "egressgateway" }}
+  servers:
+  - port:
+      number: {{ $service.port.http }}
+      name: http-port
+      protocol: HTTP
+    hosts:
+    - {{ $service.host }}
+    {{- end }}
+  {{- end }}
+  {{- if $values.egress.tcp }}
+    {{- range $service := $values.egress.tcp }}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: {{ $service.name }}-egress
+spec:
+  selector:
+    istio: {{ default $service.gateway.selector "egressgateway" }}
+  servers:
+  - port:
+      number: {{ $service.port }}
+      name: tcp-port
+      protocol: TCP
+    hosts:
+    - {{ $service.host }}
+    tls:
+      mode: MUTUAL
+      serverCertificate: /etc/certs/cert-chain.pem
+      privateKey: /etc/certs/key.pem
+      caCertificates: /etc/certs/root-cert.pem
+    {{- end }}
+  {{- end }}
+{{- end }}

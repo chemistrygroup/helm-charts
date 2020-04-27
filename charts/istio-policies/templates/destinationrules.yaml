@@ -1,0 +1,113 @@
+{{- $scope := . }}
+{{- $values := .Values }}
+{{- $release := .Release }}
+{{- $chart := .Chart }}
+# External Rules
+{{- if $values.external }}
+  {{- if $values.external.httpToHttps }}
+    {{- range $service := $values.external.httpToHttps }}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ $service.name }}-ext
+spec:
+  host: {{ $service.host }}
+  subsets:
+  - name: {{ $service.name }}-tls-origination
+    trafficPolicy:
+      loadBalancer:
+        simple: ROUND_ROBIN
+      portLevelSettings:
+      - port:
+          number: {{ default $service.port.https 443 }}
+        tls:
+          mode: SIMPLE
+    {{- end }}
+  {{- end }}
+{{- end }}
+# Egress Rules
+{{- if $values.egress }}
+  {{- if $values.egress.http }}
+    {{- range $service := $values.egress.http }}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ $service.name }}-egress
+spec:
+  host: {{ default $service.gateway.name "istio-egressgateway" }}.istio-system.svc.cluster.local
+  subsets:
+  - name: {{ $service.name }}-subset
+    {{- end }}
+  {{- end }}
+  {{- if $values.egress.https }}
+    {{- range $service := $values.egress.https }}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ $service.name }}-egress
+spec:
+  host: {{ default $service.gateway.name "istio-egressgateway" }}.istio-system.svc.cluster.local
+  subsets:
+  - name: {{ $service.name }}-subset
+    {{- end }}
+  {{- end }}
+  {{- if $values.egress.httpToHttps }}
+    {{- range $service := $values.egress.httpToHttps }}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ $service.name }}-egress
+spec:
+  host: {{ default $service.gateway.name "istio-egressgateway" }}.istio-system.svc.cluster.local
+  subsets:
+  - name: {{ $service.name }}-subset
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ $service.name }}-egress-orig
+spec:
+  host: {{ $service.host }}
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+    portLevelSettings:
+    - port:
+        number: {{ $service.port.https }}
+      tls:
+        mode: SIMPLE
+    {{- end }}
+  {{- end }}
+  {{- if $values.egress.tcp }}
+    {{- range $service := $values.egress.tcp }}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ $service.name }}-egress-tcp
+spec:
+  host: {{ default $service.gateway.name "istio-egressgateway" }}.istio-system.svc.cluster.local
+  subsets:
+  - name: {{ $service.name }}-sub
+    trafficPolicy:
+      loadBalancer:
+        simple: ROUND_ROBIN
+      portLevelSettings:
+      - port:
+          number: {{ $service.port }}
+        tls:
+          mode: ISTIO_MUTUAL
+          sni: {{ $service.host }}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ $service.name }}-egress
+spec:
+  host: {{ $service.host }}
+  {{- end }}
+{{- end }}

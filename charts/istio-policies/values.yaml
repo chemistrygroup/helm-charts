@@ -1,0 +1,81 @@
+# Default values for istio-policies.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+trafficManagement:
+  external:
+    http:
+    - name: service
+      host: example.com
+      port: 80
+    https:
+    - name: service
+      host: example.com
+      port: 443
+    httpAndHttps:
+    - name: service
+      host: example.com
+      port:
+        http: 80
+        https: 443
+    httpToHttps:
+    - name: service
+      host: example.com
+      port:
+        http: 80
+        https: 443
+    tcp:
+    - name: service
+      host: example.com
+      ip: 127.0.0.1
+      port: 5432
+
+  egress:
+    http:
+    - name: service
+      host: example.com
+      gateway:
+        name: istio-egressgateway
+        selector: egressgateway
+      port: 80
+    https:
+    - name: service
+      host: example.com
+      gateway:
+        name: istio-egressgateway
+        selector: egressgateway
+      port: 443
+
+    httpToHttps:
+    - name: service
+      host: example.com
+      gateway:
+        name: istio-egressgateway
+        selector: egressgateway
+      port:
+        http: 80
+        https: 443
+
+    tcp:
+    - name: service
+      host: example.com
+      gateway:
+        name: istio-egressgateway-postgresql
+        selector: egressgateway-postgresql
+      ip: 127.0.0.1
+      port: 5432
+
+
+  ingress:
+    - name: service
+      host:
+        origin: "*"
+        target: service.default.svc.cluster.local
+      gateway: istio-ingressgateway
+      paths:
+        sourcePath: 
+          exact: 
+          prefix:
+          regex:
+        targetPath: 
+
+

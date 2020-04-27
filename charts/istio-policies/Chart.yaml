@@ -1,0 +1,16 @@
+---
+apiVersion: v2
+name: istio-policies
+version: 1.0.0
+description: A chart for generating istio policies as egress rules authorization policies, etc.. 
+type: application
+keywords:
+  - istio, virtual services, destination rules, egress, ingress, policies
+home: https://github.com/chemistrygroup/helm-charts/istio-policies
+sources:
+  - https://github.com/chemistrygroup/helm-charts/istio-policies
+appVersion: "1.5.1"
+icon: https://helm.sh/img/helm.svg
+maintainers:
+  - email: pedro.rocha@mindera.com
+    name: Pedro Rocha
