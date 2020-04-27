@@ -64,7 +64,7 @@ Then when inside the container `cd` into `/code` and type the following command:
 
 ```sh
 cd /code
-ct lint --config=ct.yaml --validate-maintainers=off
+ct lint --config=ct.yaml --validate-maintainers=false
 ```
 
 ### Testing the chart
