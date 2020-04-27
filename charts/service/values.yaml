@@ -35,17 +35,17 @@ replicaCount: 1
 
 # service image
 image:
-  registry: gcr.io  # container registry url
-  repository: hello-minikube-zero-install/hello-node  # container registry repo name
-  tag: latest  # image tag
+  registry: docker.io  # container registry url
+  repository: pedrorochaorg/hello-minikube  # container registry repo name
+  tag: 1.0.0  # image tag
   pullPolicy: IfNotPresent  # kubernetes container image pull policy
 
 # limits the container resources
 resources:
   # resources that the container requires to boot
   requests:
-    memory: 512Mi
-    cpu: 250m
+    memory: 20Mi
+    cpu: 10m
   # limit of resources that a container may consume
   limits:
     memory: 1024Mi
@@ -70,7 +70,7 @@ probes:
     successThreshold: 1
     timeoutSeconds: 20
   readinessProbe:
-    initialDelaySeconds: 60
+    initialDelaySeconds: 10
     failureThreshold: 10
     httpGet:
       path: /

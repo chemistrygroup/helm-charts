@@ -181,29 +181,6 @@ spec:
   resolution: DNS
       {{- end }}
     {{- end }}
-    {{- if $values.trafficManagement.egress.httpToHttps }}
-      {{- range $service := $values.trafficManagement.egress.httpToHttps }}
----
-apiVersion: networking.istio.io/v1alpha3
-kind: ServiceEntry
-metadata:
-  name: {{ $service.name }}-egress
-  namespace: {{ $release.Namespace }}
-  labels:
-{{ include "chart.labels" $scope | indent 4 }}
-spec:
-  hosts:
-  - {{ $service.host }}
-  ports:
-  - number: {{ default $service.port.http 80 }}
-    name: http-port
-    protocol: HTTP
-  - number: {{ default $service.port.https 443 }}
-    name: https-port
-    protocol: HTTPS
-  resolution: DNS
-      {{- end }}
-    {{- end }}
     {{- if $values.trafficManagement.egress.tcp }}
       {{- range $service := $values.trafficManagement.egress.tcp }}
 ---

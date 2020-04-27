@@ -62,12 +62,12 @@ chart and their default values.
 | `nodeSelector`                                    | `{}`                                                                          | Node Selector properties for the deployment
 | `tolerations`                                     | `[]`                                                                          | Tolerations properties for the deployment
 | `replicaCount`                                    | `1`                                                                           | Number of pods to deploy
-| `image.registry`                                  | `gcr.io`                                                                      | Image repository host url
-| `image.repository`                                | `hello-minikube-zero-install/hello-node`                                      | Image repository
-| `image.tag`                                       | `latest`                                                                      | Image tag
+| `image.registry`                                  | `docker.io`                                                                      | Image repository host url
+| `image.repository`                                | `pedrorochaorg/hello-minikube`                                      | Image repository
+| `image.tag`                                       | `1.0.0`                                                                      | Image tag
 | `image.pullPolicy`                                | `IfNotPresent`                                                                | Image pull policy
-`resources.requests.cpu`                            | `250m`                                                                        | CPU resource requests for the deployment
-| `resources.requests.memory`                       | `512Mi`                                                                       | Memory resource requests for the deployment
+`resources.requests.cpu`                            | `10m`                                                                        | CPU resource requests for the deployment
+| `resources.requests.memory`                       | `20Mi`                                                                       | Memory resource requests for the deployment
 | `resources.limits.cpu`                            | `500m`                                                                        | CPU resource limits for the deployment
 | `resources.limits.memory`                         | `1024Mi`                                                                      | Memory resource limits for the deployment
 | `hpa.minReplicas`                                 | `1`                                                                           | minimum number of replicas for this service

@@ -1,48 +1,48 @@
 trafficManagement:
   external:
     http:
-    - name: service
+    - name: servicea
       host: example.com
       port: 80
     https:
-    - name: service
+    - name: servicex
       host: example.com
       port: 443
     httpAndHttps:
-    - name: service
+    - name: services
       host: example.com
       port:
         http: 80
         https: 443
     httpToHttps:
-    - name: service
+    - name: servicee
       host: example.com
       port:
         http: 80
         https: 443
     tcp:
-    - name: service
+    - name: servicer
       host: example.com
       ip: 127.0.0.1
       port: 5432
 
   egress:
     http:
-    - name: service
+    - name: servicee
       host: example.com
       gateway:
         name: istio-egressgateway
         selector: egressgateway
       port: 80
     https:
-    - name: service
+    - name: servicew
       host: example.com
       gateway:
         name: istio-egressgateway
         selector: egressgateway
       port: 443
     httpToHttps:
-    - name: service
+    - name: serviceq
       host: example.com
       gateway:
         name: istio-egressgateway
@@ -51,7 +51,7 @@ trafficManagement:
         http: 80
         https: 443
     tcp:
-    - name: service
+    - name: servicer
       host: example.com
       gateway:
         name: istio-egressgateway-postgresql
@@ -60,7 +60,7 @@ trafficManagement:
       port: 5432
 
   ingress:
-    - name: service
+    - name: serviceh
       host:
         origin: "*"
         target: service.default.svc.cluster.local
