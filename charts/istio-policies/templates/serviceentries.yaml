@@ -1,0 +1,224 @@
+{{- $scope := . }}
+{{- $values := .Values }}
+{{- $release := .Release }}
+{{- $chart := .Chart }}
+# External Rules
+{{- if $values.trafficManagement }}
+  {{- if $values.trafficManagement.external }}
+    {{- if $values.trafficManagement.external.http }}
+      {{- range $service := $values.trafficManagement.external.http }}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: {{ $service.name }}-ext
+  namespace: {{ $release.Namespace }}
+  labels:
+{{ include "chart.labels" $scope | indent 4 }}
+spec:
+  hosts:
+  - {{ $service.host }}
+  ports:
+  - number: {{ default $service.port 80 }}
+    name: http-port
+    protocol: HTTP
+  resolution: DNS
+  location: MESH_EXTERNAL
+      {{- end }}
+    {{- end }}
+    {{- if $values.trafficManagement.external.https }}
+      {{- range $service := $values.trafficManagement.external.https }}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: {{ $service.name }}-ext
+  namespace: {{ $release.Namespace }}
+  labels:
+{{ include "chart.labels" $scope | indent 4 }}
+spec:
+  hosts:
+  - {{ $service.host }}
+  ports:
+  - number: {{ default $service.port 443 }}
+    name: https-port
+    protocol: HTTPS
+  resolution: DNS
+  location: MESH_EXTERNAL
+      {{- end }}
+    {{- end }}
+    {{- if $values.trafficManagement.external.httpAndHttps }}
+      {{- range $service := $values.trafficManagement.external.httpAndHttps }}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: {{ $service.name }}-ext
+  namespace: {{ $release.Namespace }}
+  labels:
+{{ include "chart.labels" $scope | indent 4 }}
+spec:
+  hosts:
+  - {{ $service.host }}
+  ports:
+  - number: {{ default $service.port.http 80 }}
+    name: http-port
+    protocol: HTTP
+  - number: {{ default $service.port.https 443 }}
+    name: https-port
+    protocol: HTTPS
+  resolution: DNS
+      {{- end }}
+    {{- end }}
+    {{- if $values.trafficManagement.external.httpToHttps }}
+      {{- range $service := $values.trafficManagement.external.httpToHttps }}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: {{ $service.name }}-ext
+  namespace: {{ $release.Namespace }}
+  labels:
+{{ include "chart.labels" $scope | indent 4 }}
+spec:
+  hosts:
+  - {{ $service.host }}
+  ports:
+  - number: {{ default $service.port.http 80 }}
+    name: http-port
+    protocol: HTTP
+  - number: {{ default $service.port.https 443 }}
+    name: https-port
+    protocol: HTTPS
+  resolution: DNS
+      {{- end }}
+    {{- end }}
+    {{- if $values.trafficManagement.external.tcp }}
+      {{- range $service := $values.trafficManagement.external.tcp }}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: {{ $service.name }}-ext
+  namespace: {{ $release.Namespace }}
+  labels:
+{{ include "chart.labels" $scope | indent 4 }}
+spec:
+  hosts:
+  - {{ $service.host }}
+  addresses:
+  - {{ $service.ip }}/32
+  ports:
+  - number: {{ $service.port }}
+    name: tcp-port
+    protocol: TCP
+  location: MESH_EXTERNAL
+      {{- end }}
+    {{- end }}
+  {{- end }}
+  # Egress Rules
+  {{- if $values.trafficManagement.egress }}
+    {{- if $values.trafficManagement.egress.http }}
+      {{- range $service := $values.trafficManagement.egress.http }}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: {{ $service.name }}-egress
+  namespace: {{ $release.Namespace }}
+  labels:
+{{ include "chart.labels" $scope | indent 4 }}
+spec:
+  hosts:
+  - {{ $service.host }}
+  ports:
+  - number: {{ default $service.port 80 }}
+    name: http-port
+    protocol: HTTP
+  resolution: DNS
+      {{- end }}
+    {{- end }}
+    {{- if $values.trafficManagement.egress.https }}
+      {{- range $service := $values.trafficManagement.egress.https }}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: {{ $service.name }}-egress
+  namespace: {{ $release.Namespace }}
+  labels:
+{{ include "chart.labels" $scope | indent 4 }}
+spec:
+  hosts:
+  - {{ $service.host }}
+  ports:
+  - number: {{ default $service.port 443 }}
+    name: tls-port
+    protocol: TLS
+  resolution: DNS
+      {{- end }}
+    {{- end }}
+    {{- if $values.trafficManagement.egress.httpToHttps }}
+      {{- range $service := $values.trafficManagement.egress.httpToHttps }}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: {{ $service.name }}-egress
+  namespace: {{ $release.Namespace }}
+  labels:
+{{ include "chart.labels" $scope | indent 4 }}
+spec:
+  hosts:
+  - {{ $service.host }}
+  ports:
+  - number: {{ default $service.port.http 80 }}
+    name: http-port
+    protocol: HTTP
+  - number: {{ default $service.port.https 443 }}
+    name: https-port
+    protocol: HTTPS
+  resolution: DNS
+      {{- end }}
+    {{- end }}
+    {{- if $values.trafficManagement.egress.tcp }}
+      {{- range $service := $values.trafficManagement.egress.tcp }}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: {{ $service.name }}-egress
+  namespace: {{ $release.Namespace }}
+  labels:
+{{ include "chart.labels" $scope | indent 4 }}
+spec:
+  hosts:
+  - {{ $service.host }}
+  addresses:
+  - {{ $service.ip }}/32
+  ports:
+  - number: {{ $service.port }}
+    name: tcp-port
+    protocol: TCP
+  location: MESH_EXTERNAL
+  resolution: STATIC
+  endpoints:
+  - address: {{ $service.ip }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+  {{- if $values.trafficManagement.extraServiceEntries }}
+    {{- range $service := $values.trafficManagement.extraServiceEntries }}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: {{ $service.name }}
+  namespace: {{ $release.Namespace }}
+  labels:
+{{ include "chart.labels" $scope | indent 4 }}
+spec:
+{{ toYaml $service.spec | indent 2 }}
+    {{- end }}
+  {{- end }}
+{{- end }}

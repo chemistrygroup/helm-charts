@@ -1,0 +1,116 @@
+{{- $scope := . }}
+{{- $values := .Values }}
+{{- $release := .Release }}
+{{- $chart := .Chart }}
+{{- if $values.trafficManagement }}
+  # Egress Rules
+  {{- if $values.trafficManagement.egress }}
+    {{- if $values.trafficManagement.egress.http }}
+      {{- range $service := $values.trafficManagement.egress.http }}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: {{ $service.name }}-egress
+  namespace: {{ $release.Namespace }}
+  labels:
+{{ include "chart.labels" $scope | indent 4 }}
+spec:
+  selector:
+    istio: {{ default $service.gateway.selector "egressgateway" }}
+  servers:
+  - port:
+      number: {{ $service.port }}
+      name: http-port
+      protocol: HTTP
+    hosts:
+    - {{ $service.host }}
+      {{- end }}
+    {{- end }}
+    {{- if $values.trafficManagement.egress.https }}
+      {{- range $service := $values.trafficManagement.egress.https }}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: {{ $service.name }}-egress
+  namespace: {{ $release.Namespace }}
+  labels:
+{{ include "chart.labels" $scope | indent 4 }}
+spec:
+  selector:
+    istio: {{ default $service.gateway.selector "egressgateway" }}
+  servers:
+  - port:
+      number: {{ $service.port }}
+      name: http-port
+      protocol: HTTP
+    hosts:
+    - {{ $service.host }}
+      {{- end }}
+    {{- end }}
+    {{- if $values.trafficManagement.egress.httpToHttps }}
+      {{- range $service := $values.trafficManagement.egress.httpToHttps }}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: {{ $service.name }}-egress
+  namespace: {{ $release.Namespace }}
+  labels:
+{{ include "chart.labels" $scope | indent 4 }}
+spec:
+  selector:
+    istio: {{ default $service.gateway.selector "egressgateway" }}
+  servers:
+  - port:
+      number: {{ $service.port.http }}
+      name: http-port
+      protocol: HTTP
+    hosts:
+    - {{ $service.host }}
+      {{- end }}
+    {{- end }}
+    {{- if $values.trafficManagement.egress.tcp }}
+      {{- range $service := $values.trafficManagement.egress.tcp }}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: {{ $service.name }}-egress
+  namespace: {{ $release.Namespace }}
+  labels:
+{{ include "chart.labels" $scope | indent 4 }}
+spec:
+  selector:
+    istio: {{ default $service.gateway.selector "egressgateway" }}
+  servers:
+  - port:
+      number: {{ $service.port }}
+      name: tcp-port
+      protocol: TCP
+    hosts:
+    - {{ $service.host }}
+    tls:
+      mode: MUTUAL
+      serverCertificate: /etc/certs/cert-chain.pem
+      privateKey: /etc/certs/key.pem
+      caCertificates: /etc/certs/root-cert.pem
+      {{- end }}
+    {{- end }}
+  {{- end }}
+  {{- if $values.trafficManagement.extraGateways }}
+    {{- range $service := $values.trafficManagement.extraGateways }}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: {{ $service.name }}
+  namespace: {{ $release.Namespace }}
+  labels:
+{{ include "chart.labels" $scope | indent 4 }}
+spec:
+{{ toYaml $service.spec | indent 2 }}
+    {{- end }}
+  {{- end }}
+{{- end }}

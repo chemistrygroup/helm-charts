@@ -1,8 +1,8 @@
 # See https://github.com/helm/chart-testing#configuration
 remote: origin
+validate-mantainers: false
 chart-dirs:
   - charts
-# chart-repos:
-#   - bitnami=https://charts.bitnami.com
+chart-repos:
+  - chemistry=https://chemistrygroup.github.io/helm-charts
 helm-extra-args: --timeout 600s
-validate-mantainers: false

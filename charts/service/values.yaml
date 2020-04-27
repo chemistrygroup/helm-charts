@@ -35,17 +35,17 @@ replicaCount: 1
 
 # service image
 image:
-  registry: gcr.io  # container registry url
-  repository: hello-minikube-zero-install/hello-node  # container registry repo name
-  tag: latest  # image tag
+  registry: docker.io  # container registry url
+  repository: pedrorochaorg/hello-minikube  # container registry repo name
+  tag: 1.0.0  # image tag
   pullPolicy: IfNotPresent  # kubernetes container image pull policy
 
 # limits the container resources
 resources:
   # resources that the container requires to boot
   requests:
-    memory: 512Mi
-    cpu: 250m
+    memory: 20Mi
+    cpu: 10m
   # limit of resources that a container may consume
   limits:
     memory: 1024Mi
@@ -70,7 +70,7 @@ probes:
     successThreshold: 1
     timeoutSeconds: 20
   readinessProbe:
-    initialDelaySeconds: 60
+    initialDelaySeconds: 10
     failureThreshold: 10
     httpGet:
       path: /
@@ -123,13 +123,6 @@ extraContainerPorts: []
 service:
   enabled: true  # enables helm to create a dedicated clusterIP service for this service
   http: true  # creates a service that routes traffic from port 80 to port 8080 ( this port is already exposed in the container )
-  ingress:  # should this service be exposed to the web
-    enabled: true  # activate/deactive ingress traffic
-    paths: []  # route traffic from one external path to another
-        # original path
-#      - path: /api/v1/users
-        # target path
-#        targetPath: /users
 # add additional port's to this service
   extraPorts: []
 #    - name: grpc  # port name , must be http, https, http2, grpc or tcp ( istio )
@@ -154,3 +147,21 @@ secrets: []
 #      value: value1
 #    - name: key2
 #      value: value2
+istio:
+  trafficManagement:
+    external:
+      http: []
+      https: []
+      httpAndHttps: []
+      httpToHttps: []
+      tcp: []
+    egress:
+      http: []
+      https: []
+      httpToHttps: []
+      tcp: []
+    ingress: []
+    extraDestinationRules: []
+    extraVirtualServices: []
+    extraServiceEntries: []
+    extraGateways: []

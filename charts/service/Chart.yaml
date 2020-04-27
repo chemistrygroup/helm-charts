@@ -1,7 +1,7 @@
 ---
 apiVersion: v2
 name: service
-version: 1.0.2
+version: 1.1.0
 description: A sample description of the service purpose
 type: application
 keywords:
@@ -13,4 +13,9 @@ appVersion: "0.0.1"
 icon: https://helm.sh/img/helm.svg
 maintainers:
   - email: pedro.rocha@mindera.com
-    name: Pedro Rocha
+    name: pmrocha-mindera
+# dependencies:
+#  - name: istio-policies
+#    version: 1.0.0
+#    repository: https://chemistrygroup.github.io/helm-charts
+#    alias: istio

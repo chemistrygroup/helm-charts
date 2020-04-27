@@ -51,6 +51,7 @@ jobs:
           ./get_helm.sh
       - name: Add dependency chart repos
         run: |
+          helm repo add chemistry https://chemistrygroup.github.io/helm-charts/
           helm repo add stable https://kubernetes-charts.storage.googleapis.com/
           helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
       - name: Run chart-releaser
