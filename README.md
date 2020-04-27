@@ -64,7 +64,7 @@ Then when inside the container `cd` into `/code` and type the following command:
 
 ```sh
 cd /code
-ct lint --config=ct.yaml --validate-maintainers=false
+ct lint --config ./ct.yaml --validate-maintainers false --debug true
 ```
 
 ### Testing the chart
@@ -128,7 +128,7 @@ Now that we are in a shell running inside our docker container we only have to d
 
 ```sh
 cd /code
-ct install --config=ct.yaml --validate-maintainers=off --debug=true
+ct install --config ./ct.yaml --debug true
 ```
 
 If the command exits with other than 0 means that our chart is not working as expected and we have to debug the issues. Look at the log's for tips.
