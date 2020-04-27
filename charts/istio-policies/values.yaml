@@ -1,12 +1,9 @@
-# Default values for istio-policies.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
 trafficManagement:
   external:
-    http: 
+    http:
     - name: service
-     host: example.com
-     port: 80
+      host: example.com
+      port: 80
     https:
     - name: service
       host: example.com
@@ -70,14 +67,14 @@ trafficManagement:
       gateway: istio-ingressgateway
       port: 80
       paths:
-      - sourcePath: 
+      - sourcePath:
           exact: /api
         targetPath: /api
 
   extraDestinationRules: []
 
   extraVirtualServices: []
-  
+
   extraServiceEntries: []
 
   extraGateways: []
