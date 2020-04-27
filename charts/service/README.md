@@ -1,6 +1,6 @@
 # Service
 
-This is a template Helm Chart for deploying services into our cluster. This template contains all the required resources to successfully deploy a service into our kuberentes cluster.
+This is a template Helm Chart for deploying services into our cluster. This template contains all the required resources to successfully deploy a service into our kuberentes cluster. This chart dependends of the [Istio Policies](https://github.com/chemistrygroup/helm-charts/charts/istio-policies) chart to generate istio manifests to traffic management settings:
 
 ## Dependencies
 
@@ -102,6 +102,20 @@ chart and their default values.
 | `service.extraPorts`                              | `[]`                                                                          | A list of extra service ports to route traffic
 | `configMaps`                                      | `[]`                                                                          | A list of configmap resources to create and their data
 | `secrets`                                         | `[]`                                                                          | A list of secret resources to create and their data
+| `istio.trafficManagement.external.http`                 | `[]`                                | Allow connections to external http service
+| `istio.trafficManagement.external.https`                | `[]`                                | Allow connections to external https service
+| `istio.trafficManagement.external.httpAndHttps`         | `[]`                                | Allow connections to external service using http or https
+| `istio.trafficManagement.external.httpToHttps`          | `[]`                                | Allow connections to external service using internal http traffic and originating https traffic to the external service
+| `istio.trafficManagement.external.tcp`                  | `[]`                                | Allow connections to external tcp service 
+| `istio.trafficManagement.egress.http`                   | `[]`                                | Allow connections to external http service throught istio Egress gateway
+| `istio.trafficManagement.egress.https`                  | `[]`                                | Allow connections to external https service throught istio Egress gateway
+| `istio.trafficManagement.egress.httpToHttps`            | `[]`                                | Allow connections to external service using internal http traffic and originating https traffic to the external service throught istio Egress gateway
+| `istio.trafficManagement.egress.tcp`                    | `[]`                                | Allow connections to external tcp service throught istio Egress gateway
+| `istio.trafficManagement.ingress`                       | `[]`                                | Configure istio ingress gateway rules and routings
+| `istio.trafficManagement.extraDestinationRules`         | `[]`                                | Generate istio extra destinationRule manifests
+| `istio.trafficManagement.extraVirtualService`           | `[]`                                | Generate istio extra virtualService manifests
+| `istio.trafficManagement.extraServiceEntries`           | `[]`                                | Generate istio extra extraServiceEntries manifests
+| `istio.trafficManagement.extraGateways`                 | `[]`                                | Generate istio extra extraGateways manifests
 
 
 # Contibuting

@@ -1,0 +1,2109 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "trafficManagement": {
+      "type": "object",
+      "form": true,
+      "description": "Istio Common traffic management rules",
+      "properties": {
+        "external": {
+          "type": "object",
+          "form": true,
+          "description": "Allow traffic to mesh external services",
+          "properties": {
+            "http": {
+              "type": "array",
+              "form": true,
+              "description": "Allow traffic to external http services",
+              "items": [{
+                "$ref": "#/definitions/externalHttpItem"
+              }]
+            },
+            "https": {
+              "type": "array",
+              "form": true,
+              "description": "Allow traffic to external https services",
+              "items": [{
+                "$ref": "#/definitions/externalHttpItem"
+              }]
+            },
+            "httpAndHttps": {
+              "type": "array",
+              "form": true,
+              "description": "Allow traffic to external HTTP and HTTPS services",
+              "items": [{
+                "$ref": "#/definitions/externalHTTPPortItem"
+              }]
+            },
+            "httpToHttps": {
+              "type": "array",
+              "form": true,
+              "description": "Originate HTTPS external traffic to HTTP services",
+              "items": [{
+                "$ref": "#/definitions/externalHTTPPortItem"
+              }]
+            },
+            "tcp": {
+              "type": "array",
+              "form": true,
+              "description": "Originate HTTPS external traffic to HTTP services",
+              "items": [{
+                "$ref": "#/definitions/externalTcpItem"
+              }]
+            }
+          }
+        },
+        "egress": {
+          "type": "object",
+          "form": true,
+          "description": "Allow traffic to mesh external services proxying through the Egress Gateway",
+          "properties": {
+            "http": {
+              "type": "array",
+              "form": true,
+              "description": "Allow traffic to external http services proxying through the Egress Gateway",
+              "items": [{
+                "$ref": "#/definitions/egressHTTPItem"
+              }]
+            },
+            "https": {
+              "type": "array",
+              "form": true,
+              "description": "Allow traffic to external https services proxying through the Egress Gateway",
+              "items": [{
+                "$ref": "#/definitions/egressHTTPItem"
+              }]
+            },
+            "httpToHttps": {
+              "type": "array",
+              "form": true,
+              "description": "Originate HTTPS external traffic to HTTP services",
+              "items": [{
+                "$ref": "#/definitions/egressHTTPPortItem"
+              }]
+            },
+            "tcp": {
+              "type": "array",
+              "form": true,
+              "description": "Originate HTTPS external traffic to HTTP services",
+              "items": [{
+                "$ref": "#/definitions/egressTcpItem"
+              }]
+            }
+          }
+        },
+        "ingress": {
+          "type": "array",
+          "description": "Istio Ingress Service Routes",
+          "items": [
+            {
+              "name": {
+                "type": "String",
+                "description": "Service/Entry name"
+              },
+              "host": {
+                "type": "object",
+                "description": "Service hostname settings",
+                "properties": {
+                  "origin": {
+                    "type": "string",
+                    "description": "Origin Hostname"
+                  },
+                  "target": {
+                    "type": "string",
+                    "description": "Target Hostname"
+                  }
+                }
+              },
+              "gateway": {
+                "type": "string",
+                "description": "Istio ingress gateway name"
+              },
+              "port": {
+                "type": "integer",
+                "description": "Istio ingress gateway port"
+              },
+              "paths": {
+                "type": "array",
+                "description": "Routing paths",
+                "items": [
+                  {
+                    "$ref": "#/definitions/ingressPathItem"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "extraDestinationRules": {
+          "type": "array",
+          "description": "Extra Istio DestinationRules manifests",
+          "items": [
+            {
+              "name": {
+                "type": "string",
+                "description": "Entry name (unique)"
+              },
+              "spec": {
+                "$ref": "#/definitions/destinationRule"
+              }
+            }
+          ]
+        },
+        "extraVirtualServices": {
+          "type": "array",
+          "description": "Extra Istio VirtualServices manifests",
+          "items": [
+            {
+              "name": {
+                "type": "string",
+                "description": "Entry name (unique)"
+              },
+              "spec": {
+                "$ref": "#/definitions/virtualService"
+              }
+            }
+          ]
+        },
+        "extraServiceEntries": {
+          "type": "array",
+          "description": "Extra Istio ServiceEntry manifests",
+          "items": [
+            {
+              "name": {
+                "type": "string",
+                "description": "Entry name (unique)"
+              },
+              "spec": {
+                "$ref": "#/definitions/serviceEntry"
+              }
+            }
+          ]
+        },
+        "extraGateways": {
+          "type": "array",
+          "description": "Extra Istio Gateway manifests",
+          "items": [
+            {
+              "name": {
+                "type": "string",
+                "description": "Entry name (unique)"
+              },
+              "spec": {
+                "$ref": "#/definitions/gateway"
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "definitions": {
+    "externalHttpItem": {
+      "type": "object",
+      "form": true,
+      "description": "HTTP/HTTPS traffic management properties",
+      "properties": {
+        "name": {
+          "type": "string",
+          "form": true,
+          "description": "Service/Entry name"
+        },
+        "host": {
+          "type": "string",
+          "form": true,
+          "description": "Host address/url"
+        },
+        "port": {
+          "type": "integer",
+          "form": true,
+          "description": "Port"
+        }
+      },
+      "required": [
+        "name", "host"
+      ]
+    },
+    "externalHTTPPortItem": {
+      "type": "object",
+      "form": true,
+      "description": "HTTP/HTTPS traffic management properties",
+      "properties": {
+        "name": {
+          "type": "string",
+          "form": true,
+          "description": "Service/Entry name"
+        },
+        "host": {
+          "type": "string",
+          "form": true,
+          "description": "Host address/url"
+        },
+        "port": {
+          "$ref": "#/definitions/portItem"
+        }
+      },
+      "required": [
+        "name", "host"
+      ]
+    },
+    "externalTcpItem": {
+      "type": "object",
+      "form": true,
+      "description": "External TCP traffic management settings",
+      "properties": {
+        "name": {
+          "type": "string",
+          "form": true,
+          "description": "Service/Entry name"
+        },
+        "host": {
+          "type": "string",
+          "form": true,
+          "description": "Host address/url"
+        },
+        "ip": {
+          "type": "string",
+          "form": true,
+          "description": "IP adddress"
+        },
+        "port": {
+          "type": "integer",
+          "form": true,
+          "description": "Port"
+        }
+      },
+      "required": [
+        "name", "host", "ip", "port"
+      ]
+    },
+    "egressHTTPItem": {
+      "type": "object",
+      "form": true,
+      "description": "Egress HTTP/HTTPS traffic management settings",
+      "properties": {
+        "name": {
+          "type": "string",
+          "form": true,
+          "description": "Service/Entry name"
+        },
+        "host": {
+          "type": "string",
+          "form": true,
+          "description": "Host address/url"
+        },
+        "gateway": {
+          "$ref": "#/definitions/gatewayItem"
+        },
+        "port": {
+          "type": "integer",
+          "form": true,
+          "description": "Port"
+        }
+      },
+      "required": [
+        "name", "host", "gateway", "port"
+      ]
+    },
+    "egressHTTPPortItem": {
+      "type": "object",
+      "form": true,
+      "description": "Egress HTTP/HTTPS traffic management settings",
+      "properties": {
+        "name": {
+          "type": "string",
+          "form": true,
+          "description": "Service/Entry name"
+        },
+        "host": {
+          "type": "string",
+          "form": true,
+          "description": "Host address/url"
+        },
+        "gateway": {
+          "$ref": "#/definitions/gatewayItem"
+        },
+        "port": {
+          "$ref": "#/definitions/portItem"
+        }
+      },
+      "required": [
+        "name", "host", "gateway", "port"
+      ]
+    },
+    "egressTcpItem": {
+      "type": "object",
+      "form": true,
+      "description": "External TCP traffic management settings",
+      "properties": {
+        "name": {
+          "type": "string",
+          "form": true,
+          "description": "Service/Entry name"
+        },
+        "host": {
+          "type": "string",
+          "form": true,
+          "description": "Host address/url"
+        },
+        "gateway": {
+          "$ref": "#/definitions/gatewayItem"
+        },
+        "ip": {
+          "type": "string",
+          "form": true,
+          "description": "IP adddress"
+        },
+        "port": {
+          "type": "integer",
+          "form": true,
+          "description": "Port"
+        }
+      },
+      "required": [
+        "name", "host", "ip", "port", "gateway"
+      ]
+    },
+    "portItem": {
+      "type": "object",
+      "title": "Ports",
+      "form": true,
+      "properties": {
+        "http": {
+          "type": "integer",
+          "title": "HTTP Port",
+          "form": true
+        },
+        "https": {
+          "type": "integer",
+          "title": "HTTPS Port",
+          "form": true
+        }
+      }
+    },
+    "gatewayItem": {
+      "type": "object",
+      "title": "Gateway",
+      "form": true,
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Name",
+          "form": true
+        },
+        "selector": {
+          "type": "string",
+          "title": "Selector",
+          "form": true
+        }
+      }
+    },
+    "ingressPathItem": {
+      "type": "object",
+      "title": "Path",
+      "form": true,
+      "properties": {
+        "sourcePath": {
+          "$ref": "#/definitions/virtualService/definitions/stringMatch"
+        },
+        "targetPath": {
+          "type": "string",
+          "title": "Target Path",
+          "form": true
+        }
+      }
+    },
+    "destinationRule": {
+      "$anchor": "destinationRule",
+      "type": "object",
+      "title": "Destination Rule",
+      "form": true,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string",
+          "form": "true"
+        },
+        "spec": {
+          "description": "DestinationRule defines policies that apply to traffic intended for a service after routing has occurred.",
+          "type": "object",
+          "properties": {
+            "host": {
+              "description": "The name of a service from the service registry. Service names are looked up from the platform's service registry (e.g., Kubernetes services, Consul services, etc.) and from the hosts declared by [ServiceEntries](https://istio.io/docs/reference/config/networking/service-entry/#ServiceEntry). Rules defined for services that do not exist in the service registry will be ignored.",
+              "type": "string",
+              "format": "string"
+            },
+            "trafficPolicy": {
+              "$ref": "#/definitions/destinationRule/definitions/trafficPolicy"
+            },
+            "subsets": {
+              "description": "One or more named sets that represent individual versions of a service. Traffic policies can be overridden at subset level.",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/destinationRule/definitions/subset"
+              }
+            },
+            "exportTo": {
+              "description": "A list of namespaces to which this destination rule is exported. The resolution of a destination rule to apply to a service occurs in the context of a hierarchy of namespaces. Exporting a destination rule allows it to be included in the resolution hierarchy for services in other namespaces. This feature provides a mechanism for service owners and mesh administrators to control the visibility of destination rules across namespace boundaries.",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "string"
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "name",
+        "spec"
+      ],
+      "definitions": {
+        "trafficPolicy": {
+          "description": "Traffic policies to apply for a specific destination, across all destination ports. See DestinationRule for examples.",
+            "type": "object",
+            "properties": {
+              "loadBalancer": {
+                "$ref": "#/definitions/destinationRule/definitions/loadBalancer"
+              },
+              "connectionPool": {
+                "$ref": "#/definitions/destinationRule/definitions/connectionPool"
+              },
+              "outlierDetection": {
+                "$ref": "#/definitions/destinationRule/definitions/outlierDetection"
+              },
+              "tls": {
+                "$ref": "#/definitions/destinationRule/definitions/tls"
+              },
+              "portLevelSettings": {
+                "description": "Traffic policies specific to individual ports. Note that port level settings will override the destination-level settings. Traffic settings specified at the destination-level will not be inherited when overridden by port-level settings, i.e. default values will be applied to fields omitted in port-level traffic policies.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/destinationRule/definitions/portTrafficPolicy"
+                }
+              }
+            }
+        },
+        "subset": {
+          "description": "A subset of endpoints of a service. Subsets can be used for scenarios like A/B testing, or routing to a specific version of a service. Refer to [VirtualService](https://istio.io/docs/reference/config/networking/virtual-service/#VirtualService) documentation for examples of using subsets in these scenarios. In addition, traffic policies defined at the service-level can be overridden at a subset-level. The following rule uses a round robin load balancing policy for all traffic going to a subset named testversion that is composed of endpoints (e.g., pods) with labels (version:v3).",
+          "type": "object",
+          "properties": {
+            "name": {
+              "description": "Name of the subset. The service name and the subset name can be used for traffic splitting in a route rule.",
+              "type": "string",
+              "format": "string"
+            },
+            "trafficPolicy": {
+              "$ref": "#/definitions/destinationRule/definitions/trafficPolicy"
+            },
+            "labels": {
+              "description": "Labels apply a filter over the endpoints of a service in the service registry. See route rules for examples of usage.",
+              "type": "object",
+              "additionalProperties": {
+                "type": "string",
+                "format": "string"
+              }
+            }
+          }
+        },
+        "loadBalancer": {
+          "description": "Load balancing policies to apply for a specific destination. See Envoy's load balancing [documentation](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/load_balancing) for more details.",
+          "type": "object",
+          "properties": {
+            "localityLbSetting": {
+              "$ref": "#/definitions/destinationRule/definitions/localityLoadBalancer"
+            }
+          },
+          "oneOf": [
+            {
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "simple"
+                    ],
+                    "properties": {
+                      "simple": {
+                        "$ref": "#/definitions/destinationRule/definitions/simpleLB"
+                      }
+                    }
+                  },
+                  {
+                    "required": [
+                      "consistentHash"
+                    ],
+                    "properties": {
+                      "consistentHash": {
+                        "$ref": "#/definitions/destinationRule/definitions/consistentHashLB"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "required": [
+                "simple"
+              ],
+              "properties": {
+                "simple": {
+                  "$ref": "#/definitions/destinationRule/definitions/simpleLB"
+                }
+              }
+            },
+            {
+              "required": [
+                "consistentHash"
+              ],
+              "properties": {
+                "consistentHash": {
+                  "$ref": "#/definitions/destinationRule/definitions/consistentHashLB"
+                }
+              }
+            }
+          ]
+        },
+        "connectionPool": {
+          "description": "Connection pool settings for an upstream host. The settings apply to each individual host in the upstream service. See Envoy's [circuit breaker](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/circuit_breaking) for more details. Connection pool settings can be applied at the TCP level as well as at HTTP level.",
+          "type": "object",
+          "properties": {
+            "tcp": {
+              "$ref": "#/definitions/destinationRule/definitions/TCPSettings"
+            },
+            "http": {
+              "$ref": "#/definitions/destinationRule/definitions/HTTPSettings"
+            }
+          }
+        },
+        "outlierDetection": {
+          "description": "A Circuit breaker implementation that tracks the status of each individual host in the upstream service. Applicable to both HTTP and TCP services. For HTTP services, hosts that continually return 5xx errors for API calls are ejected from the pool for a pre-defined period of time. For TCP services, connection timeouts or connection failures to a given host counts as an error when measuring the consecutive errors metric. See Envoy's [outlier detection](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/outlier) for more details.",
+          "type": "object",
+          "properties": {
+            "interval": {
+              "description": "Time interval between ejection sweep analysis. format: 1h/1m/1s/1ms. MUST BE \u003e=1ms. Default is 10s.",
+              "type": "string"
+            },
+            "consecutiveErrors": {
+              "description": "Number of errors before a host is ejected from the connection pool. Defaults to 5. When the upstream host is accessed over HTTP, a 502, 503, or 504 return code qualifies as an error. When the upstream host is accessed over an opaque TCP connection, connect timeouts and connection error/failure events qualify as an error. $hide_from_docs",
+              "type": "integer",
+              "format": "int32",
+              "deprecated": true
+            },
+            "consecutiveGatewayErrors": {
+              "description": "Number of gateway errors before a host is ejected from the connection pool. When the upstream host is accessed over HTTP, a 502, 503, or 504 return code qualifies as a gateway error. When the upstream host is accessed over an opaque TCP connection, connect timeouts and connection error/failure events qualify as a gateway error. This feature is disabled by default or when set to the value 0.",
+              "type": "integer",
+              "nullable": true
+            },
+            "consecutive5xxErrors": {
+              "description": "Number of 5xx errors before a host is ejected from the connection pool. When the upstream host is accessed over an opaque TCP connection, connect timeouts, connection error/failure and request failure events qualify as a 5xx error. This feature defaults to 5 but can be disabled by setting the value to 0.",
+              "type": "integer",
+              "nullable": true
+            },
+            "baseEjectionTime": {
+              "description": "Minimum ejection duration. A host will remain ejected for a period equal to the product of minimum ejection duration and the number of times the host has been ejected. This technique allows the system to automatically increase the ejection period for unhealthy upstream servers. format: 1h/1m/1s/1ms. MUST BE \u003e=1ms. Default is 30s.",
+              "type": "string"
+            },
+            "maxEjectionPercent": {
+              "description": "Maximum % of hosts in the load balancing pool for the upstream service that can be ejected. Defaults to 10%.",
+              "type": "integer",
+              "format": "int32"
+            },
+            "minHealthPercent": {
+              "description": "Outlier detection will be enabled as long as the associated load balancing pool has at least min_health_percent hosts in healthy mode. When the percentage of healthy hosts in the load balancing pool drops below this threshold, outlier detection will be disabled and the proxy will load balance across all hosts in the pool (healthy and unhealthy). The threshold can be disabled by setting it to 0%. The default is 0% as it's not typically applicable in k8s environments with few pods per service.",
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        },
+        "tls": {
+          "description": "SSL/TLS related settings for upstream connections. See Envoy's [TLS context](https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/auth/cert.proto.html) for more details. These settings are common to both HTTP and TCP upstreams.",
+          "type": "object",
+          "properties": {
+            "mode": {
+              "$ref": "#/definitions/destinationRule/definitions/TLSmode"
+            },
+            "clientCertificate": {
+              "description": "REQUIRED if mode is `MUTUAL`. The path to the file holding the client-side TLS certificate to use. Should be empty if mode is `ISTIO_MUTUAL`.",
+              "type": "string",
+              "format": "string"
+            },
+            "privateKey": {
+              "description": "REQUIRED if mode is `MUTUAL`. The path to the file holding the client's private key. Should be empty if mode is `ISTIO_MUTUAL`.",
+              "type": "string",
+              "format": "string"
+            },
+            "caCertificates": {
+              "description": "OPTIONAL: The path to the file containing certificate authority certificates to use in verifying a presented server certificate. If omitted, the proxy will not verify the server's certificate. Should be empty if mode is `ISTIO_MUTUAL`.",
+              "type": "string",
+              "format": "string"
+            },
+            "subjectAltNames": {
+              "description": "A list of alternate names to verify the subject identity in the certificate. If specified, the proxy will verify that the server certificate's subject alt name matches one of the specified values. If specified, this list overrides the value of subject_alt_names from the ServiceEntry.",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "string"
+              }
+            },
+            "sni": {
+              "description": "SNI string to present to the server during TLS handshake.",
+              "type": "string",
+              "format": "string"
+            }
+          }
+        },
+        "portTrafficPolicy": {
+          "description": "Traffic policies that apply to specific ports of the service",
+          "type": "object",
+          "properties": {
+            "loadBalancer": {
+              "$ref": "#/definitions/destinationRule/definitions/loadBalancer"
+            },
+            "connectionPool": {
+              "$ref": "#/definitions/destinationRule/definitions/connectionPool"
+            },
+            "outlierDetection": {
+              "$ref": "#/definitions/destinationRule/definitions/outlierDetection"
+            },
+            "tls": {
+              "$ref": "#/definitions/destinationRule/definitions/tls"
+            },
+            "port": {
+              "$ref": "#/definitions/destinationRule/definitions/portSelector"
+            }
+          }
+        },
+        "localityLoadBalancer": {
+          "description": "Locality-weighted load balancing allows administrators to control the distribution of traffic to endpoints based on the localities of where the traffic originates and where it will terminate. These localities are specified using arbitrary labels that designate a hierarchy of localities in {region}/{zone}/{sub-zone} form. For additional detail refer to [Locality Weight](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/locality_weight) The following example shows how to setup locality weights mesh-wide.",
+          "type": "object",
+          "properties": {
+            "distribute": {
+              "description": "Optional: only one of distribute or failover can be set. Explicitly specify loadbalancing weight across different zones and geographical locations. Refer to [Locality weighted load balancing](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/locality_weight) If empty, the locality weight is set according to the endpoints number within it.",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/destinationRule/definitions/distribute"
+              }
+            },
+            "failover": {
+              "description": "Optional: only failover or distribute can be set. Explicitly specify the region traffic will land on when endpoints in local region becomes unhealthy. Should be used together with OutlierDetection to detect unhealthy endpoints. Note: if no OutlierDetection specified, this will not take effect.",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/destinationRule/definitions/failover"
+              }
+            },
+            "enabled": {
+              "description": "enable locality load balancing, this is DestinationRule-level and will override mesh wide settings in entirety. e.g. true means that turn on locality load balancing for this DestinationRule no matter what mesh wide settings is.",
+              "type": "boolean",
+              "nullable": true
+            }
+          }
+        },
+        "simpleLB": {
+          "description": "Standard load balancing algorithms that require no tuning.",
+          "type": "string",
+          "enum": [
+            "ROUND_ROBIN",
+            "LEAST_CONN",
+            "RANDOM",
+            "PASSTHROUGH"
+          ]
+        },
+        "consistentHashLB": {
+          "description": "Consistent Hash-based load balancing can be used to provide soft session affinity based on HTTP headers, cookies or other properties. This load balancing policy is applicable only for HTTP connections. The affinity to a particular destination host will be lost when one or more hosts are added/removed from the destination service.",
+            "type": "object",
+            "properties": {
+              "minimumRingSize": {
+                "description": "The minimum number of virtual nodes to use for the hash ring. Defaults to 1024. Larger ring sizes result in more granular load distributions. If the number of hosts in the load balancing pool is larger than the ring size, each host will be assigned a single virtual node.",
+                "type": "integer"
+              }
+            },
+            "oneOf": [
+              {
+                "not": {
+                  "anyOf": [
+                    {
+                      "required": [
+                        "httpHeaderName"
+                      ],
+                      "properties": {
+                        "httpHeaderName": {
+                          "description": "Hash based on a specific HTTP header.",
+                          "type": "string",
+                          "format": "string"
+                        }
+                      }
+                    },
+                    {
+                      "required": [
+                        "httpCookie"
+                      ],
+                      "properties": {
+                        "httpCookie": {
+                          "$ref": "#/definitions/destinationRule/definitions/HTTPCookie"
+                        }
+                      }
+                    },
+                    {
+                      "required": [
+                        "useSourceIp"
+                      ],
+                      "properties": {
+                        "useSourceIp": {
+                          "description": "Hash based on the source IP address.",
+                          "type": "boolean"
+                        }
+                      }
+                    },
+                    {
+                      "required": [
+                        "httpQueryParameterName"
+                      ],
+                      "properties": {
+                        "httpQueryParameterName": {
+                          "description": "Hash based on a specific HTTP query parameter.",
+                          "type": "string",
+                          "format": "string"
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "required": [
+                  "httpHeaderName"
+                ],
+                "properties": {
+                  "httpHeaderName": {
+                    "description": "Hash based on a specific HTTP header.",
+                    "type": "string",
+                    "format": "string"
+                  }
+                }
+              },
+              {
+                "required": [
+                  "httpCookie"
+                ],
+                "properties": {
+                  "httpCookie": {
+                    "$ref": "#/definitions/destinationRule/definitions/HTTPCookie"
+                  }
+                }
+              },
+              {
+                "required": [
+                  "useSourceIp"
+                ],
+                "properties": {
+                  "useSourceIp": {
+                    "description": "Hash based on the source IP address.",
+                    "type": "boolean"
+                  }
+                }
+              },
+              {
+                "required": [
+                  "httpQueryParameterName"
+                ],
+                "properties": {
+                  "httpQueryParameterName": {
+                    "description": "Hash based on a specific HTTP query parameter.",
+                    "type": "string",
+                    "format": "string"
+                  }
+                }
+              }
+            ]
+        },
+        "TCPSettings": {
+          "description": "Settings common to both HTTP and TCP upstream connections.",
+          "type": "object",
+          "properties": {
+            "maxConnections": {
+              "description": "Maximum number of HTTP1 /TCP connections to a destination host. Default 2^32-1.",
+              "type": "integer",
+              "format": "int32"
+            },
+            "connectTimeout": {
+              "description": "TCP connection timeout. format: 1h/1m/1s/1ms. MUST BE \u003e=1ms. Default is 10s.",
+              "type": "string"
+            },
+            "tcpKeepalive": {
+              "$ref": "#/definitions/destinationRule/definitions/TcpKeepalive"
+            }
+          }
+        },
+        "HTTPSettings": {
+          "description": "Settings applicable to HTTP1.1/HTTP2/GRPC connections.",
+          "type": "object",
+          "properties": {
+            "http1MaxPendingRequests": {
+              "description": "Maximum number of pending HTTP requests to a destination. Default 2^32-1.",
+              "type": "integer",
+              "format": "int32"
+            },
+            "http2MaxRequests": {
+              "description": "Maximum number of requests to a backend. Default 2^32-1.",
+              "type": "integer",
+              "format": "int32"
+            },
+            "maxRequestsPerConnection": {
+              "description": "Maximum number of requests per connection to a backend. Setting this parameter to 1 disables keep alive. Default 0, meaning \"unlimited\", up to 2^29.",
+              "type": "integer",
+              "format": "int32"
+            },
+            "maxRetries": {
+              "description": "Maximum number of retries that can be outstanding to all hosts in a cluster at a given time. Defaults to 2^32-1.",
+              "type": "integer",
+              "format": "int32"
+            },
+            "idleTimeout": {
+              "description": "The idle timeout for upstream connection pool connections. The idle timeout is defined as the period in which there are no active requests. If not set, the default is 1 hour. When the idle timeout is reached the connection will be closed. Note that request based timeouts mean that HTTP/2 PINGs will not keep the connection alive. Applies to both HTTP1.1 and HTTP2 connections.",
+              "type": "string"
+            },
+            "h2UpgradePolicy": {
+              "$ref": "#/definitions/destinationRule/definitions/H2UpgradePolicy"
+            }
+          }
+        },
+        "TLSmode": {
+          "description": "TLS connection mode",
+          "type": "string",
+          "enum": [
+            "DISABLE",
+            "SIMPLE",
+            "MUTUAL",
+            "ISTIO_MUTUAL"
+          ]
+        },
+        "portSelector": {
+          "description": "PortSelector specifies the number of a port to be used for matching or selection for final routing.",
+          "type": "object",
+          "properties": {
+            "number": {
+              "description": "Valid port number",
+              "type": "integer"
+            }
+          }
+        },
+        "distribute": {
+          "description": "Describes how traffic originating in the 'from' zone or sub-zone is distributed over a set of 'to' zones. Syntax for specifying a zone is {region}/{zone}/{sub-zone} and terminal wildcards are allowed on any segment of the specification. Examples: * - matches all localities us-west/* - all zones and sub-zones within the us-west region us-west/zone-1/* - all sub-zones within us-west/zone-1",
+          "type": "object",
+          "properties": {
+            "from": {
+              "description": "Originating locality, '/' separated, e.g. 'region/zone/sub_zone'.",
+              "type": "string",
+              "format": "string"
+            },
+            "to": {
+              "description": "Map of upstream localities to traffic distribution weights. The sum of all weights should be == 100. Any locality not assigned a weight will receive no traffic.",
+              "type": "object",
+              "additionalProperties": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "failover": {
+          "description": "Specify the traffic failover policy across regions. Since zone and sub-zone failover is supported by default this only needs to be specified for regions when the operator needs to constrain traffic failover so that the default behavior of failing over to any endpoint globally does not apply. This is useful when failing over traffic across regions would not improve service health or may need to be restricted for other reasons like regulatory controls.",
+          "type": "object",
+          "properties": {
+            "from": {
+              "description": "Originating region.",
+              "type": "string",
+              "format": "string"
+            },
+            "to": {
+              "description": "Destination region the traffic will fail over to when endpoints in the 'from' region becomes unhealthy.",
+              "type": "string",
+              "format": "string"
+            }
+          }
+        },
+        "HTTPCookie": {
+          "description": "Describes a HTTP cookie that will be used as the hash key for the Consistent Hash load balancer. If the cookie is not present, it will be generated.",
+          "type": "object",
+          "properties": {
+            "path": {
+              "description": "Path to set for the cookie.",
+              "type": "string",
+              "format": "string"
+            },
+            "name": {
+              "description": "Name of the cookie.",
+              "type": "string",
+              "format": "string"
+            },
+            "ttl": {
+              "description": "Lifetime of the cookie.",
+              "type": "string"
+            }
+          }
+        },
+        "TcpKeepalive": {
+          "description": "TCP keepalive.",
+          "type": "object",
+          "properties": {
+            "time": {
+              "description": "The time duration a connection needs to be idle before keep-alive probes start being sent. Default is to use the OS level configuration (unless overridden, Linux defaults to 7200s (ie 2 hours.)",
+              "type": "string"
+            },
+            "probes": {
+              "description": "Maximum number of keepalive probes to send without response before deciding the connection is dead. Default is to use the OS level configuration (unless overridden, Linux defaults to 9.)",
+              "type": "integer"
+            },
+            "interval": {
+              "description": "The time duration between keep-alive probes. Default is to use the OS level configuration (unless overridden, Linux defaults to 75s.)",
+              "type": "string"
+            }
+          }
+        },
+        "H2UpgradePolicy": {
+          "description": "Policy for upgrading http1.1 connections to http2.",
+          "type": "string",
+          "enum": [
+            "DEFAULT",
+            "DO_NOT_UPGRADE",
+            "UPGRADE"
+          ]
+        }
+      }
+    },
+    "serviceEntry": {
+      "description": "ServiceEntry enables adding additional entries into Istio's internal service registry.",
+      "type": "object",
+      "properties": {
+        "exportTo": {
+          "description": "A list of namespaces to which this service is exported. Exporting a service allows it to be used by sidecars, gateways and virtual services defined in other namespaces. This feature provides a mechanism for service owners and mesh administrators to control the visibility of services across namespace boundaries.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "string"
+          }
+        },
+        "subjectAltNames": {
+          "description": "If specified, the proxy will verify that the server certificate's subject alternate name matches one of the specified values.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "string"
+          }
+        },
+        "workloadSelector": {
+          "$ref": "#/definitions/serviceEntry/definitions/workloadSelector"
+        },
+        "hosts": {
+          "description": "The hosts associated with the ServiceEntry. Could be a DNS name with wildcard prefix.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "string"
+          }
+        },
+        "addresses": {
+          "description": "The virtual IP addresses associated with the service. Could be CIDR prefix. For HTTP traffic, generated route configurations will include http route domains for both the `addresses` and `hosts` field values and the destination will be identified based on the HTTP Host/Authority header. If one or more IP addresses are specified, the incoming traffic will be identified as belonging to this service if the destination IP matches the IP/CIDRs specified in the addresses field. If the Addresses field is empty, traffic will be identified solely based on the destination port. In such scenarios, the port on which the service is being accessed must not be shared by any other service in the mesh. In other words, the sidecar will behave as a simple TCP proxy, forwarding incoming traffic on a specified port to the specified destination endpoint IP/host. Unix domain socket addresses are not supported in this field.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "string"
+          }
+        },
+        "ports": {
+          "description": "The ports associated with the external service. If the Endpoints are Unix domain socket addresses, there must be exactly one port.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/serviceEntry/definitions/port"
+          }
+        },
+        "location": {
+          "$ref": "#/definitions/serviceEntry/definitions/location"
+        },
+        "resolution": {
+          "$ref": "#/definitions/serviceEntry/definitions/resolution"
+        },
+        "endpoints": {
+          "description": "One or more endpoints associated with the service. Only one of `endpoints` or `workloadSelector` can be specified.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/serviceEntry/definitions/workloadEntry"
+          }
+        }
+      },
+      "definitions": {
+        "workloadSelector": {
+          "description": "`WorkloadSelector` specifies the criteria used to determine if the `Gateway`, `Sidecar`, or `EnvoyFilter` or `ServiceEntry` configuration can be applied to a proxy. The matching criteria includes the metadata associated with a proxy, workload instance info such as labels attached to the pod/VM, or any other info that the proxy provides to Istio during the initial handshake. If multiple conditions are specified, all conditions need to match in order for the workload instance to be selected. Currently, only label based selection mechanism is supported.",
+          "type": "object",
+          "properties": {
+            "labels": {
+              "description": "One or more labels that indicate a specific set of pods/VMs on which the configuration should be applied. The scope of label search is restricted to the configuration namespace in which the the resource is present.",
+              "type": "object",
+              "additionalProperties": {
+                "type": "string",
+                "format": "string"
+              }
+            }
+          }
+        },
+        "port": {
+          "description": "Port describes the properties of a specific port of a service.",
+          "type": "object",
+          "properties": {
+            "number": {
+              "description": "A valid non-negative integer port number.",
+              "type": "integer"
+            },
+            "name": {
+              "description": "Label assigned to the port.",
+              "type": "string",
+              "format": "string"
+            },
+            "protocol": {
+              "description": "The protocol exposed on the port. MUST BE one of HTTP|HTTPS|GRPC|HTTP2|MONGO|TCP|TLS. TLS implies the connection will be routed based on the SNI header to the destination without terminating the TLS connection.",
+              "type": "string",
+              "format": "string"
+            }
+          }
+        },
+        "location": {
+          "description": "Location specifies whether the service is part of Istio mesh or outside the mesh. Location determines the behavior of several features, such as service-to-service mTLS authentication, policy enforcement, etc. When communicating with services outside the mesh, Istio's mTLS authentication is disabled, and policy enforcement is performed on the client-side as opposed to server-side.",
+          "type": "string",
+          "enum": [
+            "MESH_EXTERNAL",
+            "MESH_INTERNAL"
+          ]
+        },
+        "resolution": {
+          "description": "Resolution determines how the proxy will resolve the IP addresses of the network endpoints associated with the service, so that it can route to one of them. The resolution mode specified here has no impact on how the application resolves the IP address associated with the service. The application may still have to use DNS to resolve the service to an IP so that the outbound traffic can be captured by the Proxy. Alternatively, for HTTP services, the application could directly communicate with the proxy (e.g., by setting HTTP_PROXY) to talk to these services.",
+          "type": "string",
+          "enum": [
+            "NONE",
+            "STATIC",
+            "DNS"
+          ]
+        },
+        "workloadEntry": {
+          "description": "WorkloadEntry enables specifying the properties of a single non-Kubernetes workload such a VM or a bare metal services that can be referred to by service entries.",
+          "type": "object",
+          "properties": {
+            "labels": {
+              "description": "One or more labels associated with the endpoint.",
+              "type": "object",
+              "additionalProperties": {
+                "type": "string",
+                "format": "string"
+              }
+            },
+            "ports": {
+              "description": "Set of ports associated with the endpoint. The ports must be associated with a port name that was declared as part of the service. Do not use for `unix://` addresses.",
+              "type": "object",
+              "additionalProperties": {
+                "type": "integer"
+              }
+            },
+            "weight": {
+              "description": "The load balancing weight associated with the endpoint. Endpoints with higher weights will receive proportionally higher traffic.",
+              "type": "integer"
+            },
+            "address": {
+              "description": "Address associated with the network endpoint without the port. Domain names can be used if and only if the resolution is set to DNS, and must be fully-qualified without wildcards. Use the form unix:///absolute/path/to/socket for Unix domain socket endpoints.",
+              "type": "string",
+              "format": "string"
+            },
+            "network": {
+              "description": "Network enables Istio to group endpoints resident in the same L3 domain/network. All endpoints in the same network are assumed to be directly reachable from one another. When endpoints in different networks cannot reach each other directly, an Istio Gateway can be used to establish connectivity (usually using the `AUTO_PASSTHROUGH` mode in a Gateway Server). This is an advanced configuration used typically for spanning an Istio mesh over multiple clusters.",
+              "type": "string",
+              "format": "string"
+            },
+            "locality": {
+              "description": "The locality associated with the endpoint. A locality corresponds to a failure domain (e.g., country/region/zone). Arbitrary failure domain hierarchies can be represented by separating each encapsulating failure domain by /. For example, the locality of an an endpoint in US, in US-East-1 region, within availability zone az-1, in data center rack r11 can be represented as us/us-east-1/az-1/r11. Istio will configure the sidecar to route to endpoints within the same locality as the sidecar. If none of the endpoints in the locality are available, endpoints parent locality (but within the same network ID) will be chosen. For example, if there are two endpoints in same network (networkID \"n1\"), say e1 with locality us/us-east-1/az-1/r11 and e2 with locality us/us-east-1/az-2/r12, a sidecar from us/us-east-1/az-1/r11 locality will prefer e1 from the same locality over e2 from a different locality. Endpoint e2 could be the IP associated with a gateway (that bridges networks n1 and n2), or the IP associated with a standard service endpoint.",
+              "type": "string",
+              "format": "string"
+            },
+            "serviceAccount": {
+              "description": "The service account associated with the workload if a sidecar is present in the workload. The service account must be present in the same namespace as the configuration ( WorkloadEntry or a ServiceEntry)",
+              "type": "string",
+              "format": "string"
+            }
+          }
+        }
+      }
+    },
+    "virtualService": {
+      "description": "Configuration affecting traffic routing.",
+      "type": "object",
+      "properties": {
+        "exportTo": {
+          "description": "A list of namespaces to which this virtual service is exported. Exporting a virtual service allows it to be used by sidecars and gateways defined in other namespaces. This feature provides a mechanism for service owners and mesh administrators to control the visibility of virtual services across namespace boundaries.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "string"
+          }
+        },
+        "tls": {
+          "description": "An ordered list of route rule for non-terminated TLS \u0026 HTTPS traffic. Routing is typically performed using the SNI value presented by the ClientHello message. TLS routes will be applied to platform service ports named 'https-*', 'tls-*', unterminated gateway ports using HTTPS/TLS protocols (i.e. with \"passthrough\" TLS mode) and service entry ports using HTTPS/TLS protocols. The first rule matching an incoming request is used. NOTE: Traffic 'https-*' or 'tls-*' ports without associated virtual service will be treated as opaque TCP traffic.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/virtualService/definitions/TLSRoute"
+          }
+        },
+        "tcp": {
+          "description": "An ordered list of route rules for opaque TCP traffic. TCP routes will be applied to any port that is not a HTTP or TLS port. The first rule matching an incoming request is used.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/virtualService/definitions/TCPRoute"
+          }
+        },
+        "http": {
+          "description": "An ordered list of route rules for HTTP traffic. HTTP routes will be applied to platform service ports named 'http-*'/'http2-*'/'grpc-*', gateway ports with protocol HTTP/HTTP2/GRPC/ TLS-terminated-HTTPS and service entry ports using HTTP/HTTP2/GRPC protocols. The first rule matching an incoming request is used.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/virtualService/definitions/HTTPRoute"
+          }
+        },
+        "hosts": {
+          "description": "The destination hosts to which traffic is being sent. Could be a DNS name with wildcard prefix or an IP address. Depending on the platform, short-names can also be used instead of a FQDN (i.e. has no dots in the name). In such a scenario, the FQDN of the host would be derived based on the underlying platform.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "string"
+          }
+        },
+        "gateways": {
+          "description": "The names of gateways and sidecars that should apply these routes. Gateways in other namespaces may be referred to by `\u003cgateway namespace\u003e/\u003cgateway name\u003e`; specifying a gateway with no namespace qualifier is the same as specifying the VirtualService's namespace. A single VirtualService is used for sidecars inside the mesh as well as for one or more gateways. The selection condition imposed by this field can be overridden using the source field in the match conditions of protocol-specific routes. The reserved word `mesh` is used to imply all the sidecars in the mesh. When this field is omitted, the default gateway (`mesh`) will be used, which would apply the rule to all sidecars in the mesh. If a list of gateway names is provided, the rules will apply only to the gateways. To apply the rules to both gateways and sidecars, specify `mesh` as one of the gateway names.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "string"
+          }
+        }
+      },
+      "definitions": {
+        "TLSRoute": {
+          "description": "Describes match conditions and actions for routing unterminated TLS traffic (TLS/HTTPS) The following routing rule forwards unterminated TLS traffic arriving at port 443 of gateway called \"mygateway\" to internal services in the mesh based on the SNI value.",
+          "type": "object",
+          "properties": {
+            "route": {
+              "description": "The destination to which the connection should be forwarded to.",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/virtualService/definitions/routeDestination"
+              }
+            },
+            "match": {
+              "description": "Match conditions to be satisfied for the rule to be activated. All conditions inside a single match block have AND semantics, while the list of match blocks have OR semantics. The rule is matched if any one of the match blocks succeed.",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/virtualService/definitions/TLSMatchAttributes"
+              }
+            }
+          }
+        },
+        "TCPRoute": {
+          "description": "Describes match conditions and actions for routing TCP traffic. The following routing rule forwards traffic arriving at port 27017 for mongo.prod.svc.cluster.local to another Mongo server on port 5555.",
+          "type": "object",
+          "properties": {
+            "route": {
+              "description": "The destination to which the connection should be forwarded to.",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/virtualService/definitions/routeDestination"
+              }
+            },
+            "match": {
+              "description": "Match conditions to be satisfied for the rule to be activated. All conditions inside a single match block have AND semantics, while the list of match blocks have OR semantics. The rule is matched if any one of the match blocks succeed.",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/virtualService/definitions/L4MatchAttributes"
+              }
+            }
+          }
+        },
+        "HTTPRoute": {
+          "description": "Describes match conditions and actions for routing HTTP/1.1, HTTP2, and gRPC traffic. See VirtualService for usage examples.",
+          "type": "object",
+          "properties": {
+            "name": {
+              "description": "The name assigned to the route for debugging purposes. The route's name will be concatenated with the match's name and will be logged in the access logs for requests matching this route/match.",
+              "type": "string",
+              "format": "string"
+            },
+            "route": {
+              "description": "A HTTP rule can either redirect or forward (default) traffic. The forwarding target can be one of several versions of a service (see glossary in beginning of document). Weights associated with the service version determine the proportion of traffic it receives.",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/virtualService/definitions/HTTPRouteDestination"
+              }
+            },
+            "match": {
+              "description": "Match conditions to be satisfied for the rule to be activated. All conditions inside a single match block have AND semantics, while the list of match blocks have OR semantics. The rule is matched if any one of the match blocks succeed.",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/virtualService/definitions/HTTPMatchRequest"
+              }
+            },
+            "redirect": {
+              "$ref": "#/definitions/virtualService/definitions/HTTPRedirect"
+            },
+            "delegate": {
+              "$ref": "#/definitions/virtualService/definitions/delegate"
+            },
+            "rewrite": {
+              "$ref": "#/definitions/virtualService/definitions/HTTPRewrite"
+            },
+            "timeout": {
+              "description": "Timeout for HTTP requests.",
+              "type": "string"
+            },
+            "retries": {
+              "$ref": "#/definitions/virtualService/definitions/HTTPRetry"
+            },
+            "fault": {
+              "$ref": "#/definitions/virtualService/definitions/HTTPFaultInjection"
+            },
+            "mirror": {
+              "$ref": "#/definitions/virtualService/definitions/destination"
+            },
+            "mirrorPercent": {
+              "description": "Percentage of the traffic to be mirrored by the `mirror` field. Use of integer `mirror_percent` value is deprecated. Use the double `mirror_percentage` field instead",
+              "type": "integer",
+              "deprecated": true,
+              "nullable": true
+            },
+            "mirrorPercentage": {
+              "$ref": "#/definitions/virtualService/definitions/percent"
+            },
+            "corsPolicy": {
+              "$ref": "#/definitions/virtualService/definitions/corsPolicy"
+            },
+            "headers": {
+              "$ref": "#/definitions/virtualService/definitions/headers"
+            }
+          }          
+        },
+        "routeDestination": {
+          "description": "L4 routing rule weighted destination.",
+          "type": "object",
+          "properties": {
+            "destination": {
+              "$ref": "#/definitions/virtualService/definitions/destination"
+            },
+            "weight": {
+              "description": "The proportion of traffic to be forwarded to the service version. If there is only one destination in a rule, all traffic will be routed to it irrespective of the weight.",
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        },
+        "TLSMatchAttributes": {
+          "description": "TLS connection match attributes.",
+          "type": "object",
+          "properties": {
+            "port": {
+              "description": "Specifies the port on the host that is being addressed. Many services only expose a single port or label ports with the protocols they support, in these cases it is not required to explicitly select the port.",
+              "type": "integer"
+            },
+            "gateways": {
+              "description": "Names of gateways where the rule should be applied. Gateway names in the top-level `gateways` field of the VirtualService (if any) are overridden. The gateway match is independent of sourceLabels.",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "string"
+              }
+            },
+            "sourceLabels": {
+              "description": "One or more labels that constrain the applicability of a rule to workloads with the given labels. If the VirtualService has a list of gateways specified in the top-level `gateways` field, it should include the reserved gateway `mesh` in order for this field to be applicable.",
+              "type": "object",
+              "additionalProperties": {
+                "type": "string",
+                "format": "string"
+              }
+            },
+            "sourceNamespace": {
+              "description": "Source namespace constraining the applicability of a rule to workloads in that namespace. If the VirtualService has a list of gateways specified in the top-level `gateways` field, it must include the reserved gateway `mesh` for this field to be applicable.",
+              "type": "string",
+              "format": "string"
+            },
+            "destinationSubnets": {
+              "description": "IPv4 or IPv6 ip addresses of destination with optional subnet. E.g., a.b.c.d/xx form or just a.b.c.d.",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "string"
+              }
+            },
+            "sniHosts": {
+              "description": "SNI (server name indicator) to match on. Wildcard prefixes can be used in the SNI value, e.g., *.com will match foo.example.com as well as example.com. An SNI value must be a subset (i.e., fall within the domain) of the corresponding virtual serivce's hosts.",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "string"
+              }
+            }
+          }
+        },
+        "L4MatchAttributes": {
+          "description": "L4 connection match attributes. Note that L4 connection matching support is incomplete.",
+          "type": "object",
+          "properties": {
+            "port": {
+              "description": "Specifies the port on the host that is being addressed. Many services only expose a single port or label ports with the protocols they support, in these cases it is not required to explicitly select the port.",
+              "type": "integer"
+            },
+            "gateways": {
+              "description": "Names of gateways where the rule should be applied. Gateway names in the top-level `gateways` field of the VirtualService (if any) are overridden. The gateway match is independent of sourceLabels.",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "string"
+              }
+            },
+            "sourceLabels": {
+              "description": "One or more labels that constrain the applicability of a rule to workloads with the given labels. If the VirtualService has a list of gateways specified in the top-level `gateways` field, it should include the reserved gateway `mesh` in order for this field to be applicable.",
+              "type": "object",
+              "additionalProperties": {
+                "type": "string",
+                "format": "string"
+              }
+            },
+            "sourceNamespace": {
+              "description": "Source namespace constraining the applicability of a rule to workloads in that namespace. If the VirtualService has a list of gateways specified in the top-level `gateways` field, it must include the reserved gateway `mesh` for this field to be applicable.",
+              "type": "string",
+              "format": "string"
+            },
+            "destinationSubnets": {
+              "description": "IPv4 or IPv6 ip addresses of destination with optional subnet. E.g., a.b.c.d/xx form or just a.b.c.d.",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "string"
+              }
+            },
+            "sourceSubnet": {
+              "description": "IPv4 or IPv6 ip address of source with optional subnet. E.g., a.b.c.d/xx form or just a.b.c.d $hide_from_docs",
+              "type": "string",
+              "format": "string"
+            }
+          }
+        },
+        "HTTPRouteDestination": {
+          "description": "Each routing rule is associated with one or more service versions (see glossary in beginning of document). Weights associated with the version determine the proportion of traffic it receives. For example, the following rule will route 25% of traffic for the \"reviews\" service to instances with the \"v2\" tag and the remaining traffic (i.e., 75%) to \"v1\".",
+          "type": "object",
+          "properties": {
+            "headers": {
+              "$ref": "#/definitions/virtualService/definitions/headers"
+            },
+            "destination": {
+              "$ref": "#/definitions/virtualService/definitions/destination"
+            },
+            "weight": {
+              "description": "The proportion of traffic to be forwarded to the service version. (0-100). Sum of weights across destinations SHOULD BE == 100. If there is only one destination in a rule, the weight value is assumed to be 100.",
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        },
+        "HTTPMatchRequest": {
+          "description": "HttpMatchRequest specifies a set of criterion to be met in order for the rule to be applied to the HTTP request. For example, the following restricts the rule to match only requests where the URL path starts with /ratings/v2/ and the request contains a custom `end-user` header with value `jason`.",
+          "type": "object",
+          "properties": {
+            "name": {
+              "description": "The name assigned to a match. The match's name will be concatenated with the parent route's name and will be logged in the access logs for requests matching this route.",
+              "type": "string",
+              "format": "string"
+            },
+            "method": {
+              "$ref": "#/definitions/virtualService/definitions/stringMatch"
+            },
+            "port": {
+              "description": "Specifies the ports on the host that is being addressed. Many services only expose a single port or label ports with the protocols they support, in these cases it is not required to explicitly select the port.",
+              "type": "integer"
+            },
+            "gateways": {
+              "description": "Names of gateways where the rule should be applied. Gateway names in the top-level `gateways` field of the VirtualService (if any) are overridden. The gateway match is independent of sourceLabels.",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "string"
+              }
+            },
+            "headers": {
+              "description": "The header keys must be lowercase and use hyphen as the separator, e.g. _x-request-id_.",
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/definitions/virtualService/definitions/stringMatch"
+              }
+            },
+            "uri": {
+              "$ref": "#/definitions/virtualService/definitions/stringMatch"
+            },
+            "scheme": {
+              "$ref": "#/definitions/virtualService/definitions/stringMatch"
+            },
+            "authority": {
+              "$ref": "#/definitions/virtualService/definitions/stringMatch"
+            },
+            "sourceLabels": {
+              "description": "One or more labels that constrain the applicability of a rule to workloads with the given labels. If the VirtualService has a list of gateways specified in the top-level `gateways` field, it must include the reserved gateway `mesh` for this field to be applicable.",
+              "type": "object",
+              "additionalProperties": {
+                "type": "string",
+                "format": "string"
+              }
+            },
+            "queryParams": {
+              "description": "Query parameters for matching.",
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/definitions/virtualService/definitions/stringMatch"
+              }
+            },
+            "ignoreUriCase": {
+              "description": "Flag to specify whether the URI matching should be case-insensitive.",
+              "type": "boolean"
+            },
+            "withoutHeaders": {
+              "description": "withoutHeader has the same syntax with the header, but has opposite meaning. If a header is matched with a matching rule among withoutHeader, the traffic becomes not matched one.",
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/definitions/virtualService/definitions/stringMatch"
+              }
+            },
+            "sourceNamespace": {
+              "description": "Source namespace constraining the applicability of a rule to workloads in that namespace. If the VirtualService has a list of gateways specified in the top-level `gateways` field, it must include the reserved gateway `mesh` for this field to be applicable.",
+              "type": "string",
+              "format": "string"
+            }
+          }
+        },
+        "HTTPRedirect": {
+          "description": "HTTPRedirect can be used to send a 301 redirect response to the caller, where the Authority/Host and the URI in the response can be swapped with the specified values. For example, the following rule redirects requests for /v1/getProductRatings API on the ratings service to /v1/bookRatings provided by the bookratings service.",
+          "type": "object",
+          "properties": {
+            "uri": {
+              "description": "On a redirect, overwrite the Path portion of the URL with this value. Note that the entire path will be replaced, irrespective of the request URI being matched as an exact path or prefix.",
+              "type": "string",
+              "format": "string"
+            },
+            "authority": {
+              "description": "On a redirect, overwrite the Authority/Host portion of the URL with this value.",
+              "type": "string",
+              "format": "string"
+            },
+            "redirectCode": {
+              "description": "On a redirect, Specifies the HTTP status code to use in the redirect response. The default response code is MOVED_PERMANENTLY (301).",
+              "type": "integer"
+            }
+          }
+        },
+        "delegate": {
+          "description": "Describes the delegate VirtualService. The following routing rules forward the traffic to `/productpage` by a delegate VirtualService named `productpage`, forward the traffic to `/reviews` by a delegate VirtualService named `reviews`.",
+          "type": "object",
+          "properties": {
+            "name": {
+              "description": "Name specifies the name of the delegate VirtualService.",
+              "type": "string",
+              "format": "string"
+            },
+            "namespace": {
+              "description": "Namespace specifies the namespace where the delegate VirtualService resides. By default, it is same to the root's.",
+              "type": "string",
+              "format": "string"
+            }
+          }
+        },
+        "HTTPRewrite": {
+          "description": "HTTPRewrite can be used to rewrite specific parts of a HTTP request before forwarding the request to the destination. Rewrite primitive can be used only with HTTPRouteDestination. The following example demonstrates how to rewrite the URL prefix for api call (/ratings) to ratings service before making the actual API call.",
+          "type": "object",
+          "properties": {
+            "uri": {
+              "description": "rewrite the path (or the prefix) portion of the URI with this value. If the original URI was matched based on prefix, the value provided in this field will replace the corresponding matched prefix.",
+              "type": "string",
+              "format": "string"
+            },
+            "authority": {
+              "description": "rewrite the Authority/Host header with this value.",
+              "type": "string",
+              "format": "string"
+            }
+          }
+        },
+        "HTTPRetry": {
+          "description": "Describes the retry policy to use when a HTTP request fails. For example, the following rule sets the maximum number of retries to 3 when calling ratings:v1 service, with a 2s timeout per retry attempt.",
+          "type": "object",
+          "properties": {
+            "attempts": {
+              "description": "Number of retries for a given request. The interval between retries will be determined automatically (25ms+). Actual number of retries attempted depends on the request `timeout` of the [HTTP route](https://istio.io/docs/reference/config/networking/virtual-service/#HTTPRoute).",
+              "type": "integer",
+              "format": "int32"
+            },
+            "perTryTimeout": {
+              "description": "Timeout per retry attempt for a given request. format: 1h/1m/1s/1ms. MUST BE \u003e=1ms.",
+              "type": "string"
+            },
+            "retryOn": {
+              "description": "Specifies the conditions under which retry takes place. One or more policies can be specified using a ‘,’ delimited list. See the [retry policies](https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/router_filter#x-envoy-retry-on) and [gRPC retry policies](https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/router_filter#x-envoy-retry-grpc-on) for more details.",
+              "type": "string",
+              "format": "string"
+            },
+            "retryRemoteLocalities": {
+              "description": "Flag to specify whether the retries should retry to other localities. See the [retry plugin configuration](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/http/http_connection_management#retry-plugin-configuration) for more details.",
+              "type": "boolean",
+              "nullable": true
+            }
+          }
+        },
+        "HTTPFaultInjection": {
+          "description": "HTTPFaultInjection can be used to specify one or more faults to inject while forwarding HTTP requests to the destination specified in a route. Fault specification is part of a VirtualService rule. Faults include aborting the Http request from downstream service, and/or delaying proxying of requests. A fault rule MUST HAVE delay or abort or both.",
+          "type": "object",
+          "properties": {
+            "delay": {
+              "$ref": "#/definitions/virtualService/definitions/delay"
+            },
+            "abort": {
+              "$ref": "#/definitions/virtualService/definitions/abort"
+            }
+          }
+        },
+        "destination": {
+          "description": "Destination indicates the network addressable service to which the request/connection will be sent after processing a routing rule. The destination.host should unambiguously refer to a service in the service registry. Istio's service registry is composed of all the services found in the platform's service registry (e.g., Kubernetes services, Consul services), as well as services declared through the [ServiceEntry](https://istio.io/docs/reference/config/networking/service-entry/#ServiceEntry) resource.",
+          "type": "object",
+          "properties": {
+            "host": {
+              "description": "The name of a service from the service registry. Service names are looked up from the platform's service registry (e.g., Kubernetes services, Consul services, etc.) and from the hosts declared by [ServiceEntry](https://istio.io/docs/reference/config/networking/service-entry/#ServiceEntry). Traffic forwarded to destinations that are not found in either of the two, will be dropped.",
+              "type": "string",
+              "format": "string"
+            },
+            "port": {
+              "$ref": "#/definitions/virtualService/definitions/portSelector"
+            },
+            "subset": {
+              "description": "The name of a subset within the service. Applicable only to services within the mesh. The subset must be defined in a corresponding DestinationRule.",
+              "type": "string",
+              "format": "string"
+            }
+          }
+        },
+        "percent": {
+          "description": "Percent specifies a percentage in the range of [0.0, 100.0].",
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "number",
+              "format": "double"
+            }
+          }
+        
+        },
+        "corsPolicy": {
+          "description": "Describes the Cross-Origin Resource Sharing (CORS) policy, for a given service. Refer to [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) for further details about cross origin resource sharing. For example, the following rule restricts cross origin requests to those originating from example.com domain using HTTP POST/GET, and sets the `Access-Control-Allow-Credentials` header to false. In addition, it only exposes `X-Foo-bar` header and sets an expiry period of 1 day.",
+          "type": "object",
+          "properties": {
+            "allowOrigin": {
+              "description": "The list of origins that are allowed to perform CORS requests. The content will be serialized into the Access-Control-Allow-Origin header. Wildcard * will allow all origins. $hide_from_docs",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "string"
+              },
+              "deprecated": true
+            },
+            "allowOrigins": {
+              "description": "String patterns that match allowed origins. An origin is allowed if any of the string matchers match. If a match is found, then the outgoing Access-Control-Allow-Origin would be set to the origin as provided by the client.",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/virtualService/definitions/stringMatch"
+              }
+            },
+            "allowMethods": {
+              "description": "List of HTTP methods allowed to access the resource. The content will be serialized into the Access-Control-Allow-Methods header.",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "string"
+              }
+            },
+            "allowHeaders": {
+              "description": "List of HTTP headers that can be used when requesting the resource. Serialized to Access-Control-Allow-Headers header.",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "string"
+              }
+            },
+            "exposeHeaders": {
+              "description": "A white list of HTTP headers that the browsers are allowed to access. Serialized into Access-Control-Expose-Headers header.",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "string"
+              }
+            },
+            "maxAge": {
+              "description": "Specifies how long the results of a preflight request can be cached. Translates to the `Access-Control-Max-Age` header.",
+              "type": "string"
+            },
+            "allowCredentials": {
+              "description": "Indicates whether the caller is allowed to send the actual request (not the preflight) using credentials. Translates to `Access-Control-Allow-Credentials` header.",
+              "type": "boolean",
+              "nullable": true
+            }
+          }        
+        },
+        "headers": {
+          "type": "object",
+          "properties": {
+            "response": {
+              "$ref": "#/definitions/virtualService/definitions/headerOperations"
+            },
+            "request": {
+              "$ref": "#/definitions/virtualService/definitions/headerOperations"
+            }
+          }
+        },
+        "stringMatch": {
+          "description": "Describes how to match a given string in HTTP headers. Match is case-sensitive.",
+          "type": "object",
+          "oneOf": [
+            {
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "exact"
+                    ],
+                    "properties": {
+                      "exact": {
+                        "description": "exact string match",
+                        "type": "string",
+                        "format": "string"
+                      }
+                    }
+                  },
+                  {
+                    "required": [
+                      "prefix"
+                    ],
+                    "properties": {
+                      "prefix": {
+                        "description": "prefix-based match",
+                        "type": "string",
+                        "format": "string"
+                      }
+                    }
+                  },
+                  {
+                    "required": [
+                      "regex"
+                    ],
+                    "properties": {
+                      "regex": {
+                        "description": "RE2 style regex-based match (https://github.com/google/re2/wiki/Syntax).",
+                        "type": "string",
+                        "format": "string"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "required": [
+                "exact"
+              ],
+              "properties": {
+                "exact": {
+                  "description": "exact string match",
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            },
+            {
+              "required": [
+                "prefix"
+              ],
+              "properties": {
+                "prefix": {
+                  "description": "prefix-based match",
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            },
+            {
+              "required": [
+                "regex"
+              ],
+              "properties": {
+                "regex": {
+                  "description": "RE2 style regex-based match (https://github.com/google/re2/wiki/Syntax).",
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          ]
+        },
+        "delay": {
+          "description": "Delay specification is used to inject latency into the request forwarding path. The following example will introduce a 5 second delay in 1 out of every 1000 requests to the \"v1\" version of the \"reviews\" service from all pods with label env: prod",
+          "type": "object",
+          "properties": {
+            "percent": {
+              "description": "Percentage of requests on which the delay will be injected (0-100). Use of integer `percent` value is deprecated. Use the double `percentage` field instead.",
+              "type": "integer",
+              "format": "int32",
+              "deprecated": true
+            },
+            "percentage": {
+              "$ref": "#/definitions/virtualService/definitions/percent"
+            }
+          },
+          "oneOf": [
+            {
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "fixedDelay"
+                    ],
+                    "properties": {
+                      "fixedDelay": {
+                        "description": "Add a fixed delay before forwarding the request. Format: 1h/1m/1s/1ms. MUST be \u003e=1ms.",
+                        "type": "string"
+                      }
+                    }
+                  },
+                  {
+                    "required": [
+                      "exponentialDelay"
+                    ],
+                    "properties": {
+                      "exponentialDelay": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "required": [
+                "fixedDelay"
+              ],
+              "properties": {
+                "fixedDelay": {
+                  "description": "Add a fixed delay before forwarding the request. Format: 1h/1m/1s/1ms. MUST be \u003e=1ms.",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "required": [
+                "exponentialDelay"
+              ],
+              "properties": {
+                "exponentialDelay": {
+                  "type": "string"
+                }
+              }
+            }
+          ]
+        },
+        "abort": {
+          "description": "Abort specification is used to prematurely abort a request with a pre-specified error code. The following example will return an HTTP 400 error code for 1 out of every 1000 requests to the \"ratings\" service \"v1\".",
+          "type": "object",
+          "properties": {
+            "percentage": {
+              "$ref": "#/definitions/virtualService/definitions/percent"
+            }
+          },
+          "oneOf": [
+            {
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "httpStatus"
+                    ],
+                    "properties": {
+                      "httpStatus": {
+                        "description": "HTTP status code to use to abort the Http request.",
+                        "type": "integer",
+                        "format": "int32"
+                      }
+                    }
+                  },
+                  {
+                    "required": [
+                      "grpcStatus"
+                    ],
+                    "properties": {
+                      "grpcStatus": {
+                        "type": "string",
+                        "format": "string"
+                      }
+                    }
+                  },
+                  {
+                    "required": [
+                      "http2Error"
+                    ],
+                    "properties": {
+                      "http2Error": {
+                        "type": "string",
+                        "format": "string"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "required": [
+                "httpStatus"
+              ],
+              "properties": {
+                "httpStatus": {
+                  "description": "HTTP status code to use to abort the Http request.",
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            },
+            {
+              "required": [
+                "grpcStatus"
+              ],
+              "properties": {
+                "grpcStatus": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            },
+            {
+              "required": [
+                "http2Error"
+              ],
+              "properties": {
+                "http2Error": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          ]
+        }, 
+        "portSelector": {
+          "description": "PortSelector specifies the number of a port to be used for matching or selection for final routing.",
+          "type": "object",
+          "properties": {
+            "number": {
+              "description": "Valid port number",
+              "type": "integer"
+            }
+          }
+        },
+        "headerOperations": {
+          "description": "HeaderOperations Describes the header manipulations to apply",
+          "type": "object",
+          "properties": {
+            "set": {
+              "description": "Overwrite the headers specified by key with the given values",
+              "type": "object",
+              "additionalProperties": {
+                "type": "string",
+                "format": "string"
+              }
+            },
+            "add": {
+              "description": "Append the given values to the headers specified by keys (will create a comma-separated list of values)",
+              "type": "object",
+              "additionalProperties": {
+                "type": "string",
+                "format": "string"
+              }
+            },
+            "remove": {
+              "description": "Remove a the specified headers",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "gateway": {
+      "description": "Gateway describes a load balancer operating at the edge of the mesh receiving incoming or outgoing HTTP/TCP connections.",
+      "type": "object",
+      "properties": {
+        "servers": {
+          "description": "A list of server specifications.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gateway/definitions/server"
+          }
+        },
+        "selector": {
+          "description": "One or more labels that indicate a specific set of pods/VMs on which this gateway configuration should be applied. The scope of label search is restricted to the configuration namespace in which the the resource is present. In other words, the Gateway resource must reside in the same namespace as the gateway workload instance.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "format": "string"
+          }
+        }
+      },
+      "definitions": {
+        "server": {
+          "description": "`Server` describes the properties of the proxy on a given load balancer port. For example,",
+          "type": "object",
+          "properties": {
+            "tls": {
+              "$ref": "#/definitions/gateway/definitions/serverTLSSettings"
+            },
+            "port": {
+              "$ref": "#/definitions/gateway/definitions/port"
+            },
+            "bind": {
+              "description": "The ip or the Unix domain socket to which the listener should be bound to. Format: `x.x.x.x` or `unix:///path/to/uds` or `unix://@foobar` (Linux abstract namespace). When using Unix domain sockets, the port number should be 0.",
+              "type": "string",
+              "format": "string"
+            },
+            "hosts": {
+              "description": "One or more hosts exposed by this gateway. While typically applicable to HTTP services, it can also be used for TCP services using TLS with SNI. A host is specified as a `dnsName` with an optional `namespace/` prefix. The `dnsName` should be specified using FQDN format, optionally including a wildcard character in the left-most component (e.g., `prod/*.example.com`). Set the `dnsName` to `*` to select all `VirtualService` hosts from the specified namespace (e.g.,`prod/*`).",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "string"
+              }
+            },
+            "defaultEndpoint": {
+              "description": "The loopback IP endpoint or Unix domain socket to which traffic should be forwarded to by default. Format should be `127.0.0.1:PORT` or `unix:///path/to/socket` or `unix://@foobar` (Linux abstract namespace). NOT IMPLEMENTED. $hide_from_docs",
+              "type": "string",
+              "format": "string"
+            }
+          }
+        },
+        "serverTLSSettings": {
+          "type": "object",
+          "properties": {
+            "mode": {
+              "$ref": "#/definitions/gateway/definitions/TLSmode"
+            },
+            "privateKey": {
+              "description": "REQUIRED if mode is `SIMPLE` or `MUTUAL`. The path to the file holding the server's private key.",
+              "type": "string",
+              "format": "string"
+            },
+            "caCertificates": {
+              "description": "REQUIRED if mode is `MUTUAL`. The path to a file containing certificate authority certificates to use in verifying a presented client side certificate.",
+              "type": "string",
+              "format": "string"
+            },
+            "subjectAltNames": {
+              "description": "A list of alternate names to verify the subject identity in the certificate presented by the client.",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "string"
+              }
+            },
+            "httpsRedirect": {
+              "description": "If set to true, the load balancer will send a 301 redirect for all http connections, asking the clients to use HTTPS.",
+              "type": "boolean"
+            },
+            "serverCertificate": {
+              "description": "REQUIRED if mode is `SIMPLE` or `MUTUAL`. The path to the file holding the server-side TLS certificate to use.",
+              "type": "string",
+              "format": "string"
+            },
+            "credentialName": {
+              "description": "For gateways running on Kubernetes, the name of the secret that holds the TLS certs including the CA certificates. Applicable only on Kubernetes, and only if the dynamic credential fetching feature is enabled in the proxy by setting `ISTIO_META_USER_SDS` metadata variable. The secret (of type `generic`) should contain the following keys and values: `key: \u003cprivateKey\u003e`, `cert: \u003cserverCert\u003e`, `cacert: \u003cCACertificate\u003e`.",
+              "type": "string",
+              "format": "string"
+            },
+            "verifyCertificateSpki": {
+              "description": "An optional list of base64-encoded SHA-256 hashes of the SKPIs of authorized client certificates. Note: When both verify_certificate_hash and verify_certificate_spki are specified, a hash matching either value will result in the certificate being accepted.",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "string"
+              }
+            },
+            "verifyCertificateHash": {
+              "description": "An optional list of hex-encoded SHA-256 hashes of the authorized client certificates. Both simple and colon separated formats are acceptable. Note: When both verify_certificate_hash and verify_certificate_spki are specified, a hash matching either value will result in the certificate being accepted.",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "string"
+              }
+            },
+            "minProtocolVersion": {
+              "$ref": "#/definitions/gateway/definitions/TLSProtocol"
+            },
+            "maxProtocolVersion": {
+              "$ref": "#/definitions/gateway/definitions/TLSProtocol"
+            },
+            "cipherSuites": {
+              "description": "Optional: If specified, only support the specified cipher list. Otherwise default to the default cipher list supported by Envoy.",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "string"
+              }
+            }
+          }          
+        },
+        "port": {
+          "description": "Port describes the properties of a specific port of a service.",
+          "type": "object",
+          "properties": {
+            "number": {
+              "description": "A valid non-negative integer port number.",
+              "type": "integer"
+            },
+            "name": {
+              "description": "Label assigned to the port.",
+              "type": "string",
+              "format": "string"
+            },
+            "protocol": {
+              "description": "The protocol exposed on the port. MUST BE one of HTTP|HTTPS|GRPC|HTTP2|MONGO|TCP|TLS. TLS implies the connection will be routed based on the SNI header to the destination without terminating the TLS connection.",
+              "type": "string",
+              "format": "string"
+            }
+          }
+        },
+        "TLSmode": {
+          "description": "TLS modes enforced by the proxy",
+          "type": "string",
+          "enum": [
+            "PASSTHROUGH",
+            "SIMPLE",
+            "MUTUAL",
+            "AUTO_PASSTHROUGH",
+            "ISTIO_MUTUAL"
+          ]
+        },
+        "TLSProtocol": {
+          "description": "TLS protocol versions.",
+          "type": "string",
+          "enum": [
+            "TLS_AUTO",
+            "TLSV1_0",
+            "TLSV1_1",
+            "TLSV1_2",
+            "TLSV1_3"
+          ]
+        }
+      }
+    }
+  
+  }
+}

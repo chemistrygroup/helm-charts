@@ -3,10 +3,10 @@
 # Declare variables to be passed into your templates.
 trafficManagement:
   external:
-    http:
+    http: 
     - name: service
-      host: example.com
-      port: 80
+     host: example.com
+     port: 80
     https:
     - name: service
       host: example.com
@@ -44,7 +44,6 @@ trafficManagement:
         name: istio-egressgateway
         selector: egressgateway
       port: 443
-
     httpToHttps:
     - name: service
       host: example.com
@@ -54,7 +53,6 @@ trafficManagement:
       port:
         http: 80
         https: 443
-
     tcp:
     - name: service
       host: example.com
@@ -64,18 +62,22 @@ trafficManagement:
       ip: 127.0.0.1
       port: 5432
 
-
   ingress:
     - name: service
       host:
         origin: "*"
         target: service.default.svc.cluster.local
       gateway: istio-ingressgateway
+      port: 80
       paths:
-        sourcePath: 
-          exact: 
-          prefix:
-          regex:
-        targetPath: 
+      - sourcePath: 
+          exact: /api
+        targetPath: /api
 
+  extraDestinationRules: []
 
+  extraVirtualServices: []
+  
+  extraServiceEntries: []
+
+  extraGateways: []
