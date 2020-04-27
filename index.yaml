@@ -1,6 +1,46 @@
 apiVersion: v1
 entries:
+  istio-policies:
+  - apiVersion: v2
+    appVersion: 1.5.1
+    created: "2020-04-27T19:15:11.884232024Z"
+    description: A chart for generating istio policies as egress rules authorization
+      policies, etc..
+    digest: 2cb8e07b375e3e31adb88f3873eddd5567ed412884052902f4467707def41792
+    home: https://github.com/chemistrygroup/helm-charts/istio-policies
+    icon: https://helm.sh/img/helm.svg
+    keywords:
+    - istio, virtual services, destination rules, egress, ingress, policies
+    maintainers:
+    - email: pedro.rocha@mindera.com
+      name: pmrocha-mindera
+    name: istio-policies
+    sources:
+    - https://github.com/chemistrygroup/helm-charts/istio-policies
+    type: application
+    urls:
+    - https://github.com/chemistrygroup/helm-charts/releases/download/istio-policies-1.0.0/istio-policies-1.0.0.tgz
+    version: 1.0.0
   service:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2020-04-27T19:15:11.981646889Z"
+    description: A sample description of the service purpose
+    digest: af44175f60f802f7c136a1830aa084c69ea636bd90029fc0090d1f09c50b02cd
+    home: https://github.com/chemistrygroup/helm-charts/service
+    icon: https://helm.sh/img/helm.svg
+    keywords:
+    - service-name
+    maintainers:
+    - email: pedro.rocha@mindera.com
+      name: pmrocha-mindera
+    name: service
+    sources:
+    - https://github.com/chemistrygroup/helm-charts/service
+    type: application
+    urls:
+    - https://github.com/chemistrygroup/helm-charts/releases/download/service-1.1.0/service-1.1.0.tgz
+    version: 1.1.0
   - apiVersion: v2
     appVersion: 0.0.1
     created: "2020-04-21T14:22:26.563048251Z"
