@@ -1,18 +1,52 @@
 ---
 version: v1  # service version, good practice to label every k8s resource with a version if we want to use istio traffic routing capabilities in the future
 
-nameOverride: "fluentbit"  # replace this by your service name
+nameOverride: "fluent-bit"  # replace this by your service name
 fullnameOverride: ""  # fill if you whish to override the generatedChartFullName
 name: &nameOverride
 
 # Service serviceAccount
 serviceAccount:
   create: true  # if true the chart will create the service account
-  name: fluentbit  # name of the serviceAccount to use or to create
+  name: fluent-bit  # name of the serviceAccount to use or to create
 
 # controls k8s Role Based Access Control settings tied to the serviceAccount
 rbac:
   enabled: true  # enables/disables the creation of Role Based Policies
   type: cluster  # type can be cluster or namespace  ( ClusterRole or Role)
   roleType: Cluster
+
+# specify k8s configmaps to create
+configMaps:
+ - name: "fluent-bit-config"
+   data:
+    fluent-bit.conf: |
+      [SERVICE]
+          Parsers_File  parsers.conf
+      [INPUT]
+          Name              tail
+          Tag               kube.*
+          Path              /var/log/containers/*.log
+          Parser            docker
+          DB                /var/log/flb_kube.db
+          Mem_Buf_Limit     5MB
+          Skip_Long_Lines   On
+          Refresh_Interval  10
+      [FILTER]
+          Name parser
+          Match **
+          Parser nginx
+          Key_Name log
+      [OUTPUT]
+          Name firehose
+          Match **
+          delivery_stream eks-stream
+          region us-west-2
+    parsers.conf: |
+      [PARSER]
+          Name   nginx
+          Format regex
+          Regex ^(?<remote>[^ ]*) (?<host>[^ ]*) (?<user>[^ ]*) \[(?<time>[^\]]*)\] "(?<method>\S+)(?: +(?<path>[^\"]*?)(?: +\S*)?)?" (?<code>[^ ]*) (?<size>[^ ]*)(?: "(?<referer>[^\"]*)" "(?<agent>[^\"]*)")? \"-\"$
+          Time_Key time
+          Time_Format %d/%b/%Y:%H:%M:%S %z
 
