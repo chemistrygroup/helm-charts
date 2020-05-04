@@ -1,0 +1,18 @@
+---
+version: v1  # service version, good practice to label every k8s resource with a version if we want to use istio traffic routing capabilities in the future
+
+nameOverride: "fluentbit"  # replace this by your service name
+fullnameOverride: ""  # fill if you whish to override the generatedChartFullName
+name: &nameOverride
+
+# Service serviceAccount
+serviceAccount:
+  create: true  # if true the chart will create the service account
+  name: fluentbit  # name of the serviceAccount to use or to create
+
+# controls k8s Role Based Access Control settings tied to the serviceAccount
+rbac:
+  enabled: true  # enables/disables the creation of Role Based Policies
+  type: cluster  # type can be cluster or namespace  ( ClusterRole or Role)
+  roleType: Cluster
+
