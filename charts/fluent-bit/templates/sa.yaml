@@ -1,0 +1,16 @@
+---
+{{- $scope := . }}
+{{- $values := .Values }}
+{{- $release := .Release }}
+{{- $chart := .Chart }}
+{{- if and $values.serviceAccount.name $values.serviceAccount.create }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "chart.serviceAccountName" $scope }}
+  namespace: {{ $release.Namespace }}
+  annotations:
+{{ toYaml $values.serviceAccount.annotations | indent 4 }}
+  labels:
+{{ include "chart.labels" $scope | indent 4 }}
+{{- end }}

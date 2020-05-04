@@ -8,14 +8,16 @@ name: &nameOverride
 # Controls if prometheus scrapping should be enabled for this service
 prometheus:
   enabled: true  # enables/disable scraping of prometheus metrics
-  path: '/api/v1/metrics/prometheus'  # path for scrapping prometheus metrics
+  path: "/api/v1/metrics/prometheus"  # path for scrapping prometheus metrics
   port: 2020  # port were the metrics web server is running
-  scheme: 'tcp'  # tcp connection scheme
+  scheme: "tcp"  # tcp connection scheme
 
 # Service serviceAccount
 serviceAccount:
   create: true  # if true the chart will create the service account
   name: fluent-bit  # name of the serviceAccount to use or to create
+  annotations: {}
+    # eks.amazonaws.com/role-arn: arn:aws:iam::AWS_ACCOUNT_ID:role/IAM_ROLE_NAME
 
 # controls k8s Role Based Access Control settings tied to the serviceAccount
 rbac:
