@@ -5,6 +5,13 @@ nameOverride: "fluent-bit"  # replace this by your service name
 fullnameOverride: ""  # fill if you whish to override the generatedChartFullName
 name: &nameOverride
 
+# Controls if prometheus scrapping should be enabled for this service
+prometheus:
+  enabled: true  # enables/disable scraping of prometheus metrics
+  path: '/api/v1/metrics/prometheus'  # path for scrapping prometheus metrics
+  port: 2020  # port were the metrics web server is running
+  scheme: 'tcp'  # tcp connection scheme
+
 # Service serviceAccount
 serviceAccount:
   create: true  # if true the chart will create the service account
@@ -14,7 +21,43 @@ serviceAccount:
 rbac:
   enabled: true  # enables/disables the creation of Role Based Policies
   type: cluster  # type can be cluster or namespace  ( ClusterRole or Role)
-  roleType: Cluster
+
+# pod affinity policies
+affinity: {}
+
+# node selector
+nodeSelector: {}
+
+# tolerations
+tolerations: []
+
+# service image
+image:
+  registry: docker.io  # container registry url
+  repository: amazon/aws-for-fluent-bit # container registry repo name
+  tag: 2.3.0  # image tag
+  pullPolicy: Always  # kubernetes container image pull policy
+
+# limits the container resources
+resources:
+  # resources that the container requires to boot
+  requests:
+    memory: 500m
+    cpu: 100Mi
+  # limit of resources that a container may consume
+  limits:
+    memory: 500Mi
+
+podSecurityContext: {}
+# fsGroup: 2000
+
+securityContext: {}
+# capabilities:
+#   drop:
+#   - ALL
+# readOnlyRootFilesystem: true
+# runAsNonRoot: true
+# runAsUser: 1000
 
 # specify k8s configmaps to create
 configMaps:

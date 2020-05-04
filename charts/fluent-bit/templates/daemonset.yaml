@@ -1,0 +1,90 @@
+---
+{{- $scope := . }}
+{{- $values := .Values }}
+{{- $release := .Release }}
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ include "chart.name" $scope }}
+  namespace: {{ $release.Namespace }}
+  labels:
+{{ include "chart.labels" $scope | indent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "chart.name" $scope }}
+      release: {{ $release.Name }}
+      namespace: {{ $release.Namespace }}
+      version: {{ include "chart.appVersion" $scope }}
+  replicas: {{ default $values.replicaCount 1 }}
+  strategy:
+    type: "RollingUpdate"
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: {{ $values.prometheus.enabled | default "true" }}
+        prometheus.io/path: {{ $values.prometheus.path | default "/metrics" }}
+        prometheus.io/port: {{ $values.prometheus.port | default "8082" }}
+        prometheus.io/scheme: {{ $values.prometheus.scheme | default "http" }}
+      labels:
+        app: {{ include "chart.name" $scope }}
+        release: {{ $release.Name }}
+        namespace: {{ $release.Namespace }}
+        version: {{ include "chart.appVersion" $scope }}
+    spec:
+      serviceAccountName: {{ include "chart.serviceAccountName" $scope }}
+      securityContext:
+{{ toYaml $values.podSecurityContext | indent 8 }}
+      containers:
+        - name: service
+          securityContext:
+{{ toYaml $values.securityContext | indent 12 }}
+          env:
+          image: {{ printf "%s/%s:%s" $values.image.registry $values.image.repository $values.image.tag }}
+          imagePullPolicy: {{ default $values.image.pullPolicy "IfNotPresent" }}
+          ports:
+  {{- if and $values.prometheus.enabled }}
+            - name: metrics
+              containerPort: 2020
+              protocol: TCP
+  {{- end }}
+  {{- if $values.resources }}
+          resources:
+{{ toYaml $values.resources | indent 12 }}
+  {{- end }}
+          volumeMounts:
+          - name: varlog
+            mountPath: /var/log
+          - name: varlibdockercontainers
+            mountPath: /var/lib/docker/containers
+            readOnly: true
+          - name: fluent-bit-config
+            mountPath: /fluent-bit/etc/
+          - name: mnt
+            mountPath: /mnt
+            readOnly: true
+{{- if $values.affinity }}
+      affinity:
+{{ toYaml $values.affinity | indent 8 }}
+{{- end }}
+{{- if $values.nodeSelector }}
+      nodeSelector:
+{{ toYaml $values.nodeSelector | indent 8 }}
+{{- end }}
+{{- if $values.tolerations }}
+      tolerations:
+{{ toYaml $values.tolerations | indent 8 }}
+{{- end }}
+      volumes:
+      - name: varlog
+        hostPath:
+          path: /var/log
+      - name: varlibdockercontainers
+        hostPath:
+          path: /var/lib/docker/containers
+      - name: fluent-bit-config
+        configMap:
+          name: fluent-bit-config
+      - name: mnt
+        hostPath:
+          path: /mnt
