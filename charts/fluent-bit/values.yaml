@@ -34,7 +34,7 @@ tolerations: []
 # service image
 image:
   registry: docker.io  # container registry url
-  repository: amazon/aws-for-fluent-bit # container registry repo name
+  repository: amazon/aws-for-fluent-bit  # container registry repo name
   tag: 2.3.0  # image tag
   pullPolicy: Always  # kubernetes container image pull policy
 
@@ -61,35 +61,36 @@ securityContext: {}
 
 # specify k8s configmaps to create
 configMaps:
- - name: "fluent-bit-config"
-   data:
-    fluent-bit.conf: |
-      [SERVICE]
-          Parsers_File  parsers.conf
-      [INPUT]
-          Name              tail
-          Tag               kube.*
-          Path              /var/log/containers/*.log
-          Parser            docker
-          DB                /var/log/flb_kube.db
-          Mem_Buf_Limit     5MB
-          Skip_Long_Lines   On
-          Refresh_Interval  10
-      [FILTER]
-          Name parser
-          Match **
-          Parser nginx
-          Key_Name log
-      [OUTPUT]
-          Name firehose
-          Match **
-          delivery_stream eks-stream
-          region us-west-2
-    parsers.conf: |
-      [PARSER]
-          Name   nginx
-          Format regex
-          Regex ^(?<remote>[^ ]*) (?<host>[^ ]*) (?<user>[^ ]*) \[(?<time>[^\]]*)\] "(?<method>\S+)(?: +(?<path>[^\"]*?)(?: +\S*)?)?" (?<code>[^ ]*) (?<size>[^ ]*)(?: "(?<referer>[^\"]*)" "(?<agent>[^\"]*)")? \"-\"$
-          Time_Key time
-          Time_Format %d/%b/%Y:%H:%M:%S %z
+  - name: "fluent-bit-config"  # https://aws.amazon.com/blogs/containers/kubernetes-logging-powered-by-aws-for-fluent-bit/
+    data:
+      fluent-bit.conf: |
+        [SERVICE]
+            Parsers_File /fluent-bit/parsers/parsers.conf
 
+        [INPUT]
+            Name              tail
+            Tag               kube.*
+            Path              /var/log/containers/*.log
+            DB                /var/log/flb_kube.db
+            Parser            docker
+            Docker_Mode       On
+            Mem_Buf_Limit     5MB
+            Skip_Long_Lines   On
+            Refresh_Interval  10
+
+        [FILTER]
+            Name                kubernetes
+            Match               kube.*
+            Kube_URL            https://kubernetes.default.svc.cluster.local:443
+            Merge_Log           On
+            Merge_Log_Key       data
+            K8S-Logging.Parser  On
+            K8S-Logging.Exclude On
+
+        [OUTPUT]
+            Name cloudwatch
+            Match   **
+            region us-east-2
+            log_group_name fluentbit-cloudwatch-example
+            log_stream_prefix fluentbit-
+            auto_create_group true
