@@ -1,0 +1,19 @@
+---
+apiVersion: v2
+name: fluent-bit-cloudwatch
+version: 1.0.0
+description: Fluent-bit with cloudwatch plugin
+type: application
+keywords:
+  - logging
+  - monitoring
+  - fluent
+  - fluentd
+home: https://github.com/chemistrygroup/helm-charts/fluent-bit
+sources:
+  - https://github.com/chemistrygroup/helm-charts/fluent-bit
+appVersion: "2.3.0"
+icon: https://helm.sh/img/helm.svg
+maintainers:
+  - email: ricardo.moreira@mindera.com
+    name: rddmoreira
