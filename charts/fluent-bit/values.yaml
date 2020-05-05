@@ -10,7 +10,7 @@ prometheus:
   enabled: true  # enables/disable scraping of prometheus metrics
   path: "/api/v1/metrics/prometheus"  # path for scrapping prometheus metrics
   port: 2020  # port were the metrics web server is running
-  scheme: "tcp"  # tcp connection scheme
+  scheme: "http"  # tcp connection scheme
 
 # Service serviceAccount
 serviceAccount:
@@ -41,14 +41,15 @@ image:
   pullPolicy: Always  # kubernetes container image pull policy
 
 # limits the container resources
+# Values from: https://github.com/fluent/fluent-bit-kubernetes-logging/blob/master/fluent-bit-daemonset-kafka-rest.yml
 resources:
   # resources that the container requires to boot
   requests:
-    memory: 500m
+    memory: 100m
     cpu: 100Mi
   # limit of resources that a container may consume
   limits:
-    memory: 500Mi
+    memory: 100Mi
 
 podSecurityContext: {}
 # fsGroup: 2000
@@ -116,7 +117,7 @@ configMaps:
             region us-east-2
             log_group_name fluentbit-cloudwatch-example
             log_stream_prefix fluentbit-
-            auto_create_group true
+            auto_create_group false
 
       parsers.conf: |
         [PARSER]
