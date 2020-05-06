@@ -3,6 +3,28 @@ entries:
   fluent-bit-cloudwatch:
   - apiVersion: v2
     appVersion: 2.3.0
+    created: "2020-05-06T23:21:24.546901537Z"
+    description: Fluent-bit with cloudwatch plugin
+    digest: 46c016e57a2414602186fdb7f8a4d8d587bfb0106394131b13a3b2cb055d6c99
+    home: https://github.com/chemistrygroup/helm-charts/fluent-bit
+    icon: https://helm.sh/img/helm.svg
+    keywords:
+    - logging
+    - monitoring
+    - fluent
+    - fluentd
+    maintainers:
+    - email: ricardo.moreira@mindera.com
+      name: rddmoreira
+    name: fluent-bit-cloudwatch
+    sources:
+    - https://github.com/chemistrygroup/helm-charts/fluent-bit
+    type: application
+    urls:
+    - https://github.com/chemistrygroup/helm-charts/releases/download/fluent-bit-cloudwatch-1.0.2/fluent-bit-cloudwatch-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 2.3.0
     created: "2020-05-06T11:51:44.636925757Z"
     description: Fluent-bit with cloudwatch plugin
     digest: be8ef19b2118b18a8ca566bc022c1677722232b9b317025ab395f716941c33b0
@@ -48,6 +70,26 @@ entries:
   istio-policies:
   - apiVersion: v2
     appVersion: 1.5.1
+    created: "2020-05-06T23:21:24.663629907Z"
+    description: A chart for generating istio policies as egress rules authorization
+      policies, etc..
+    digest: ec353f72c12a1369793347bb495a874c85472521aeeaf5ae7f58b854dc3a4279
+    home: https://github.com/chemistrygroup/helm-charts/istio-policies
+    icon: https://helm.sh/img/helm.svg
+    keywords:
+    - istio, virtual services, destination rules, egress, ingress, policies
+    maintainers:
+    - email: pedro.rocha@mindera.com
+      name: pmrocha-mindera
+    name: istio-policies
+    sources:
+    - https://github.com/chemistrygroup/helm-charts/istio-policies
+    type: application
+    urls:
+    - https://github.com/chemistrygroup/helm-charts/releases/download/istio-policies-1.1.0/istio-policies-1.1.0.tgz
+    version: 1.1.0
+  - apiVersion: v2
+    appVersion: 1.5.1
     created: "2020-04-27T19:15:11.884232024Z"
     description: A chart for generating istio policies as egress rules authorization
       policies, etc..
@@ -67,6 +109,30 @@ entries:
     - https://github.com/chemistrygroup/helm-charts/releases/download/istio-policies-1.0.0/istio-policies-1.0.0.tgz
     version: 1.0.0
   service:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2020-05-06T23:21:24.756422904Z"
+    dependencies:
+    - alias: istio
+      name: istio-policies
+      repository: https://chemistrygroup.github.io/helm-charts
+      version: 1.0.0
+    description: A sample description of the service purpose
+    digest: 4e0f6866a1d3530490c8c029f8036ac3426c2c3e10e0ea1c89788a7c82a31f78
+    home: https://github.com/chemistrygroup/helm-charts/service
+    icon: https://helm.sh/img/helm.svg
+    keywords:
+    - service-name
+    maintainers:
+    - email: pedro.rocha@mindera.com
+      name: pmrocha-mindera
+    name: service
+    sources:
+    - https://github.com/chemistrygroup/helm-charts/service
+    type: application
+    urls:
+    - https://github.com/chemistrygroup/helm-charts/releases/download/service-1.2.4/service-1.2.4.tgz
+    version: 1.2.4
   - apiVersion: v2
     appVersion: 0.0.1
     created: "2020-05-06T22:46:10.037090814Z"
