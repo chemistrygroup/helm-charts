@@ -55,7 +55,8 @@ chart and their default values.
 | `prometheus.port`                                 | `8082`                                                                        | Metrics webserver running port
 | `prometheus.scheme`                               | `http`                                                                        | Metrics webserver protocol/scheme
 | `serviceAccount.create`                           | `true`                                                                        | If `true`, create a new service account
-| `serviceAccount.name`                             | `{nameOverride}`                                                              | Service account to be used
+| `serviceAccount.name`                             | `{nameOverride}`        | Service account to be used
+| `serviceAccount.annotations`                      | `{}`                    | Service account annotations to append
 | `rbac.enabled`                                    | `true`                                                                        | If `true`, create and use RBAC resources
 | `rbac.type`                                       | `cluster`                                                                     | `cluster` creates cluster level role's , `namespace` create's namespace level roles
 | `affinity`                                        | `{}`                                                                          | Affinity properties for the deployment

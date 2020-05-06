@@ -11,4 +11,8 @@ metadata:
   namespace: {{ $release.Namespace }}
   labels:
 {{ include "chart.labels" $scope | indent 4 }}
+  {{- if $values.serviceAccount.annotations }}
+  annotations:
+{{ toYaml $values.serviceAccount.annotations | indent 4 }}
+  {{- end }}
 {{- end }}
