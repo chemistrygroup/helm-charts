@@ -41,6 +41,12 @@ image:
   tag: 1.0.0  # image tag
   pullPolicy: IfNotPresent  # kubernetes container image pull policy
 
+#  command to execute inside pod
+# command:
+#   name: some.command
+#   args:
+#     - args1
+
 # limits the container resources
 resources:
   # resources that the container requires to boot
