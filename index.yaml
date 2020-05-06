@@ -69,6 +69,30 @@ entries:
   service:
   - apiVersion: v2
     appVersion: 0.0.1
+    created: "2020-05-06T19:22:48.319434568Z"
+    dependencies:
+    - alias: istio
+      name: istio-policies
+      repository: https://chemistrygroup.github.io/helm-charts
+      version: 1.0.0
+    description: A sample description of the service purpose
+    digest: aef7ee899744d321fdc6795eed08ef56ab782a399d2dbbc8abc866b2054f05f5
+    home: https://github.com/chemistrygroup/helm-charts/service
+    icon: https://helm.sh/img/helm.svg
+    keywords:
+    - service-name
+    maintainers:
+    - email: pedro.rocha@mindera.com
+      name: pmrocha-mindera
+    name: service
+    sources:
+    - https://github.com/chemistrygroup/helm-charts/service
+    type: application
+    urls:
+    - https://github.com/chemistrygroup/helm-charts/releases/download/service-1.2.1/service-1.2.1.tgz
+    version: 1.2.1
+  - apiVersion: v2
+    appVersion: 0.0.1
     created: "2020-05-06T17:53:03.507486372Z"
     dependencies:
     - alias: istio
