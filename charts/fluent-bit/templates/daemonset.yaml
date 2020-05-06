@@ -43,7 +43,7 @@ spec:
 {{ toYaml $values.securityContext | indent 12 }}
           env:
           image: {{ printf "%s/%s:%s" $values.image.registry $values.image.repository $values.image.tag }}
-          imagePullPolicy: {{ default $values.image.pullPolicy "IfNotPresent" }}
+          imagePullPolicy: {{ default "IfNotPresent" $values.image.pullPolicy }}
           ports:
   {{- if and $values.prometheus.enabled }}
             - name: metrics

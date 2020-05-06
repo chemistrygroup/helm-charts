@@ -19,7 +19,7 @@ spec:
   hosts:
   - {{ $service.host }}
   ports:
-  - number: {{ default $service.port 80 }}
+  - number: {{ default 80 $service.port }}
     name: http-port
     protocol: HTTP
   resolution: DNS
@@ -40,7 +40,7 @@ spec:
   hosts:
   - {{ $service.host }}
   ports:
-  - number: {{ default $service.port 443 }}
+  - number: {{ default 443 $service.port }}
     name: https-port
     protocol: HTTPS
   resolution: DNS
@@ -61,10 +61,10 @@ spec:
   hosts:
   - {{ $service.host }}
   ports:
-  - number: {{ default $service.port.http 80 }}
+  - number: {{ default 80 $service.port.http }}
     name: http-port
     protocol: HTTP
-  - number: {{ default $service.port.https 443 }}
+  - number: {{ default 443 $service.port.https }}
     name: https-port
     protocol: HTTPS
   resolution: DNS
@@ -84,10 +84,10 @@ spec:
   hosts:
   - {{ $service.host }}
   ports:
-  - number: {{ default $service.port.http 80 }}
+  - number: {{ default 80 $service.port.http }}
     name: http-port
     protocol: HTTP
-  - number: {{ default $service.port.https 443 }}
+  - number: {{ default 443 $service.port.https }}
     name: https-port
     protocol: HTTPS
   resolution: DNS
@@ -132,7 +132,7 @@ spec:
   hosts:
   - {{ $service.host }}
   ports:
-  - number: {{ default $service.port 80 }}
+  - number: {{ default 80 $service.port }}
     name: http-port
     protocol: HTTP
   resolution: DNS
@@ -152,7 +152,7 @@ spec:
   hosts:
   - {{ $service.host }}
   ports:
-  - number: {{ default $service.port 443 }}
+  - number: {{ default 443 $service.port }}
     name: tls-port
     protocol: TLS
   resolution: DNS
@@ -172,10 +172,10 @@ spec:
   hosts:
   - {{ $service.host }}
   ports:
-  - number: {{ default $service.port.http 80 }}
+  - number: {{ default 80 $service.port.http }}
     name: http-port
     protocol: HTTP
-  - number: {{ default $service.port.https 443 }}
+  - number: {{ default 443 $service.port.https }}
     name: https-port
     protocol: HTTPS
   resolution: DNS

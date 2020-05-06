@@ -16,7 +16,7 @@ spec:
       release: {{ $release.Name }}
       namespace: {{ $release.Namespace }}
       version: {{ include "chart.appVersion" $scope }}
-  replicas: {{ default $values.replicaCount 1 }}
+  replicas: {{ default 1 $values.replicaCount }}
   strategy:
     type: "RollingUpdate"
     rollingUpdate:
@@ -26,9 +26,9 @@ spec:
     metadata:
       annotations:
         prometheus.io/scrape: {{ default (printf "'%s'" $values.prometheus.enabled) "'true'" }}
-        prometheus.io/path: {{ default $values.prometheus.path "/metrics" }}
-        prometheus.io/port: {{ default (printf "'%s'" $values.prometheus.port) "'8082'" }}
-        prometheus.io/scheme: {{ default $values.prometheus.scheme "http" }}
+        prometheus.io/path: {{ default "/metrics" $values.prometheus.path }}
+        prometheus.io/port: {{ default "'8082'" (printf "'%s'" $values.prometheus.port)  }}
+        prometheus.io/scheme: {{ default "http" $values.prometheus.scheme }}
       labels:
         app: {{ include "chart.name" $scope }}
         release: {{ $release.Name }}
@@ -47,7 +47,7 @@ spec:
 {{ toYaml $values.extraEnvs | indent 12 }}
   {{- end }}
           image: {{ printf "%s/%s:%s" $values.image.registry $values.image.repository $values.image.tag }}
-          imagePullPolicy: {{ default $values.image.pullPolicy "IfNotPresent" }}
+          imagePullPolicy: {{ default "IfNotPresent" $values.image.pullPolicy }}
   {{- if $values.command }}
           command:
             - {{ $values.command.name | quote }}

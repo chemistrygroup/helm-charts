@@ -24,7 +24,7 @@ spec:
         simple: ROUND_ROBIN
       portLevelSettings:
       - port:
-          number: {{ default $service.port.https 443 }}
+          number: {{ default 443 $service.port.https }}
         tls:
           mode: SIMPLE
       {{- end }}
@@ -43,7 +43,7 @@ metadata:
   labels:
 {{ include "chart.labels" $scope | indent 4 }}
 spec:
-  host: {{ default $service.gateway.name "istio-egressgateway" }}.istio-system.svc.cluster.local
+  host: {{ default "istio-egressgateway" $service.gateway.name }}.istio-system.svc.cluster.local
   subsets:
   - name: {{ $service.name }}-subset
       {{- end }}
@@ -59,7 +59,7 @@ metadata:
   labels:
 {{ include "chart.labels" $scope | indent 4 }}
 spec:
-  host: {{ default $service.gateway.name "istio-egressgateway" }}.istio-system.svc.cluster.local
+  host: {{ default "istio-egressgateway" $service.gateway.name }}.istio-system.svc.cluster.local
   subsets:
   - name: {{ $service.name }}-subset
       {{- end }}
@@ -75,7 +75,7 @@ metadata:
   labels:
 {{ include "chart.labels" $scope | indent 4 }}
 spec:
-  host: {{ default $service.gateway.name "istio-egressgateway" }}.istio-system.svc.cluster.local
+  host: {{ default "istio-egressgateway" $service.gateway.name }}.istio-system.svc.cluster.local
   subsets:
   - name: {{ $service.name }}-subset
 ---
@@ -109,7 +109,7 @@ metadata:
   labels:
 {{ include "chart.labels" $scope | indent 4 }}
 spec:
-  host: {{ default $service.gateway.name "istio-egressgateway" }}.istio-system.svc.cluster.local
+  host: {{ default "istio-egressgateway" $service.gateway.name }}.istio-system.svc.cluster.local
   subsets:
   - name: {{ $service.name }}-sub
     trafficPolicy:

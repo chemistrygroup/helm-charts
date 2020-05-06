@@ -102,6 +102,10 @@
                 "type": "String",
                 "description": "Service/Entry name"
               },
+              "cors": {
+                "type": "boolean",
+                "description": "Append CORS Headers"
+              },
               "host": {
                 "type": "object",
                 "description": "Service hostname settings",

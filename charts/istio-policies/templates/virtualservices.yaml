@@ -20,14 +20,14 @@ spec:
   - {{ $service.host }}
   tls:
   - match:
-    - port: {{ default $service.port.https 443 }}
+    - port: {{ default 443 $service.port.https }}
       sni_hosts:
       - {{ $service.host }}
     route:
     - destination:
         host: {{ $service.host }}
         port:
-          number: {{ default $service.port.https 443 }}
+          number: {{ default 443 $service.port.https }}
       weight: 100
       {{- end }}
     {{- end }}
@@ -46,13 +46,13 @@ spec:
   - {{ $service.host }}
   tls:
   - match:
-    - port: {{ default $service.port.http 80 }}
+    - port: {{ default 80 $service.port.http }}
     route:
     - destination:
         host: {{ $service.host }}
         subset: {{ $service.name }}-tls-origination
         port:
-          number: {{ default $service.port.https 443 }}
+          number: {{ default 443 $service.port.https }}
       {{- end }}
     {{- end }}
   {{- end }}
@@ -72,29 +72,29 @@ spec:
   hosts:
   - {{ $service.host }}
   gateways:
-  - {{ default $service.gateway.name "istio-egressgateway" }}
+  - istio-system/{{ default "istio-egressgateway" $service.gateway.name }}
   - mesh
   http:
   - match:
     - gateways:
       - mesh
-      port: {{ default $service.port 80 }}
+      port: {{ default 80 $service.port }}
     route:
     - destination:
-        host: {{ default $service.gateway.name "istio-egressgateway" }}.istio-system.svc.cluster.local
+        host: {{ default "istio-egressgateway" $service.gateway.name }}.istio-system.svc.cluster.local
         subset: {{ $service.name }}-subset
         port:
-          number: {{ default $service.port 80 }}
+          number: {{ default 80 $service.port }}
       weight: 100
   - match:
     - gateways:
-      - {{ default $service.gateway.name "istio-egressgateway" }}
-      port: {{ default $service.port 80 }}
+      - istio-system/{{ default "istio-egressgateway" $service.gateway.name }}
+      port: {{ default 80 $service.port }}
     route:
     - destination:
         host: {{ $service.host }}
         port:
-          number: {{ default $service.port 80 }}
+          number: {{ default 80 $service.port }}
       weight: 100
       {{- end }}
     {{- end }}
@@ -113,31 +113,31 @@ spec:
   - {{ $service.host }}
   gateways:
   - mesh
-  - {{ default $service.gateway.name "istio-egressgateway" }}
+  - istio-system/{{ default "istio-egressgateway" $service.gateway.name }}
   tls:
   - match:
     - gateways:
       - mesh
-      port: {{ default $service.port 443 }}
+      port: {{ default 443 $service.port }}
       sni_hosts:
       - {{ $service.host }}
     route:
     - destination:
-        host: {{ default $service.gateway.name "istio-egressgateway" }}.istio-system.svc.cluster.local
+        host: {{ default "istio-egressgateway" $service.gateway.name }}.istio-system.svc.cluster.local
         subset: {{ $service.name }}-subset
         port:
-          number: {{ default $service.port 443 }}
+          number: {{ default 443 $service.port }}
   - match:
     - gateways:
-      - {{ default $service.gateway.name "istio-egressgateway" }}
-      port: {{ default $service.port 443 }}
+      - istio-system/{{ default "istio-egressgateway" $service.gateway.name }}
+      port: {{ default 443 $service.port }}
       sni_hosts:
         - {{ $service.host }}
     route:
     - destination:
         host: {{ $service.host }}
         port:
-          number: {{ default $service.port 443 }}
+          number: {{ default 443 $service.port }}
       weight: 100
       {{- end }}
     {{- end }}
@@ -155,29 +155,29 @@ spec:
   hosts:
   - {{ $service.host }}
   gateways:
-  - {{ default $service.gateway.name "istio-egressgateway" }}
+  - istio-system/{{ default "istio-egressgateway" $service.gateway.name }}
   - mesh
   http:
   - match:
     - gateways:
       - mesh
-      port: {{ default $service.port.http 80 }}
+      port: {{ default 80 $service.port.http }}
     route:
     - destination:
-        host: {{ default $service.gateway.name "istio-egressgateway" }}.istio-system.svc.cluster.local
+        host: {{ default "istio-egressgateway" $service.gateway.name }}.istio-system.svc.cluster.local
         subset: {{ $service.name }}-subset
         port:
-          number: {{ default $service.port.http 80 }}
+          number: {{ default 80 $service.port.http }}
       weight: 100
   - match:
     - gateways:
-      - {{ default $service.gateway.name "istio-egressgateway" }}
-      port: {{ default $service.port.http 80 }}
+      - istio-system/{{ default "istio-egressgateway" $service.gateway.name }}
+      port: {{ default 80 $service.port.http }}
     route:
     - destination:
         host: {{ $service.host }}
         port:
-          number: {{ default $service.port.https 443 }}
+          number: {{ default 443 $service.port.https }}
       weight: 100
       {{- end }}
     {{- end }}
@@ -196,7 +196,7 @@ spec:
   - {{ $service.host }}
   gateways:
   - mesh
-  - {{ default $service.gateway.name "istio-egressgateway" }}
+  - istio-system/{{ default "istio-egressgateway" $service.gateway.name }}
   tcp:
   - match:
     - gateways:
@@ -206,13 +206,13 @@ spec:
       port: {{ $service.port }}
     route:
     - destination:
-        host: {{ default $service.gateway.name "istio-egressgateway" }}.istio-system.svc.cluster.local
+        host: {{ default "istio-egressgateway" $service.gateway.name  }}.istio-system.svc.cluster.local
         subset: {{ $service.name }}-subset
         port:
           number: {{ $service.port }}
   - match:
     - gateways:
-      - {{ default $service.gateway.name "istio-egressgateway" }}
+      - istio-system/{{ default "istio-egressgateway" $service.gateway.name }}
       port: {{ $service.port }}
     route:
     - destination:
@@ -238,7 +238,7 @@ spec:
   hosts:
   - {{ $service.host.origin | quote }}
   gateways:
-  - {{ $service.gateway }}
+  - istio-system/{{ $service.gateway }}
   http:
       {{- range $path := $service.paths }}
   - match:
@@ -251,6 +251,22 @@ spec:
         port:
           number: {{ $service.port }}
         host: {{ $service.host.target }}
+        {{- if $service.cors }}
+    cors:
+      allowOrigin: 
+      - "*"
+      allowMethods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - HEAD
+      - OPTIONS
+      allowHeaders:
+      - Content-Type
+      - Authorization
+      allowCredentials: true
+        {{- end }}
       {{- end }}
     {{- end }}
   {{- end }}

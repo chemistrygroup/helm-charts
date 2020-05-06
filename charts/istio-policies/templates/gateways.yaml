@@ -17,7 +17,7 @@ metadata:
 {{ include "chart.labels" $scope | indent 4 }}
 spec:
   selector:
-    istio: {{ default $service.gateway.selector "egressgateway" }}
+    istio: {{ default "egressgateway" $service.gateway.selector }}
   servers:
   - port:
       number: {{ $service.port }}
@@ -39,7 +39,7 @@ metadata:
 {{ include "chart.labels" $scope | indent 4 }}
 spec:
   selector:
-    istio: {{ default $service.gateway.selector "egressgateway" }}
+    istio: {{ default "egressgateway" $service.gateway.selector }}
   servers:
   - port:
       number: {{ $service.port }}
@@ -61,7 +61,7 @@ metadata:
 {{ include "chart.labels" $scope | indent 4 }}
 spec:
   selector:
-    istio: {{ default $service.gateway.selector "egressgateway" }}
+    istio: {{ default "egressgateway" $service.gateway.selector }}
   servers:
   - port:
       number: {{ $service.port.http }}
@@ -83,7 +83,7 @@ metadata:
 {{ include "chart.labels" $scope | indent 4 }}
 spec:
   selector:
-    istio: {{ default $service.gateway.selector "egressgateway" }}
+    istio: {{ default "egressgateway" $service.gateway.selector }}
   servers:
   - port:
       number: {{ $service.port }}

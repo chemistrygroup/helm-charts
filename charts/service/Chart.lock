@@ -1,0 +1,6 @@
+dependencies:
+- name: istio-policies
+  repository: https://chemistrygroup.github.io/helm-charts
+  version: 1.0.0
+digest: sha256:6e837906aaae7c2ca65044756e36c20baa369c2d9287df92ff7186c0f551ae8e
+generated: "2020-05-06T23:18:28.7848544Z"
