@@ -1,7 +1,7 @@
 ---
 apiVersion: v2
 name: fluent-bit-cloudwatch
-version: 1.0.0
+version: 1.0.1
 description: Fluent-bit with cloudwatch plugin
 type: application
 keywords:
