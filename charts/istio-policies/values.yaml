@@ -1,55 +1,55 @@
 trafficManagement:
-  # external:
-  #   http:
-  #   - name: servicea
-  #     host: example.com
-  #     port: 80
-  #   https:
-  #   - name: servicex
-  #     host: example.com
-  #     port: 443
-  #   httpAndHttps:
-  #   - name: services
-  #     host: example.com
-  #     port:
-  #       http: 80
-  #       https: 443
-  #   httpToHttps:
-  #   - name: servicee
-  #     host: example.com
-  #     port:
-  #       http: 80
-  #       https: 443
-  #   tcp:
-  #   - name: servicer
-  #     host: example.com
-  #     ip: 127.0.0.1
-  #     port: 5432
+  external:
+    http:
+    - name: servicea
+      host: example.com
+      port: 80
+    https:
+    - name: servicex
+      host: example.com
+      port: 443
+    httpAndHttps:
+    - name: services
+      host: example.com
+      port:
+        http: 80
+        https: 443
+    httpToHttps:
+    - name: servicee
+      host: example.com
+      port:
+        http: 80
+        https: 443
+    tcp:
+    - name: servicer
+      host: example.com
+      ip: 127.0.0.1
+      port: 5432
 
   egress:
-    # http:
-    # - name: servicee
-    #   host: example.com
-    #   gateway:
-    #     name: istio-egressgateway
-    #     selector: egressgateway
-    #   port: 80
-    # https:
-    # - name: servicew
-    #   host: example.com
-    #   gateway:
-    #     name: istio-egressgateway
-    #     selector: egressgateway
-    #   port: 443
-    # httpToHttps:
-    # - name: serviceq
-    #   host: example.com
-    #   gateway:
-    #     name: istio-egressgateway
-    #     selector: egressgateway
-    #   port:
-    #     http: 80
-    #     https: 443
+    http:
+    - name: servicee
+      host: example.com
+      gateway:
+        name: istio-egressgateway
+        selector: egressgateway
+      port: 80
+    https:
+    - name: servicew
+      host: example.com
+      gateway:
+        name: istio-egressgateway
+        selector: egressgateway
+      port: 443
+    httpToHttps:
+    - name: serviceq
+      host: example.com
+      gateway:
+        name: istio-egressgateway
+        selector: egressgateway
+      port:
+        http: 80
+        https: 443
     tcp:
     - name: servicer
       host: example.com
@@ -59,18 +59,18 @@ trafficManagement:
       ip: 127.0.0.1
       port: 5432
 
-  ingress: []
-    # - name: serviceh
-    #   cors: true
-    #   host:
-    #     origin: "*"
-    #     target: service.default.svc.cluster.local
-    #   gateway: istio-ingressgateway
-    #   port: 80
-    #   paths:
-    #   - sourcePath:
-    #       exact: /api
-    #     targetPath: /api
+  ingress:
+    - name: serviceh
+      cors: true
+      host:
+        origin: "*"
+        target: service.default.svc.cluster.local
+      gateway: istio-ingressgateway
+      port: 80
+      paths:
+      - sourcePath:
+          exact: /api
+        targetPath: /api
 
   extraDestinationRules: []
 
