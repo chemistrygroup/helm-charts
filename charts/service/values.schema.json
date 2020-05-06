@@ -84,6 +84,12 @@
           "title": "ServiceAccount name",
           "description": "Service Account Name to create and/or to run the pod with",
           "form": true
+        },
+        "annotations": {
+          "type": "object",
+          "title": "Annotations",
+          "description": "Service Account annotations",
+          "form": true
         }
       }
     },
