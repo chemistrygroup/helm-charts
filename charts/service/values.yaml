@@ -16,7 +16,7 @@ prometheus:
 serviceAccount:
   create: true  # if true the chart will create the service account
   name: java-service-sa  # name of the serviceAccount to use or to create
-  annotations: {} # service account annotations
+  annotations: {}  # service account annotations
 
 # controls k8s Role Based Access Control settings tied to the serviceAccount
 rbac:
