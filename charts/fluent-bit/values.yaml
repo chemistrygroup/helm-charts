@@ -45,8 +45,8 @@ image:
 resources:
   # resources that the container requires to boot
   requests:
-    memory: 100m
-    cpu: 100Mi
+    memory: 100Mi
+    cpu: 100m
   # limit of resources that a container may consume
   limits:
     memory: 100Mi
