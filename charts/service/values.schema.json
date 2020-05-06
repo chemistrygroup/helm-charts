@@ -185,6 +185,25 @@
         }
       }
     },
+    "command": {
+      "type": "object",
+      "title": "Command",
+      "description": "Command to execute inside the pod",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "ServiceAccount name",
+          "description": "Service Account Name to create and/or to run the pod with",
+          "form": true
+        },
+        "args": {
+          "type": "array",
+          "title": "Annotations",
+          "description": "Service Account annotations",
+          "form": true
+        }
+      }
+    },
     "resources": {
       "type": "object",
       "title": "Required Resources",

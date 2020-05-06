@@ -48,6 +48,12 @@ spec:
   {{- end }}
           image: {{ printf "%s/%s:%s" $values.image.registry $values.image.repository $values.image.tag }}
           imagePullPolicy: {{ default $values.image.pullPolicy "IfNotPresent" }}
+  {{- id $values.command }}
+          command:
+            - {{ $values.command.name | quote }}
+          args:
+{{ toYaml $values.command.args | indent 12 }}
+  {{- end }}
           ports:
   {{- if and $values.service.enabled $values.service.http }}
             - name: http
