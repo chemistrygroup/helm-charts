@@ -70,6 +70,26 @@ entries:
   istio-policies:
   - apiVersion: v2
     appVersion: 1.5.1
+    created: "2020-05-18T12:34:04.566756304Z"
+    description: A chart for generating istio policies as egress rules authorization
+      policies, etc..
+    digest: 9e90b602693facc0c7fd1e6733462f653debc16e902dec7059e1144824a3b2d4
+    home: https://github.com/chemistrygroup/helm-charts/istio-policies
+    icon: https://helm.sh/img/helm.svg
+    keywords:
+    - istio, virtual services, destination rules, egress, ingress, policies
+    maintainers:
+    - email: pedro.rocha@mindera.com
+      name: pmrocha-mindera
+    name: istio-policies
+    sources:
+    - https://github.com/chemistrygroup/helm-charts/istio-policies
+    type: application
+    urls:
+    - https://github.com/chemistrygroup/helm-charts/releases/download/istio-policies-1.1.1/istio-policies-1.1.1.tgz
+    version: 1.1.1
+  - apiVersion: v2
+    appVersion: 1.5.1
     created: "2020-05-06T23:21:24.663629907Z"
     description: A chart for generating istio policies as egress rules authorization
       policies, etc..
@@ -109,6 +129,30 @@ entries:
     - https://github.com/chemistrygroup/helm-charts/releases/download/istio-policies-1.0.0/istio-policies-1.0.0.tgz
     version: 1.0.0
   service:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2020-05-18T12:34:04.674915025Z"
+    dependencies:
+    - alias: istio
+      name: istio-policies
+      repository: https://chemistrygroup.github.io/helm-charts
+      version: 1.1.0
+    description: A sample description of the service purpose
+    digest: e4dbd3c228456ebd1853c9309508155e6c3088512508f62e352a38a4596cb4ec
+    home: https://github.com/chemistrygroup/helm-charts/service
+    icon: https://helm.sh/img/helm.svg
+    keywords:
+    - service-name
+    maintainers:
+    - email: pedro.rocha@mindera.com
+      name: pmrocha-mindera
+    name: service
+    sources:
+    - https://github.com/chemistrygroup/helm-charts/service
+    type: application
+    urls:
+    - https://github.com/chemistrygroup/helm-charts/releases/download/service-1.2.8/service-1.2.8.tgz
+    version: 1.2.8
   - apiVersion: v2
     appVersion: 0.0.1
     created: "2020-05-11T16:41:03.25609203Z"
