@@ -252,20 +252,23 @@ spec:
           number: {{ $service.port }}
         host: {{ $service.host.target }}
         {{- if $service.cors }}
-      corsPolicy:
-        allowOrigin: 
-        - "*"
-        allowMethods:
-        - GET
-        - POST
-        - PUT
-        - DELETE
-        - HEAD
-        - OPTIONS
-        allowHeaders:
-        - Content-Type
-        - Authorization
-        allowCredentials: true
+    corsPolicy:
+      allowOrigin: 
+      - "*"
+      allowMethods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - HEAD
+      - OPTIONS
+      - PATCH
+      allowHeaders:
+      - Content-Type
+      - Authorization
+      - access
+      - User-agent
+      allowCredentials: true
         {{- end }}
       {{- end }}
     {{- end }}
