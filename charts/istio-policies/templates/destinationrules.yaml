@@ -18,7 +18,7 @@ metadata:
 spec:
   host: {{ $service.host }}
   subsets:
-  - name: {{ $service.name }}-tls-origination
+  - name: {{ $service.name }}-ext
     trafficPolicy:
       loadBalancer:
         simple: ROUND_ROBIN
@@ -45,7 +45,7 @@ metadata:
 spec:
   host: {{ default "istio-egressgateway" $service.gateway.name }}.istio-system.svc.cluster.local
   subsets:
-  - name: {{ $service.name }}-subset
+  - name: {{ $service.name }}-ext
       {{- end }}
     {{- end }}
     {{- if $values.trafficManagement.egress.https }}
@@ -61,7 +61,7 @@ metadata:
 spec:
   host: {{ default "istio-egressgateway" $service.gateway.name }}.istio-system.svc.cluster.local
   subsets:
-  - name: {{ $service.name }}-subset
+  - name: {{ $service.name }}-egress
       {{- end }}
     {{- end }}
     {{- if $values.trafficManagement.egress.httpToHttps }}
@@ -77,7 +77,7 @@ metadata:
 spec:
   host: {{ default "istio-egressgateway" $service.gateway.name }}.istio-system.svc.cluster.local
   subsets:
-  - name: {{ $service.name }}-subset
+  - name: {{ $service.name }}-egress
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
@@ -111,7 +111,7 @@ metadata:
 spec:
   host: {{ default "istio-egressgateway" $service.gateway.name }}.istio-system.svc.cluster.local
   subsets:
-  - name: {{ $service.name }}-sub
+  - name: {{ $service.name }}-egress
     trafficPolicy:
       loadBalancer:
         simple: ROUND_ROBIN

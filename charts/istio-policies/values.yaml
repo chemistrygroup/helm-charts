@@ -59,7 +59,7 @@ trafficManagement:
       ip: 127.0.0.1
       port: 5432
 
-  ingress:
+  ingress: 
     - name: serviceh
       cors: true
       host:

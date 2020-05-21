@@ -21,7 +21,7 @@ spec:
   tls:
   - match:
     - port: {{ default 443 $service.port.https }}
-      sni_hosts:
+      sniHosts:
       - {{ $service.host }}
     route:
     - destination:
@@ -72,7 +72,7 @@ spec:
   hosts:
   - {{ $service.host }}
   gateways:
-  - istio-system/{{ default "istio-egressgateway" $service.gateway.name }}
+  - {{ $release.Namespace }}/{{ $service.name }}-egress
   - mesh
   http:
   - match:
@@ -82,13 +82,13 @@ spec:
     route:
     - destination:
         host: {{ default "istio-egressgateway" $service.gateway.name }}.istio-system.svc.cluster.local
-        subset: {{ $service.name }}-subset
+        subset: {{ $service.name }}-egress
         port:
           number: {{ default 80 $service.port }}
       weight: 100
   - match:
     - gateways:
-      - istio-system/{{ default "istio-egressgateway" $service.gateway.name }}
+      - {{ $release.Namespace }}/{{ $service.name }}-egress
       port: {{ default 80 $service.port }}
     route:
     - destination:
@@ -113,25 +113,25 @@ spec:
   - {{ $service.host }}
   gateways:
   - mesh
-  - istio-system/{{ default "istio-egressgateway" $service.gateway.name }}
+  - {{ $release.Namespace }}/{{ $service.name }}-egress
   tls:
   - match:
     - gateways:
       - mesh
       port: {{ default 443 $service.port }}
-      sni_hosts:
+      sniHosts:
       - {{ $service.host }}
     route:
     - destination:
         host: {{ default "istio-egressgateway" $service.gateway.name }}.istio-system.svc.cluster.local
-        subset: {{ $service.name }}-subset
+        subset: {{ $service.name }}-egress
         port:
           number: {{ default 443 $service.port }}
   - match:
     - gateways:
-      - istio-system/{{ default "istio-egressgateway" $service.gateway.name }}
+      - {{ $release.Namespace }}/{{ $service.name }}-egress
       port: {{ default 443 $service.port }}
-      sni_hosts:
+      sniHosts:
         - {{ $service.host }}
     route:
     - destination:
@@ -155,8 +155,8 @@ spec:
   hosts:
   - {{ $service.host }}
   gateways:
-  - istio-system/{{ default "istio-egressgateway" $service.gateway.name }}
-  - mesh
+    - {{ $release.Namespace }}/{{ $service.name }}-egress
+    - mesh
   http:
   - match:
     - gateways:
@@ -165,13 +165,13 @@ spec:
     route:
     - destination:
         host: {{ default "istio-egressgateway" $service.gateway.name }}.istio-system.svc.cluster.local
-        subset: {{ $service.name }}-subset
+        subset: {{ $service.name }}-egress
         port:
           number: {{ default 80 $service.port.http }}
       weight: 100
   - match:
     - gateways:
-      - istio-system/{{ default "istio-egressgateway" $service.gateway.name }}
+      - {{ $release.Namespace }}/{{ $service.name }}-egress
       port: {{ default 80 $service.port.http }}
     route:
     - destination:
@@ -196,7 +196,7 @@ spec:
   - {{ $service.host }}
   gateways:
   - mesh
-  - istio-system/{{ default "istio-egressgateway" $service.gateway.name }}
+  - {{ $release.Namespace }}/{{ $service.name }}-egress
   tcp:
   - match:
     - gateways:
@@ -207,12 +207,12 @@ spec:
     route:
     - destination:
         host: {{ default "istio-egressgateway" $service.gateway.name  }}.istio-system.svc.cluster.local
-        subset: {{ $service.name }}-subset
+        subset: {{ $service.name }}-egress
         port:
           number: {{ $service.port }}
   - match:
     - gateways:
-      - istio-system/{{ default "istio-egressgateway" $service.gateway.name }}
+      - {{ $release.Namespace }}/{{ $service.name }}-egress
       port: {{ $service.port }}
     route:
     - destination:

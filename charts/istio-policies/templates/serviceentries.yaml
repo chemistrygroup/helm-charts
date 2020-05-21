@@ -20,7 +20,7 @@ spec:
   - {{ $service.host }}
   ports:
   - number: {{ default 80 $service.port }}
-    name: http-port
+    name: http
     protocol: HTTP
   resolution: DNS
   location: MESH_EXTERNAL
@@ -41,7 +41,7 @@ spec:
   - {{ $service.host }}
   ports:
   - number: {{ default 443 $service.port }}
-    name: https-port
+    name: https
     protocol: HTTPS
   resolution: DNS
   location: MESH_EXTERNAL
@@ -135,6 +135,9 @@ spec:
   - number: {{ default 80 $service.port }}
     name: http-port
     protocol: HTTP
+  - number: 443
+    name: https
+    protocol: HTTPS
   resolution: DNS
       {{- end }}
     {{- end }}
@@ -153,7 +156,7 @@ spec:
   - {{ $service.host }}
   ports:
   - number: {{ default 443 $service.port }}
-    name: tls-port
+    name: tls
     protocol: TLS
   resolution: DNS
       {{- end }}
@@ -173,10 +176,10 @@ spec:
   - {{ $service.host }}
   ports:
   - number: {{ default 80 $service.port.http }}
-    name: http-port
+    name: http
     protocol: HTTP
   - number: {{ default 443 $service.port.https }}
-    name: https-port
+    name: https
     protocol: HTTPS
   resolution: DNS
       {{- end }}
@@ -198,7 +201,7 @@ spec:
   - {{ $service.ip }}/32
   ports:
   - number: {{ $service.port }}
-    name: tcp-port
+    name: tcp
     protocol: TCP
   location: MESH_EXTERNAL
   resolution: STATIC

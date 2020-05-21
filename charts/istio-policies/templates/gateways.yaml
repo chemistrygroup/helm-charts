@@ -21,7 +21,7 @@ spec:
   servers:
   - port:
       number: {{ $service.port }}
-      name: http-port
+      name: http
       protocol: HTTP
     hosts:
     - {{ $service.host }}
@@ -43,10 +43,12 @@ spec:
   servers:
   - port:
       number: {{ $service.port }}
-      name: http-port
-      protocol: HTTP
+      name: tls
+      protocol: TLS
     hosts:
     - {{ $service.host }}
+    tls:
+      mode: PASSTHROUGH
       {{- end }}
     {{- end }}
     {{- if $values.trafficManagement.egress.httpToHttps }}
@@ -87,7 +89,7 @@ spec:
   servers:
   - port:
       number: {{ $service.port }}
-      name: tcp-port
+      name: tcp
       protocol: TCP
     hosts:
     - {{ $service.host }}
