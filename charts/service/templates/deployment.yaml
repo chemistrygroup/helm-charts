@@ -27,7 +27,7 @@ spec:
       annotations:
         prometheus.io/scrape: {{ default (printf "'%s'" $values.prometheus.enabled) "'true'" }}
         prometheus.io/path: {{ default "/metrics" $values.prometheus.path }}
-        prometheus.io/port: {{ default "'8082'" (printf "'%s'" $values.prometheus.port)  }}
+        prometheus.io/port: {{ toString (default 8082 $values.prometheus.port) }}
         prometheus.io/scheme: {{ default "http" $values.prometheus.scheme }}
         sidecar.istio.io/rewriteAppHTTPProbers: "true"
       labels:
