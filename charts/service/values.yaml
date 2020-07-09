@@ -9,7 +9,7 @@ name: &nameOverride
 prometheus:
   enabled: true  # enables/disable scraping of prometheus metrics
   path: '/metrics'  # path for scrapping prometheus metrics
-  port: 8082  # port were the metrics web server is running
+  port: '8082'  # port were the metrics web server is running
   scheme: 'http'  # http connection scheme
 
 # Service serviceAccount
