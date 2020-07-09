@@ -48,7 +48,7 @@
           "form": true
         },
         "port": {
-          "type": "integer",
+          "type": "string",
           "title": "Port",
           "description": "Network port were the metrics webserver is running at",
           "form": true
