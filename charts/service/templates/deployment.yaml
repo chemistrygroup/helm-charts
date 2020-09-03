@@ -25,10 +25,10 @@ spec:
   template:
     metadata:
       annotations:
-        prometheus.io/scrape: {{ default (printf "'%s'" $values.prometheus.enabled) "'true'" }}
-        prometheus.io/path: '8082'
-        prometheus.io/port: {{ printf "'%s'" (toString $values.prometheus.port | default "8082") }}
-        prometheus.io/scheme: {{ default "http" $values.prometheus.scheme }}
+        prometheus.io/scrape: {{ printf "'%s'" $values.prometheus.enabled | default "'true'" }}
+        prometheus.io/path: {{ printf "'%s'" $values.prometheus.path | default "'/prometheus'" }}
+        prometheus.io/port: {{ printf "'%s'" $values.prometheus.port | default "'8082'" }}
+        prometheus.io/scheme: {{ $values.prometheus.scheme | default "http" }}
         sidecar.istio.io/rewriteAppHTTPProbers: "true"
       labels:
         app: {{ include "chart.name" $scope }}
