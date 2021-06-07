@@ -277,7 +277,7 @@
           "title": "Maximum Number of Replicas",
           "description": "set's the maximum number of replicas for this service",
           "type": "integer",
-          "exclusiveMinimum": 1,
+          "exclusiveMinimum": 0,
           "form": true
         },
         "targetCPU": {
