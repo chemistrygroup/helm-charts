@@ -1,27 +1,27 @@
 ---
-version: v1  # service version, good practice to label every k8s resource with a version if we want to use istio traffic routing capabilities in the future
+version: v1 # service version, good practice to label every k8s resource with a version if we want to use istio traffic routing capabilities in the future
 
-nameOverride: "service"  # replace this by your service name
-fullnameOverride: ""  # fill if you whish to override the generatedChartFullName
+nameOverride: "service" # replace this by your service name
+fullnameOverride: "" # fill if you whish to override the generatedChartFullName
 name: &nameOverride
 
 # Controls if prometheus scrapping should be enabled for this service
 prometheus:
-  enabled: true  # enables/disable scraping of prometheus metrics
-  path: '/metrics'  # path for scrapping prometheus metrics
-  port: '8082'  # port were the metrics web server is running
-  scheme: 'http'  # http connection scheme
+  enabled: true # enables/disable scraping of prometheus metrics
+  path: "/metrics" # path for scrapping prometheus metrics
+  port: "8082" # port were the metrics web server is running
+  scheme: "http" # http connection scheme
 
 # Service serviceAccount
 serviceAccount:
-  create: true  # if true the chart will create the service account
-  name: java-service-sa  # name of the serviceAccount to use or to create
-  annotations: {}  # service account annotations
+  create: true # if true the chart will create the service account
+  name: java-service-sa # name of the serviceAccount to use or to create
+  annotations: {} # service account annotations
 
 # controls k8s Role Based Access Control settings tied to the serviceAccount
 rbac:
-  enabled: true  # enables/disables the creation of Role Based Policies
-  type: cluster  # type can be cluster or namespace  ( ClusterRole or Role)
+  enabled: true # enables/disables the creation of Role Based Policies
+  type: cluster # type can be cluster or namespace  ( ClusterRole or Role)
 
 # pod affinity policies
 affinity: {}
@@ -36,10 +36,10 @@ replicaCount: 1
 
 # service image
 image:
-  registry: docker.io  # container registry url
-  repository: pedrorochaorg/hello-minikube  # container registry repo name
-  tag: 1.0.0  # image tag
-  pullPolicy: IfNotPresent  # kubernetes container image pull policy
+  registry: docker.io # container registry url
+  repository: pedrorochaorg/hello-minikube # container registry repo name
+  tag: 1.0.0 # image tag
+  pullPolicy: IfNotPresent # kubernetes container image pull policy
 
 # command to execute inside pod
 # command:
@@ -60,9 +60,10 @@ resources:
 
 #  Controlls the Horizontal Pod Autoscalling settings
 hpa:
-  minReplicas: 1  # set's the minimum number of replicas for this service
-  maxReplicas: 2  # set's the maximum number of replicas for this service
-  targetCPU: 80  # the target cpu value that triggers the scale action
+  enabled: true
+  minReplicas: 1 # set's the minimum number of replicas for this service
+  maxReplicas: 2 # set's the maximum number of replicas for this service
+  targetCPU: 80 # the target cpu value that triggers the scale action
 
 # Constrols the liveness and readiness kubernetes pod probes
 probes:
@@ -86,7 +87,6 @@ probes:
     periodSeconds: 30
     successThreshold: 1
     timeoutSeconds: 10
-
 
 podSecurityContext: {}
 # fsGroup: 2000
@@ -128,9 +128,9 @@ extraContainerPorts: []
 
 # service related settings
 service:
-  enabled: true  # enables helm to create a dedicated clusterIP service for this service
-  http: true  # creates a service that routes traffic from port 80 to port 8080 ( this port is already exposed in the container )
-# add additional port's to this service
+  enabled: true # enables helm to create a dedicated clusterIP service for this service
+  http: true # creates a service that routes traffic from port 80 to port 8080 ( this port is already exposed in the container )
+  # add additional port's to this service
   extraPorts: []
 #    - name: grpc  # port name , must be http, https, http2, grpc or tcp ( istio )
 #      port: 81

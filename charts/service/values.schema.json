@@ -266,6 +266,15 @@
       "description": "Controlls the Horizontal Pod Autoscalling settings",
       "form": true,
       "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "Enabled",
+          "description": "Enables/Disables hpa",
+          "form": true,
+          "render": "slider",
+          "sliderMin": 0,
+          "sliderMax": 1
+        },
         "minReplicas": {
           "title": "Minimum Number of Replicas",
           "description": "set's the minimum number of replicas for this service",
