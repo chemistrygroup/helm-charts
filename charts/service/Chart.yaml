@@ -1,7 +1,7 @@
 ---
 apiVersion: v2
 name: service
-version: 1.2.22
+version: 1.2.23
 description: A sample description of the service purpose, changed
 type: application
 keywords:
