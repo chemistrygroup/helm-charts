@@ -16,41 +16,51 @@
               "type": "array",
               "form": true,
               "description": "Allow traffic to external http services",
-              "items": [{
-                "$ref": "#/definitions/externalHttpItem"
-              }]
+              "items": [
+                {
+                  "$ref": "#/definitions/externalHttpItem"
+                }
+              ]
             },
             "https": {
               "type": "array",
               "form": true,
               "description": "Allow traffic to external https services",
-              "items": [{
-                "$ref": "#/definitions/externalHttpItem"
-              }]
+              "items": [
+                {
+                  "$ref": "#/definitions/externalHttpItem"
+                }
+              ]
             },
             "httpAndHttps": {
               "type": "array",
               "form": true,
               "description": "Allow traffic to external HTTP and HTTPS services",
-              "items": [{
-                "$ref": "#/definitions/externalHTTPPortItem"
-              }]
+              "items": [
+                {
+                  "$ref": "#/definitions/externalHTTPPortItem"
+                }
+              ]
             },
             "httpToHttps": {
               "type": "array",
               "form": true,
               "description": "Originate HTTPS external traffic to HTTP services",
-              "items": [{
-                "$ref": "#/definitions/externalHTTPPortItem"
-              }]
+              "items": [
+                {
+                  "$ref": "#/definitions/externalHTTPPortItem"
+                }
+              ]
             },
             "tcp": {
               "type": "array",
               "form": true,
               "description": "Originate HTTPS external traffic to HTTP services",
-              "items": [{
-                "$ref": "#/definitions/externalTcpItem"
-              }]
+              "items": [
+                {
+                  "$ref": "#/definitions/externalTcpItem"
+                }
+              ]
             }
           }
         },
@@ -63,33 +73,41 @@
               "type": "array",
               "form": true,
               "description": "Allow traffic to external http services proxying through the Egress Gateway",
-              "items": [{
-                "$ref": "#/definitions/egressHTTPItem"
-              }]
+              "items": [
+                {
+                  "$ref": "#/definitions/egressHTTPItem"
+                }
+              ]
             },
             "https": {
               "type": "array",
               "form": true,
               "description": "Allow traffic to external https services proxying through the Egress Gateway",
-              "items": [{
-                "$ref": "#/definitions/egressHTTPItem"
-              }]
+              "items": [
+                {
+                  "$ref": "#/definitions/egressHTTPItem"
+                }
+              ]
             },
             "httpToHttps": {
               "type": "array",
               "form": true,
               "description": "Originate HTTPS external traffic to HTTP services",
-              "items": [{
-                "$ref": "#/definitions/egressHTTPPortItem"
-              }]
+              "items": [
+                {
+                  "$ref": "#/definitions/egressHTTPPortItem"
+                }
+              ]
             },
             "tcp": {
               "type": "array",
               "form": true,
               "description": "Originate HTTPS external traffic to HTTP services",
-              "items": [{
-                "$ref": "#/definitions/egressTcpItem"
-              }]
+              "items": [
+                {
+                  "$ref": "#/definitions/egressTcpItem"
+                }
+              ]
             }
           }
         },
@@ -103,8 +121,21 @@
                 "description": "Service/Entry name"
               },
               "cors": {
-                "type": "boolean",
-                "description": "Append CORS Headers"
+                "type": "object",
+                "description": "Ingress cors settings",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "activate cors policy"
+                  },
+                  "origins": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "string"
+                    }
+                  }
+                }
               },
               "host": {
                 "type": "object",
@@ -226,7 +257,8 @@
         }
       },
       "required": [
-        "name", "host"
+        "name",
+        "host"
       ]
     },
     "externalHTTPPortItem": {
@@ -249,7 +281,8 @@
         }
       },
       "required": [
-        "name", "host"
+        "name",
+        "host"
       ]
     },
     "externalTcpItem": {
@@ -279,7 +312,10 @@
         }
       },
       "required": [
-        "name", "host", "ip", "port"
+        "name",
+        "host",
+        "ip",
+        "port"
       ]
     },
     "egressHTTPItem": {
@@ -307,7 +343,10 @@
         }
       },
       "required": [
-        "name", "host", "gateway", "port"
+        "name",
+        "host",
+        "gateway",
+        "port"
       ]
     },
     "egressHTTPPortItem": {
@@ -333,7 +372,10 @@
         }
       },
       "required": [
-        "name", "host", "gateway", "port"
+        "name",
+        "host",
+        "gateway",
+        "port"
       ]
     },
     "egressTcpItem": {
@@ -366,7 +408,11 @@
         }
       },
       "required": [
-        "name", "host", "ip", "port", "gateway"
+        "name",
+        "host",
+        "ip",
+        "port",
+        "gateway"
       ]
     },
     "portItem": {
@@ -466,28 +512,28 @@
       "definitions": {
         "trafficPolicy": {
           "description": "Traffic policies to apply for a specific destination, across all destination ports. See DestinationRule for examples.",
-            "type": "object",
-            "properties": {
-              "loadBalancer": {
-                "$ref": "#/definitions/destinationRule/definitions/loadBalancer"
-              },
-              "connectionPool": {
-                "$ref": "#/definitions/destinationRule/definitions/connectionPool"
-              },
-              "outlierDetection": {
-                "$ref": "#/definitions/destinationRule/definitions/outlierDetection"
-              },
-              "tls": {
-                "$ref": "#/definitions/destinationRule/definitions/tls"
-              },
-              "portLevelSettings": {
-                "description": "Traffic policies specific to individual ports. Note that port level settings will override the destination-level settings. Traffic settings specified at the destination-level will not be inherited when overridden by port-level settings, i.e. default values will be applied to fields omitted in port-level traffic policies.",
-                "type": "array",
-                "items": {
-                  "$ref": "#/definitions/destinationRule/definitions/portTrafficPolicy"
-                }
+          "type": "object",
+          "properties": {
+            "loadBalancer": {
+              "$ref": "#/definitions/destinationRule/definitions/loadBalancer"
+            },
+            "connectionPool": {
+              "$ref": "#/definitions/destinationRule/definitions/connectionPool"
+            },
+            "outlierDetection": {
+              "$ref": "#/definitions/destinationRule/definitions/outlierDetection"
+            },
+            "tls": {
+              "$ref": "#/definitions/destinationRule/definitions/tls"
+            },
+            "portLevelSettings": {
+              "description": "Traffic policies specific to individual ports. Note that port level settings will override the destination-level settings. Traffic settings specified at the destination-level will not be inherited when overridden by port-level settings, i.e. default values will be applied to fields omitted in port-level traffic policies.",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/destinationRule/definitions/portTrafficPolicy"
               }
             }
+          }
         },
         "subset": {
           "description": "A subset of endpoints of a service. Subsets can be used for scenarios like A/B testing, or routing to a specific version of a service. Refer to [VirtualService](https://istio.io/docs/reference/config/networking/virtual-service/#VirtualService) documentation for examples of using subsets in these scenarios. In addition, traffic policies defined at the service-level can be overridden at a subset-level. The following rule uses a round robin load balancing policy for all traffic going to a subset named testversion that is composed of endpoints (e.g., pods) with labels (version:v3).",
@@ -715,111 +761,111 @@
         },
         "consistentHashLB": {
           "description": "Consistent Hash-based load balancing can be used to provide soft session affinity based on HTTP headers, cookies or other properties. This load balancing policy is applicable only for HTTP connections. The affinity to a particular destination host will be lost when one or more hosts are added/removed from the destination service.",
-            "type": "object",
-            "properties": {
-              "minimumRingSize": {
-                "description": "The minimum number of virtual nodes to use for the hash ring. Defaults to 1024. Larger ring sizes result in more granular load distributions. If the number of hosts in the load balancing pool is larger than the ring size, each host will be assigned a single virtual node.",
-                "type": "integer"
-              }
-            },
-            "oneOf": [
-              {
-                "not": {
-                  "anyOf": [
-                    {
-                      "required": [
-                        "httpHeaderName"
-                      ],
-                      "properties": {
-                        "httpHeaderName": {
-                          "description": "Hash based on a specific HTTP header.",
-                          "type": "string",
-                          "format": "string"
-                        }
-                      }
-                    },
-                    {
-                      "required": [
-                        "httpCookie"
-                      ],
-                      "properties": {
-                        "httpCookie": {
-                          "$ref": "#/definitions/destinationRule/definitions/HTTPCookie"
-                        }
-                      }
-                    },
-                    {
-                      "required": [
-                        "useSourceIp"
-                      ],
-                      "properties": {
-                        "useSourceIp": {
-                          "description": "Hash based on the source IP address.",
-                          "type": "boolean"
-                        }
-                      }
-                    },
-                    {
-                      "required": [
-                        "httpQueryParameterName"
-                      ],
-                      "properties": {
-                        "httpQueryParameterName": {
-                          "description": "Hash based on a specific HTTP query parameter.",
-                          "type": "string",
-                          "format": "string"
-                        }
+          "type": "object",
+          "properties": {
+            "minimumRingSize": {
+              "description": "The minimum number of virtual nodes to use for the hash ring. Defaults to 1024. Larger ring sizes result in more granular load distributions. If the number of hosts in the load balancing pool is larger than the ring size, each host will be assigned a single virtual node.",
+              "type": "integer"
+            }
+          },
+          "oneOf": [
+            {
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "httpHeaderName"
+                    ],
+                    "properties": {
+                      "httpHeaderName": {
+                        "description": "Hash based on a specific HTTP header.",
+                        "type": "string",
+                        "format": "string"
                       }
                     }
-                  ]
-                }
-              },
-              {
-                "required": [
-                  "httpHeaderName"
-                ],
-                "properties": {
-                  "httpHeaderName": {
-                    "description": "Hash based on a specific HTTP header.",
-                    "type": "string",
-                    "format": "string"
+                  },
+                  {
+                    "required": [
+                      "httpCookie"
+                    ],
+                    "properties": {
+                      "httpCookie": {
+                        "$ref": "#/definitions/destinationRule/definitions/HTTPCookie"
+                      }
+                    }
+                  },
+                  {
+                    "required": [
+                      "useSourceIp"
+                    ],
+                    "properties": {
+                      "useSourceIp": {
+                        "description": "Hash based on the source IP address.",
+                        "type": "boolean"
+                      }
+                    }
+                  },
+                  {
+                    "required": [
+                      "httpQueryParameterName"
+                    ],
+                    "properties": {
+                      "httpQueryParameterName": {
+                        "description": "Hash based on a specific HTTP query parameter.",
+                        "type": "string",
+                        "format": "string"
+                      }
+                    }
                   }
-                }
-              },
-              {
-                "required": [
-                  "httpCookie"
-                ],
-                "properties": {
-                  "httpCookie": {
-                    "$ref": "#/definitions/destinationRule/definitions/HTTPCookie"
-                  }
-                }
-              },
-              {
-                "required": [
-                  "useSourceIp"
-                ],
-                "properties": {
-                  "useSourceIp": {
-                    "description": "Hash based on the source IP address.",
-                    "type": "boolean"
-                  }
-                }
-              },
-              {
-                "required": [
-                  "httpQueryParameterName"
-                ],
-                "properties": {
-                  "httpQueryParameterName": {
-                    "description": "Hash based on a specific HTTP query parameter.",
-                    "type": "string",
-                    "format": "string"
-                  }
+                ]
+              }
+            },
+            {
+              "required": [
+                "httpHeaderName"
+              ],
+              "properties": {
+                "httpHeaderName": {
+                  "description": "Hash based on a specific HTTP header.",
+                  "type": "string",
+                  "format": "string"
                 }
               }
-            ]
+            },
+            {
+              "required": [
+                "httpCookie"
+              ],
+              "properties": {
+                "httpCookie": {
+                  "$ref": "#/definitions/destinationRule/definitions/HTTPCookie"
+                }
+              }
+            },
+            {
+              "required": [
+                "useSourceIp"
+              ],
+              "properties": {
+                "useSourceIp": {
+                  "description": "Hash based on the source IP address.",
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "required": [
+                "httpQueryParameterName"
+              ],
+              "properties": {
+                "httpQueryParameterName": {
+                  "description": "Hash based on a specific HTTP query parameter.",
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          ]
         },
         "TCPSettings": {
           "description": "Settings common to both HTTP and TCP upstream connections.",
@@ -1285,7 +1331,7 @@
             "headers": {
               "$ref": "#/definitions/virtualService/definitions/headers"
             }
-          }          
+          }
         },
         "routeDestination": {
           "description": "L4 routing rule weighted destination.",
@@ -1599,7 +1645,6 @@
               "format": "double"
             }
           }
-        
         },
         "corsPolicy": {
           "description": "Describes the Cross-Origin Resource Sharing (CORS) policy, for a given service. Refer to [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) for further details about cross origin resource sharing. For example, the following rule restricts cross origin requests to those originating from example.com domain using HTTP POST/GET, and sets the `Access-Control-Allow-Credentials` header to false. In addition, it only exposes `X-Foo-bar` header and sets an expiry period of 1 day.",
@@ -1654,7 +1699,7 @@
               "type": "boolean",
               "nullable": true
             }
-          }        
+          }
         },
         "headers": {
           "type": "object",
@@ -1900,7 +1945,7 @@
               }
             }
           ]
-        }, 
+        },
         "portSelector": {
           "description": "PortSelector specifies the number of a port to be used for matching or selection for final routing.",
           "type": "object",
@@ -2062,7 +2107,7 @@
                 "format": "string"
               }
             }
-          }          
+          }
         },
         "port": {
           "description": "Port describes the properties of a specific port of a service.",
@@ -2108,6 +2153,5 @@
         }
       }
     }
-  
   }
 }

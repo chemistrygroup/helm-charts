@@ -252,9 +252,10 @@ spec:
           number: {{ $service.port }}
         host: {{ $service.host.target }}
         {{- if $service.cors }}
+          {{- if $service.cors.enabled }}
     corsPolicy:
       allowOrigin: 
-      - "*"
+{{ toYaml $service.cors.origins | indent 6 }}
       allowMethods:
       - GET
       - POST
@@ -270,6 +271,7 @@ spec:
       - User-agent
       - X-API-KEY
       allowCredentials: true
+          {{- end }}
         {{- end }}
       {{- end }}
     {{- end }}
