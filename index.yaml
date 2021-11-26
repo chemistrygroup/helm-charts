@@ -70,6 +70,26 @@ entries:
   istio-policies:
   - apiVersion: v2
     appVersion: 1.5.1
+    created: "2021-11-26T11:38:59.341650306Z"
+    description: A chart for generating istio policies as egress rules authorization
+      policies, etc..
+    digest: dd691f2e788b79bf43e26f334aaaaf6628e39a68941ec6829288cf14076894a7
+    home: https://github.com/chemistrygroup/helm-charts/istio-policies
+    icon: https://helm.sh/img/helm.svg
+    keywords:
+    - istio, virtual services, destination rules, egress, ingress, policies
+    maintainers:
+    - email: pedro.rocha@mindera.com
+      name: pmrocha-mindera
+    name: istio-policies
+    sources:
+    - https://github.com/chemistrygroup/helm-charts/istio-policies
+    type: application
+    urls:
+    - https://github.com/chemistrygroup/helm-charts/releases/download/istio-policies-1.2.0/istio-policies-1.2.0.tgz
+    version: 1.2.0
+  - apiVersion: v2
+    appVersion: 1.5.1
     created: "2020-07-13T15:17:27.48395877Z"
     description: A chart for generating istio policies as egress rules authorization
       policies, etc..
