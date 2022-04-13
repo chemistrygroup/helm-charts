@@ -47,7 +47,7 @@ spec:
   {{- if $values.extraEnvs }}
 {{ toYaml $values.extraEnvs | indent 12 }}
   {{- end }}
-          image: {{ printf "%s/%s:%s" $values.image.registry $values.image.repository $values.image.tag }}
+          image: {{ printf "%s:%s" $values.image.repository $values.image.tag }}
           imagePullPolicy: {{ default "IfNotPresent" $values.image.pullPolicy }}
   {{- if $values.command }}
           command:

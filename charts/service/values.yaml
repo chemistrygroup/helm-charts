@@ -36,8 +36,7 @@ replicaCount: 1
 
 # service image
 image:
-  registry: docker.io # container registry url
-  repository: pedrorochaorg/hello-minikube # container registry repo name
+  repository: docker.io/pedrorochaorg/hello-minikube # container registry repo name
   tag: 1.0.0 # image tag
   pullPolicy: IfNotPresent # kubernetes container image pull policy
 

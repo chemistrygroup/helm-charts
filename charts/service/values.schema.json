@@ -155,16 +155,10 @@
       "description": "Container Image related settings",
       "form": true,
       "properties": {
-        "registry": {
+        "repository": {
           "type": "string",
           "title": "Registry URL",
           "description": "Docker Container registry URL",
-          "form": true
-        },
-        "repository": {
-          "type": "string",
-          "title": "Repository Name",
-          "description": "Docker Container registry repository name",
           "form": true
         },
         "tag": {
