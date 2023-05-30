@@ -16,6 +16,6 @@ maintainers:
     name: pmrocha-mindera
 dependencies:
   - name: istio-policies
-    version: 1.4.0
+    version: 1.4.1
     repository: https://chemistrygroup.github.io/helm-charts
     alias: istio
