@@ -1,7 +1,7 @@
 ---
 apiVersion: v2
 name: service
-version: 2.1.1
+version: 2.1.2
 description: A sample description of the service purpose, changed
 type: application
 keywords:
@@ -16,6 +16,6 @@ maintainers:
     name: pmrocha-mindera
 dependencies:
   - name: istio-policies
-    version: 1.4.1
+    version: 1.4.2
     repository: https://chemistrygroup.github.io/helm-charts
     alias: istio
