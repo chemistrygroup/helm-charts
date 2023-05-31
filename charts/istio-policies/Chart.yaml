@@ -1,7 +1,7 @@
 ---
 apiVersion: v2
 name: istio-policies
-version: 1.4.1
+version: 1.4.2
 description: A chart for generating istio policies as egress rules authorization policies, etc..
 type: application
 keywords:
