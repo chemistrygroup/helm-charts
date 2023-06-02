@@ -7443,6 +7443,8 @@ spec:
     status: {}
   versions:
     - name: v1alpha2
+      schema:
+        openAPIV3Schema: {}
       served: true
       storage: true
 ---
@@ -7473,5 +7475,7 @@ spec:
     status: {}
   versions:
     - name: v1alpha2
+      schema:
+        openAPIV3Schema: {}
       served: true
       storage: true
