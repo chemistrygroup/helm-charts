@@ -7444,7 +7444,8 @@ spec:
   versions:
     - name: v1alpha2
       schema:
-        openAPIV3Schema: {}
+        openAPIV3Schema:
+          type: object
       served: true
       storage: true
 ---
@@ -7476,6 +7477,7 @@ spec:
   versions:
     - name: v1alpha2
       schema:
-        openAPIV3Schema: {}
+        openAPIV3Schema:
+          type: object
       served: true
       storage: true
