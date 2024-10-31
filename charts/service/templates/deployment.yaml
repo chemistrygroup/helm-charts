@@ -30,6 +30,10 @@ spec:
         prometheus.io/port: {{ $values.prometheus.port | default "8082" | quote }}
         prometheus.io/scheme: {{ $values.prometheus.scheme | default "http" | quote }}
         sidecar.istio.io/rewriteAppHTTPProbers: "true"
+        sidecar.istio.io/proxyCPU: {{ $values.istio.requests.cpu | default "500m" }}
+        sidecar.istio.io/proxyCPULimit: {{ $values.istio.limits.cpu | default "1000m" }}
+        sidecar.istio.io/proxyMemory: {{ $values.istio.requests.memory | default "256Mi" }}
+        sidecar.istio.io/proxyMemoryLimit: {{ $values.istio.limits.memory | default "512Mi" }}
       labels:
         app: {{ include "chart.name" $scope }}
         release: {{ $release.Name }}
