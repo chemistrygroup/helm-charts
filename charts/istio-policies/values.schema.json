@@ -16,41 +16,51 @@
               "type": "array",
               "form": true,
               "description": "Allow traffic to external http services",
-              "items": {
-                "$ref": "#/definitions/externalHttpItem"
-              }
+              "items": [
+                {
+                  "$ref": "#/definitions/externalHttpItem"
+                }
+              ]
             },
             "https": {
               "type": "array",
               "form": true,
               "description": "Allow traffic to external https services",
-              "items": {
-                "$ref": "#/definitions/externalHttpItem"
-              }
+              "items": [
+                {
+                  "$ref": "#/definitions/externalHttpItem"
+                }
+              ]
             },
             "httpAndHttps": {
               "type": "array",
               "form": true,
               "description": "Allow traffic to external HTTP and HTTPS services",
-              "items": {
-                "$ref": "#/definitions/externalHTTPPortItem"
-              }
+              "items": [
+                {
+                  "$ref": "#/definitions/externalHTTPPortItem"
+                }
+              ]
             },
             "httpToHttps": {
               "type": "array",
               "form": true,
               "description": "Originate HTTPS external traffic to HTTP services",
-              "items": {
-                "$ref": "#/definitions/externalHTTPPortItem"
-              }
+              "items": [
+                {
+                  "$ref": "#/definitions/externalHTTPPortItem"
+                }
+              ]
             },
             "tcp": {
               "type": "array",
               "form": true,
               "description": "Originate HTTPS external traffic to HTTP services",
-              "items": {
-                "$ref": "#/definitions/externalTcpItem"
-              }
+              "items": [
+                {
+                  "$ref": "#/definitions/externalTcpItem"
+                }
+              ]
             }
           }
         },
@@ -63,143 +73,163 @@
               "type": "array",
               "form": true,
               "description": "Allow traffic to external http services proxying through the Egress Gateway",
-              "items": {
-                "$ref": "#/definitions/egressHTTPItem"
-              }
+              "items": [
+                {
+                  "$ref": "#/definitions/egressHTTPItem"
+                }
+              ]
             },
             "https": {
               "type": "array",
               "form": true,
               "description": "Allow traffic to external https services proxying through the Egress Gateway",
-              "items": {
-                "$ref": "#/definitions/egressHTTPItem"
-              }
+              "items": [
+                {
+                  "$ref": "#/definitions/egressHTTPItem"
+                }
+              ]
             },
             "httpToHttps": {
               "type": "array",
               "form": true,
               "description": "Originate HTTPS external traffic to HTTP services",
-              "items": {
-                "$ref": "#/definitions/egressHTTPPortItem"
-              }
+              "items": [
+                {
+                  "$ref": "#/definitions/egressHTTPPortItem"
+                }
+              ]
             },
             "tcp": {
               "type": "array",
               "form": true,
               "description": "Originate HTTPS external traffic to HTTP services",
-              "items": {
-                "$ref": "#/definitions/egressTcpItem"
-              }
+              "items": [
+                {
+                  "$ref": "#/definitions/egressTcpItem"
+                }
+              ]
             }
           }
         },
         "ingress": {
           "type": "array",
           "description": "Istio Ingress Service Routes",
-          "items": {
-            "name": {
-              "type": "String",
-              "description": "Service/Entry name"
-            },
-            "cors": {
-              "type": "object",
-              "description": "Ingress cors settings",
-              "properties": {
-                "enabled": {
-                  "type": "boolean",
-                  "description": "activate cors policy"
-                },
-                "origins": {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "format": "string"
+          "items": [
+            {
+              "name": {
+                "type": "String",
+                "description": "Service/Entry name"
+              },
+              "cors": {
+                "type": "object",
+                "description": "Ingress cors settings",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "activate cors policy"
+                  },
+                  "origins": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "string"
+                    }
                   }
                 }
-              }
-            },
-            "host": {
-              "type": "object",
-              "description": "Service hostname settings",
-              "properties": {
-                "origin": {
-                  "type": "string",
-                  "description": "Origin Hostname"
-                },
-                "target": {
-                  "type": "string",
-                  "description": "Target Hostname"
+              },
+              "host": {
+                "type": "object",
+                "description": "Service hostname settings",
+                "properties": {
+                  "origin": {
+                    "type": "string",
+                    "description": "Origin Hostname"
+                  },
+                  "target": {
+                    "type": "string",
+                    "description": "Target Hostname"
+                  }
                 }
-              }
-            },
-            "gateway": {
-              "type": "string",
-              "description": "Istio ingress gateway name"
-            },
-            "port": {
-              "type": "integer",
-              "description": "Istio ingress gateway port"
-            },
-            "paths": {
-              "type": "array",
-              "description": "Routing paths",
-              "items": {
-                "$ref": "#/definitions/ingressPathItem"
+              },
+              "gateway": {
+                "type": "string",
+                "description": "Istio ingress gateway name"
+              },
+              "port": {
+                "type": "integer",
+                "description": "Istio ingress gateway port"
+              },
+              "paths": {
+                "type": "array",
+                "description": "Routing paths",
+                "items": [
+                  {
+                    "$ref": "#/definitions/ingressPathItem"
+                  }
+                ]
               }
             }
-          }
+          ]
         },
         "extraDestinationRules": {
           "type": "array",
           "description": "Extra Istio DestinationRules manifests",
-          "items": {
-            "name": {
-              "type": "string",
-              "description": "Entry name (unique)"
-            },
-            "spec": {
-              "$ref": "#/definitions/destinationRule"
+          "items": [
+            {
+              "name": {
+                "type": "string",
+                "description": "Entry name (unique)"
+              },
+              "spec": {
+                "$ref": "#/definitions/destinationRule"
+              }
             }
-          }
+          ]
         },
         "extraVirtualServices": {
           "type": "array",
           "description": "Extra Istio VirtualServices manifests",
-          "items": {
-            "name": {
-              "type": "string",
-              "description": "Entry name (unique)"
-            },
-            "spec": {
-              "$ref": "#/definitions/virtualService"
+          "items": [
+            {
+              "name": {
+                "type": "string",
+                "description": "Entry name (unique)"
+              },
+              "spec": {
+                "$ref": "#/definitions/virtualService"
+              }
             }
-          }
+          ]
         },
         "extraServiceEntries": {
           "type": "array",
           "description": "Extra Istio ServiceEntry manifests",
-          "items": {
-            "name": {
-              "type": "string",
-              "description": "Entry name (unique)"
-            },
-            "spec": {
-              "$ref": "#/definitions/serviceEntry"
+          "items": [
+            {
+              "name": {
+                "type": "string",
+                "description": "Entry name (unique)"
+              },
+              "spec": {
+                "$ref": "#/definitions/serviceEntry"
+              }
             }
-          }
+          ]
         },
         "extraGateways": {
           "type": "array",
           "description": "Extra Istio Gateway manifests",
-          "items": {
-            "name": {
-              "type": "string",
-              "description": "Entry name (unique)"
-            },
-            "spec": {
-              "$ref": "#/definitions/gateway"
+          "items": [
+            {
+              "name": {
+                "type": "string",
+                "description": "Entry name (unique)"
+              },
+              "spec": {
+                "$ref": "#/definitions/gateway"
+              }
             }
-          }
+          ]
         }
       }
     }
