@@ -70,6 +70,26 @@ entries:
   istio-policies:
   - apiVersion: v2
     appVersion: 1.5.1
+    created: "2026-04-30T20:29:59.165868Z"
+    description: A chart for generating istio policies as egress rules authorization
+      policies, etc..
+    digest: 2295a199dabf57605623ecddca7f36fe4ebc0e228d45a8df76eb9de7b0f6a165
+    home: https://github.com/chemistrygroup/helm-charts/istio-policies
+    icon: https://helm.sh/img/helm.svg
+    keywords:
+    - istio, virtual services, destination rules, egress, ingress, policies
+    maintainers:
+    - email: pedro.rocha@mindera.com
+      name: pmrocha-mindera
+    name: istio-policies
+    sources:
+    - https://github.com/chemistrygroup/helm-charts/istio-policies
+    type: application
+    urls:
+    - https://github.com/chemistrygroup/helm-charts/releases/download/istio-policies-1.4.6/istio-policies-1.4.6.tgz
+    version: 1.4.6
+  - apiVersion: v2
+    appVersion: 1.5.1
     created: "2026-04-17T16:39:36.089618907Z"
     description: A chart for generating istio policies as egress rules authorization
       policies, etc..
@@ -329,6 +349,30 @@ entries:
     - https://github.com/chemistrygroup/helm-charts/releases/download/istio-policies-1.0.0/istio-policies-1.0.0.tgz
     version: 1.0.0
   service:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2026-04-30T20:29:59.167139Z"
+    dependencies:
+    - alias: istio
+      name: istio-policies
+      repository: https://chemistrygroup.github.io/helm-charts
+      version: 1.4.6
+    description: A sample description of the service purpose, changed
+    digest: 11a644697938d777e2042844c78e50e358b83a8fc2316c20c4a63e4b599eb120
+    home: https://github.com/chemistrygroup/helm-charts/service
+    icon: https://helm.sh/img/helm.svg
+    keywords:
+    - service-name
+    maintainers:
+    - email: pedro.rocha@mindera.com
+      name: pmrocha-mindera
+    name: service
+    sources:
+    - https://github.com/chemistrygroup/helm-charts/service
+    type: application
+    urls:
+    - https://github.com/chemistrygroup/helm-charts/releases/download/service-2.1.8/service-2.1.8.tgz
+    version: 2.1.8
   - apiVersion: v2
     appVersion: 0.0.1
     created: "2026-04-17T16:41:08.989043694Z"
@@ -1231,4 +1275,4 @@ entries:
     urls:
     - https://github.com/chemistrygroup/helm-charts/releases/download/service-1.0.2/service-1.0.2.tgz
     version: 1.0.2
-generated: "2020-04-21T14:22:26.460313409Z"
+generated: "2026-04-30T20:29:59.165112Z"
